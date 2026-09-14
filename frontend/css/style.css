@@ -1,0 +1,97 @@
+:root {
+    --color-fondo: #ffffff;
+    --color-texto: #000000;
+    --color-primario: #e60000;
+    --color-secundario: #f4f4f4;
+    --color-borde: #dddddd;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--color-secundario);
+    color: var(--color-texto);
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: var(--color-texto);
+    color: var(--color-fondo);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.contenedor {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.tarjeta {
+    background: var(--color-fondo);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border: 1px solid var(--color-borde);
+    margin-bottom: 2rem;
+}
+
+.grupo-input {
+    margin-bottom: 1.5rem;
+}
+
+.grupo-input label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.grupo-input input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid var(--color-borde);
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: var(--color-texto);
+    color: var(--color-fondo);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+button:hover { background-color: #333; }
+
+.btn-rojo { background-color: var(--color-primario); }
+.btn-rojo:hover { background-color: #cc0000; }
+
+.oculto { display: none !important; }
+
+.msj-error { color: var(--color-primario); font-weight: bold; }
+
+.grilla-dashboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.consola {
+    background: #1e1e1e;
+    color: #00ff00;
+    padding: 1rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    min-height: 100px;
+}
