@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Restaurantes disponibles</title>
+
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+
+    <header class="encabezado">
+        <div class="contenedor">
+
+            <h1>Restaurantes disponibles</h1>
+
+            <p>
+                Consultá rápidamente qué restaurantes tienen mesas disponibles.
+            </p>
+
+        </div>
+    </header>
+
+    <main class="contenedor">
+
+        <section class="filtros">
+
+            <input
+                type="text"
+                id="buscador"
+                placeholder="Buscar restaurante..."
+            >
+
+            <select id="personas">
+                <option value="0">Cantidad de personas</option>
+                <option value="1">1 persona</option>
+                <option value="2">2 personas</option>
+                <option value="3">3 personas</option>
+                <option value="4">4 personas</option>
+                <option value="5">5 personas</option>
+                <option value="6">6 personas</option>
+                <option value="7">7 personas</option>
+                <option value="8">8 personas</option>
+            </select>
+
+        </section>
+
+        <section id="mensaje">
+            <p>Cargando restaurantes...</p>
+        </section>
+
+        <section
+            id="restaurantes"
+            class="lista-restaurantes"
+        >
+        </section>
+
+    </main>
+
+    <script src="main.js"></script>
+
+</body>
+
+</html>
