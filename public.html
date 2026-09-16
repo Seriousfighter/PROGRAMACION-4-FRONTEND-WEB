@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurantes disponibles — Mesas Disponibles</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body class="public-page">
+
+    <!-- ============================================
+         Header
+         ============================================ -->
+    <header class="app-header">
+        <div class="container app-header__inner">
+            <a href="public.html" class="app-header__logo">
+                <span class="logo-icon">🍽️</span>
+                <span class="logo-text">Mesas Disponibles</span>
+            </a>
+            <nav class="app-header__nav">
+                <a href="index.html" class="btn btn-outline btn-sm">Iniciar sesión</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ============================================
+         Hero
+         ============================================ -->
+    <section class="hero">
+        <div class="container hero__inner">
+            <p class="hero__eyebrow">Reservá en segundos</p>
+            <h1 class="hero__title">Encontrá tu mesa perfecta</h1>
+            <p class="hero__subtitle">
+                Consultá en tiempo real la disponibilidad de mesas en los mejores restaurantes.
+            </p>
+        </div>
+    </section>
+
+    <!-- ============================================
+         Stats
+         ============================================ -->
+    <section class="container stats-section" id="stats-section" hidden>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-card__icon">🏛️</div>
+                <div class="stat-card__value" id="stat-restaurants">—</div>
+                <div class="stat-card__label">Restaurantes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card__icon">🪑</div>
+                <div class="stat-card__value" id="stat-available">—</div>
+                <div class="stat-card__label">Mesas disponibles</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card__icon">⭐</div>
+                <div class="stat-card__value stat-card__value--text" id="stat-best">—</div>
+                <div class="stat-card__label">Mejor opción hoy</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         Toolbar
+         ============================================ -->
+    <section class="container toolbar" id="toolbar" hidden>
+        <div class="toolbar__search">
+            <span class="toolbar__search-icon">🔍</span>
+            <input type="text" id="search-input"
+                   placeholder="Buscar por nombre, dirección o descripción..."
+                   autocomplete="off">
+        </div>
+        <div class="toolbar__sort">
+            <label for="sort-select">Ordenar por</label>
+            <select id="sort-select">
+                <option value="availability">Mayor disponibilidad</option>
+                <option value="name">Nombre (A-Z)</option>
+                <option value="total">Mayor cantidad de mesas</option>
+            </select>
+        </div>
+    </section>
+
+    <!-- ============================================
+         Main
+         ============================================ -->
+    <main class="container public-main">
+
+        <div id="loading" class="state-block">
+            <div class="spinner"></div>
+            <p>Cargando restaurantes...</p>
+        </div>
+
+        <div id="error-box" class="state-block state-block--error" hidden>
+            <p id="error-message">Ocurrió un error.</p>
+            <button class="btn btn-primary" onclick="location.reload()">Reintentar</button>
+        </div>
+
+        <div id="empty-box" class="state-block" hidden>
+            <div class="empty-icon">🍽️</div>
+            <p id="empty-message">No hay restaurantes registrados todavía.</p>
+        </div>
+
+        <section id="restaurants-grid" class="cards-grid" hidden></section>
+
+    </main>
+
+    <!-- ============================================
+         Footer
+         ============================================ -->
+    <footer class="app-footer">
+        <div class="container">
+            <p>&copy; 2026 Mesas Disponibles — Proyecto académico</p>
+        </div>
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/utils/session.js"></script>
+    <script src="js/utils/ui.js"></script>
+    <script src="js/services/client.js"></script>
+    <script src="js/services/public.js"></script>
+    <script src="js/pages/public.js"></script>
+</body>
+</html>
