@@ -1,5 +1,5 @@
 const API_URL =
-    "../messapi/api/public/restaurants";
+   "http://localhost/PROGRAMACION-4-BACKEND/messapi/api/public/restaurants";
 
 const listaRestaurantes =
     document.getElementById("restaurantes");
