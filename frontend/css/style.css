@@ -1,0 +1,186 @@
+/* --- Estilos Base --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f0f0;
+    color: #000000;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #000000;
+    color: #ffffff;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 0 #e60000;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+}
+
+.contenedor {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.oculto {
+    display: none !important;
+}
+
+/* --- Formularios y Botones --- */
+.grupo-input {
+    margin-bottom: 15px;
+}
+
+.grupo-input label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.grupo-input input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #000000;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #ffffff;
+    color: #000000;
+    border: 2px solid #000000;
+    padding: 10px 20px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+button:hover {
+    background-color: #f0f0f0;
+}
+
+.btn-rojo {
+    background-color: #e60000;
+    color: #ffffff;
+    border-color: #000000;
+}
+
+.btn-rojo:hover {
+    background-color: #cc0000;
+}
+
+#btn-logout {
+    background-color: #000000;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+}
+
+#btn-logout:hover {
+    background-color: #e60000;
+    border-color: #e60000;
+}
+
+.msj-error {
+    color: #e60000;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.consola {
+    background: #000000;
+    color: #00ff00;
+    padding: 15px;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+
+/* --- Tarjetas Principales --- */
+.tarjeta {
+    background: #ffffff;
+    border: 2px solid #000000;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 8px 8px 0px #000000;
+    margin-bottom: 30px;
+}
+
+.tarjeta h2 {
+    margin-top: 0;
+    border-bottom: 3px solid #e60000;
+    padding-bottom: 10px;
+    display: inline-block;
+}
+
+/* --- Grilla de Restaurantes (Catálogo Público) --- */
+.contenedor-restaurantes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.tarjeta-restaurante {
+    background: #ffffff;
+    border: 2px solid #000000;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 4px 4px 0px #000000;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tarjeta-restaurante:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 8px 8px 0px #e60000;
+}
+
+.tarjeta-restaurante h3 {
+    margin-top: 0;
+    border-bottom: 2px solid #000000;
+    padding-bottom: 10px;
+}
+
+/* --- Efecto 3D de las Mesas --- */
+.grilla-mesas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.mesa-3d {
+    aspect-ratio: 1;
+    background: #ffffff;
+    border: 2px solid #000000;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    cursor: default;
+    box-shadow: 0px 6px 0px #000000, 0px 8px 10px rgba(0,0,0,0.2);
+    transition: all 0.15s ease;
+    position: relative;
+}
+
+/* Estado Libre */
+.mesa-libre {
+    background: #ffffff;
+    color: #000000;
+}
+
+/* Estado Ocupada */
+.mesa-ocupada {
+    background: #e60000;
+    color: #ffffff;
+    border-color: #000000;
+    box-shadow: 0px 6px 0px #990000, 0px 8px 10px rgba(0,0,0,0.4);
+}
