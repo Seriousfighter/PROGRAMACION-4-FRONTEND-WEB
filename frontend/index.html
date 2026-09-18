@@ -16,9 +16,19 @@
     </header>
 
     <main class="contenedor">
-        <!-- Vista de Login -->
+        
+        <!-- VISTA PÚBLICA (Siempre visible para cualquier usuario) -->
+        <section id="vista-publica" class="tarjeta">
+            <h2>Catálogo de Restaurantes</h2>
+            <button id="btn-cargar-restaurantes" style="margin-bottom: 15px;">Actualizar Disponibilidad</button>
+            
+            <!-- Aquí se inyectarán las tarjetas y mesas 3D desde JavaScript -->
+            <div id="contenedor-restaurantes" class="contenedor-restaurantes"></div>
+        </section>
+
+        <!-- Vista de Login (Solo para administradores) -->
         <section id="vista-login" class="tarjeta">
-            <h2>Acceso al Sistema</h2>
+            <h2>Acceso Administrativo</h2>
             <form id="form-login">
                 <div class="grupo-input">
                     <label for="email">Correo Electrónico</label>
@@ -33,25 +43,18 @@
             </form>
         </section>
 
-        <!-- Vista del Dashboard (Protegida) -->
-        <section id="vista-dashboard" class="oculto">
-            <h2>Panel de Control</h2>
+        <!-- Vista del Dashboard (Privada, se muestra al loguear) -->
+        <section id="vista-dashboard" class="oculto tarjeta">
+            <h2>Panel de Gestión (Privado)</h2>
+            <p>Acciones administrativas protegidas por token.</p>
             
-            <div class="grilla-dashboard">
-                <div class="tarjeta">
-                    <h3>Restaurantes (Público)</h3>
-                    <button id="btn-cargar-restaurantes">Cargar Restaurantes</button>
-                    <pre id="res-restaurantes" class="consola"></pre>
-                </div>
-
-                <div class="tarjeta">
-                    <h3>Gestión de Mesas (Privado)</h3>
-                    <p>Prueba el endpoint protegido con tu JWT.</p>
-                    <button id="btn-rotar-mesa" class="btn-rojo">Rotar Estado Mesa #1</button>
-                    <pre id="res-mesas" class="consola"></pre>
-                </div>
+            <div style="margin-top: 20px; border: 2px dashed #000; padding: 20px;">
+                <h3>Rotar Estado de Mesa</h3>
+                <button id="btn-rotar-mesa" class="btn-rojo">Rotar Mesa #1</button>
+                <pre id="res-mesas" class="consola" style="margin-top: 15px;"></pre>
             </div>
         </section>
+        
     </main>
 
     <script src="js/api.js"></script>
