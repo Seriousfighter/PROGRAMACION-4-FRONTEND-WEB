@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Messapi | Panel del restaurante</title>
+
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+
+    <!-- =====================================
+         ENCABEZADO
+    ====================================== -->
+
+    <header class="panel-encabezado">
+
+        <div class="contenedor panel-barra">
+
+            <div>
+                <h1>Panel del restaurante</h1>
+                <p>Administrá la disponibilidad de tus mesas.</p>
+            </div>
+
+            <button type="button" class="btn-salir" onclick="cerrarSesion()">
+                Cerrar sesión
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <main class="contenedor panel-contenido">
+
+
+        <!-- =====================================
+             INFORMACIÓN DEL RESTAURANTE
+        ====================================== -->
+
+        <section class="panel-restaurante">
+
+            <div class="panel-restaurante-info">
+
+                <div>
+
+                    <p class="panel-etiqueta">
+                        Mi restaurante
+                    </p>
+
+                    <h2 id="nombre-restaurante">
+                        Cargando...
+                    </h2>
+
+                    <p id="direccion-restaurante"></p>
+
+                </div>
+
+
+                <div class="estado-local">
+
+                    <p>
+                        Estado del restaurante
+                    </p>
+
+                    <span id="estado-restaurante-panel">
+                        Cargando...
+                    </span>
+
+                    <button type="button" id="btn-estado-restaurante" class="btn-secundario">
+                        Cambiar estado
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             RESUMEN
+        ====================================== -->
+
+        <section class="panel-resumen">
+
+            <!-- TOTAL -->
+
+            <div class="resumen-caja">
+
+                <span>
+                    Mesas totales
+                </span>
+
+                <strong id="total-mesas">
+                    0
+                </strong>
+
+            </div>
+
+
+            <!-- LIBRES -->
+
+            <div class="resumen-caja">
+
+                <span>
+                    Libres
+                </span>
+
+                <strong id="mesas-disponibles">
+                    0
+                </strong>
+
+            </div>
+
+
+            <!-- OCUPADAS -->
+
+            <div class="resumen-caja">
+
+                <span>
+                    Ocupadas
+                </span>
+
+                <strong id="mesas-ocupadas">
+                    0
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             ESTADO DE MESAS
+        ====================================== -->
+
+        <section class="seccion-estado-mesas">
+
+            <div class="panel-titulo">
+
+                <div>
+
+                    <h2>
+                        Estado de mesas
+                    </h2>
+
+                    <p>
+                        Seleccioná una mesa para gestionarla.
+                    </p>
+
+                </div>
+
+
+                <button type="button" id="btn-agregar-mesa" class="btn-principal">
+                    + Agregar mesa
+                </button>
+
+            </div>
+
+
+            <!-- =====================================
+                 REFERENCIAS
+            ====================================== -->
+
+            <div class="referencias-mesas">
+
+                <!-- LIBRE -->
+
+                <div class="referencia">
+
+                    <span class="referencia-color disponible"></span>
+
+                    <span>
+                        Libre
+                    </span>
+
+                </div>
+
+
+                <!-- OCUPADA -->
+
+                <div class="referencia">
+
+                    <span class="referencia-color no-disponible"></span>
+
+                    <span>
+                        Ocupada
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================
+                 GRILLA DE MESAS
+
+                 VERDE = LIBRE
+                 ROJO = OCUPADA
+            ====================================== -->
+
+            <div id="panel-mesas" class="grilla-mesas">
+
+                <p class="cargando-mesas">
+                    Cargando mesas...
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             AGREGAR MESA
+        ====================================== -->
+
+        <section id="formulario-mesa" class="formulario-mesa oculto">
+
+            <h2>
+                Agregar mesa
+            </h2>
+
+
+            <form id="form-agregar-mesa">
+
+
+                <!-- NÚMERO -->
+
+                <div class="campo">
+
+                    <label for="numero-mesa">
+                        Número de mesa
+                    </label>
+
+                    <input type="number" id="numero-mesa" min="1" required>
+
+                </div>
+
+
+                <!-- CAPACIDAD -->
+
+                <div class="campo">
+
+                    <label for="cantidad-sillas">
+                        Cantidad de personas
+                    </label>
+
+                    <input type="number" id="cantidad-sillas" min="1" required>
+
+                </div>
+
+
+                <!-- DETALLE -->
+
+                <div class="campo">
+
+                    <label for="detalle-mesa">
+                        Detalle
+                    </label>
+
+                    <input type="text" id="detalle-mesa" placeholder="Ej: Cerca de la ventana">
+
+                </div>
+
+
+                <!-- BOTONES -->
+
+                <div class="acciones-formulario">
+
+                    <button type="submit" class="btn-principal">
+                        Guardar mesa
+                    </button>
+
+
+                    <button type="button" id="btn-cancelar-mesa" class="btn-secundario">
+                        Cancelar
+                    </button>
+
+                </div>
+
+
+                <p id="mensaje-mesa"></p>
+
+            </form>
+
+        </section>
+
+
+        <!-- =====================================
+             GESTIONAR MESA
+        ====================================== -->
+
+        <section id="gestionar-mesa" class="formulario-mesa gestionar-mesa oculto">
+
+            <!-- CABECERA -->
+
+            <div class="cabecera-gestion-mesa">
+
+                <div>
+
+                    <p class="panel-etiqueta">
+                        Administración
+                    </p>
+
+                    <h2 id="titulo-gestionar-mesa">
+                        Gestionar mesa
+                    </h2>
+
+                </div>
+
+
+                <span id="indicador-estado-gestion" class="indicador-estado">
+                    Estado
+                </span>
+
+            </div>
+
+
+            <form id="form-gestionar-mesa">
+
+
+                <!-- ID OCULTO -->
+
+                <input type="hidden" id="gestionar-mesa-id">
+
+
+                <!-- NÚMERO -->
+
+                <div class="campo">
+
+                    <label for="gestionar-numero">
+                        Número de mesa
+                    </label>
+
+                    <input type="number" id="gestionar-numero" min="1" required>
+
+                </div>
+
+
+                <!-- CAPACIDAD -->
+
+                <div class="campo">
+
+                    <label for="gestionar-sillas">
+                        Cantidad de personas
+                    </label>
+
+                    <input type="number" id="gestionar-sillas" min="1" required>
+
+                </div>
+
+
+                <!-- DETALLE -->
+
+                <div class="campo">
+
+                    <label for="gestionar-detalle">
+                        Detalle
+                    </label>
+
+                    <input type="text" id="gestionar-detalle" placeholder="Ej: Sector principal">
+
+                </div>
+
+
+                <!-- ESTADO -->
+
+                <div class="campo">
+
+                    <label>
+                        Estado actual
+                    </label>
+
+                    <p id="gestionar-estado">
+                        -
+                    </p>
+
+                </div>
+
+
+                <!-- ACCIONES -->
+
+                <div class="acciones-gestionar">
+
+                    <button type="button" id="btn-cambiar-estado-gestion" class="btn-cambiar-disponibilidad">
+                        Cambiar estado
+                    </button>
+
+
+                    <button type="submit" class="btn-principal">
+                        Guardar cambios
+                    </button>
+
+
+                    <button type="button" id="btn-eliminar-gestion" class="btn-eliminar-gestion">
+                        Eliminar mesa
+                    </button>
+
+
+                    <button type="button" id="btn-cancelar-gestion" class="btn-secundario">
+                        Cancelar
+                    </button>
+
+                </div>
+
+
+                <p id="mensaje-gestion"></p>
+
+            </form>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- =====================================
+         JAVASCRIPT
+    ====================================== -->
+
+    <script src="panel.js"></script>
+
+</body>
+
+</html>

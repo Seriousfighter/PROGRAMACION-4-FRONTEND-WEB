@@ -12,30 +12,45 @@
 
 <body>
 
+    <!-- ENCABEZADO -->
     <header class="encabezado">
-        <div class="contenedor">
 
-            <h1>Restaurantes disponibles</h1>
+        <div class="contenedor barra-superior">
 
-            <p>
-                Consultá rápidamente qué restaurantes tienen mesas disponibles.
-            </p>
+            <div class="titulo-principal">
+                <h1>Restaurantes disponibles</h1>
+
+                <p>
+                    Encontrá rápidamente un lugar disponible para comer.
+                </p>
+            </div>
+
+            <!-- Acceso exclusivo para restaurantes -->
+            <a href="login.html" class="btn-restaurante">
+                Ingreso para restaurantes
+            </a>
 
         </div>
+
     </header>
 
+
+    <!-- CONTENIDO PRINCIPAL -->
     <main class="contenedor">
 
+        <!-- FILTROS -->
         <section class="filtros">
 
-            <input
-                type="text"
-                id="buscador"
-                placeholder="Buscar restaurante..."
-            >
+            <!-- Buscar por nombre -->
+            <input type="text" id="buscador" placeholder="Buscar restaurante...">
 
+            <!-- Buscar por cantidad de personas -->
             <select id="personas">
-                <option value="0">Cantidad de personas</option>
+
+                <option value="0">
+                    Cantidad de personas
+                </option>
+
                 <option value="1">1 persona</option>
                 <option value="2">2 personas</option>
                 <option value="3">3 personas</option>
@@ -44,22 +59,29 @@
                 <option value="6">6 personas</option>
                 <option value="7">7 personas</option>
                 <option value="8">8 personas</option>
+
             </select>
 
         </section>
 
+
+        <!-- MENSAJES -->
         <section id="mensaje">
             <p>Cargando restaurantes...</p>
         </section>
 
-        <section
-            id="restaurantes"
-            class="lista-restaurantes"
-        >
+
+        <!--
+            Acá JavaScript carga automáticamente
+            los restaurantes que vienen de la API.
+        -->
+        <section id="restaurantes" class="lista-restaurantes">
         </section>
 
     </main>
 
+
+    <!-- JAVASCRIPT -->
     <script src="main.js"></script>
 
 </body>
