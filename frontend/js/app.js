@@ -12,7 +12,6 @@ async function cargarRestaurantes() {
     
     try {
         const respuesta = await api.obtenerRestaurantes();
-        // Adaptador para asegurar que siempre sea un Array
         const restaurantes = Array.isArray(respuesta) ? respuesta : (respuesta.data || respuesta.datos || []);
         
         contenedor.innerHTML = ''; 
@@ -23,24 +22,57 @@ async function cargarRestaurantes() {
         }
 
         restaurantes.forEach(restaurante => {
+            const mesasDelLocal = restaurante.tables || [];
+            let totalMesas = mesasDelLocal.length;
+            let mesasOcupadas = 0;
+
+            // 1. Calculamos la ocupación del restaurante antes de dibujarlo
+            mesasDelLocal.forEach(mesa => {
+                const estadoStr = mesa.status ? mesa.status.toLowerCase() : 'disponible';
+                if (estadoStr === 'ocupada' || estadoStr === 'reservada') {
+                    mesasOcupadas++;
+                }
+            });
+
+            // 2. Determinamos la clase CSS y el texto según el porcentaje
+            let claseRestaurante = 'restaurante-disponible';
+            let textoEstado = 'Disponible';
+
+            if (totalMesas > 0) {
+                const porcentaje = (mesasOcupadas / totalMesas) * 100;
+                if (porcentaje === 100) {
+                    claseRestaurante = 'restaurante-lleno';
+                    textoEstado = 'Lleno';
+                } else if (porcentaje >= 50) {
+                    claseRestaurante = 'restaurante-medio';
+                    textoEstado = 'Ocupación Media';
+                }
+            }
+
+            // 3. Creamos la tarjeta general del restaurante
             const card = document.createElement('div');
-            card.className = 'tarjeta-restaurante';
+            card.className = `tarjeta-restaurante ${claseRestaurante}`;
             
             const nombreLocal = restaurante.name || 'Restaurante';
-            let htmlContenido = `<h3>${nombreLocal}</h3>`;
-            htmlContenido += `<div class="grilla-mesas">`;
-
-            const mesasDelLocal = restaurante.tables || [];
             
-            if (mesasDelLocal.length > 0) {
+            let htmlContenido = `
+                <h3 style="display: flex; justify-content: space-between; align-items: center;">
+                    ${nombreLocal}
+                    <span style="font-size: 0.75rem; font-weight: bold; text-transform: uppercase; padding: 4px 8px; border-radius: 4px; background: rgba(0,0,0,0.08); color: #000000;">
+                        ${textoEstado}
+                    </span>
+                </h3>
+                <div class="grilla-mesas">
+            `;
+            
+            // 4. Dibujamos las mesas internamente
+            if (totalMesas > 0) {
                 mesasDelLocal.forEach(mesa => {
-                    // Lectura del JSON del backend
                     const estadoStr = mesa.status ? mesa.status.toLowerCase() : 'disponible';
                     const numeroMesa = mesa.table_number || '#';
                     const capacidad = mesa.chairs || 4;
                     const detalle = mesa.details || 'General';
 
-                    // Asignación de clases CSS según el texto del estado
                     let claseEstado = 'mesa-disponible';
                     if (estadoStr === 'ocupada') claseEstado = 'mesa-ocupada';
                     if (estadoStr === 'reservada') claseEstado = 'mesa-reservada';
@@ -51,7 +83,7 @@ async function cargarRestaurantes() {
                                 ${numeroMesa}
                             </div>
                             <div class="mesa-info">
-                                <span class="capacidad">${capacidad} pax</span>
+                                <span class= "capacidad"> Capacidad: ${capacidad} </span>
                                 <span class="detalle">${detalle}</span>
                             </div>
                         </div>

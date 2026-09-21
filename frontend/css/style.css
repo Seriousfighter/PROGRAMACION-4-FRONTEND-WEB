@@ -116,29 +116,71 @@ button:hover {
     margin-top: 0;
 }
 
-/* --- Grilla de Restaurantes (Catálogo Público) --- */
+/* --- Grilla de Restaurantes --- */
 .contenedor-restaurantes {
     display: grid;
     grid-template-columns: 1fr;
     gap: 30px;
 }
 
+/* Base de la tarjeta del restaurante */
 .tarjeta-restaurante {
-    background: #f9f9f9;
     border: 2px solid #000000;
     border-radius: 8px;
     padding: 20px;
-    box-shadow: 4px 4px 0px #000000;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .tarjeta-restaurante h3 {
     margin-top: 0;
-    border-bottom: 2px solid #000000;
+    border-bottom: 2px solid;
     padding-bottom: 10px;
     font-size: 1.4rem;
 }
 
-/* --- Mesas CSS Puro (2.5D) --- */
+/* --- ESTADOS DINÁMICOS DE LOS RESTAURANTES --- */
+
+/* Verde (Disponible) */
+.restaurante-disponible {
+    background: #f0fdf4;
+    box-shadow: 4px 4px 0px #16a34a;
+}
+.restaurante-disponible:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 8px 8px 0px #16a34a;
+}
+.restaurante-disponible h3 {
+    border-bottom-color: #16a34a;
+}
+
+/* Amarillo (Ocupación Media) */
+.restaurante-medio {
+    background: #fefce8;
+    box-shadow: 4px 4px 0px #ca8a04;
+}
+.restaurante-medio:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 8px 8px 0px #ca8a04;
+}
+.restaurante-medio h3 {
+    border-bottom-color: #ca8a04;
+}
+
+/* Rojo (Lleno) */
+.restaurante-lleno {
+    background: #fef2f2;
+    box-shadow: 4px 4px 0px #dc2626;
+}
+.restaurante-lleno:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 8px 8px 0px #dc2626;
+}
+.restaurante-lleno h3 {
+    border-bottom-color: #dc2626;
+}
+
+
+/* --- Mesas CSS 2.5D Interactivas --- */
 .grilla-mesas {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
@@ -154,9 +196,9 @@ button:hover {
 }
 
 .mesa-3d {
+    --color-sombra: #000000; 
     width: 60px;
     height: 60px;
-    background: #ffffff;
     border: 3px solid #000000;
     border-radius: 50%;
     display: flex;
@@ -164,11 +206,22 @@ button:hover {
     justify-content: center;
     font-weight: 900;
     font-size: 1.4rem;
-    box-shadow: 0px 6px 0px #000000, 0px 8px 10px rgba(0,0,0,0.2);
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    cursor: pointer;
+    box-shadow: 0px 6px 0px var(--color-sombra), 0px 8px 10px rgba(0,0,0,0.2);
+    transition: all 0.15s ease;
 }
 
-/* Información extra de la mesa (sillas y detalle) */
+.mesa-3d:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 9px 0px var(--color-sombra), 0px 12px 15px rgba(0,0,0,0.3);
+}
+
+.mesa-3d:active {
+    transform: translateY(6px);
+    box-shadow: 0px 0px 0px var(--color-sombra), 0px 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Información extra de la mesa */
 .mesa-info {
     text-align: center;
     line-height: 1.2;
@@ -190,22 +243,21 @@ button:hover {
     max-width: 90px;
 }
 
-/* Estados de las mesas */
+/* Estados de las mesas (Inyectando variables de color) */
 .mesa-disponible {
     background: #ffffff;
     color: #000000;
+    --color-sombra: #000000;
 }
 
 .mesa-ocupada {
     background: #e60000;
     color: #ffffff;
-    border-color: #000000;
-    box-shadow: 0px 6px 0px #990000, 0px 8px 10px rgba(0,0,0,0.3);
+    --color-sombra: #990000;
 }
 
 .mesa-reservada {
     background: #ffaa00;
     color: #000000;
-    border-color: #000000;
-    box-shadow: 0px 6px 0px #cc8800, 0px 8px 10px rgba(0,0,0,0.3);
+    --color-sombra: #cc8800;
 }
