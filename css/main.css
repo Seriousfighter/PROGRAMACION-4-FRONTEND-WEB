@@ -523,3 +523,29 @@ a:hover { color: var(--wine-dark); text-decoration: none; }
     width: 100%;
     margin-top: 8px;
 }
+
+/* =========================================================
+   Registro — extras
+   ========================================================= */
+.auth-switch {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.auth-switch a {
+    color: var(--wine);
+    font-weight: 600;
+}
+.auth-switch a:hover {
+    color: var(--wine-dark);
+    text-decoration: underline;
+}
+
+.form-hint {
+    display: block;
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 0.8rem;
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear cuenta — Mesas Disponibles</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body class="auth-page">
+
+    <main class="auth-container">
+        <div class="auth-card">
+            <div class="auth-logo">🍽️</div>
+            <h1 class="auth-title">Crear cuenta</h1>
+            <p class="auth-subtitle">Registrate para gestionar tus restaurantes</p>
+
+            <form id="register-form" novalidate>
+                <div class="form-group">
+                    <label for="name">Nombre</label>
+                    <input type="text" id="name" name="name" required
+                           placeholder="Tu nombre"
+                           autocomplete="name"
+                           maxlength="100"
+                           autofocus>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required
+                           placeholder="tu@email.com"
+                           autocomplete="email"
+                           maxlength="150">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" required
+                           placeholder="Mínimo 6 caracteres"
+                           autocomplete="new-password"
+                           minlength="6"
+                           maxlength="72">
+                    <small class="form-hint">La contraseña debe tener al menos 6 caracteres.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="password-confirm">Confirmar contraseña</label>
+                    <input type="password" id="password-confirm" name="password-confirm" required
+                           placeholder="Repetí la contraseña"
+                           autocomplete="new-password"
+                           minlength="6"
+                           maxlength="72">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block" id="register-btn">
+                    Crear cuenta
+                </button>
+
+                <div id="form-error" class="form-error" hidden></div>
+            </form>
+
+            <p class="auth-switch">
+                ¿Ya tenés cuenta? <a href="index.html">Iniciar sesión</a>
+            </p>
+
+            <p class="auth-footer">
+                <a href="public.html">← Volver a la vista pública</a>
+            </p>
+        </div>
+    </main>
+
+    <script src="js/config.js"></script>
+    <script src="js/utils/session.js"></script>
+    <script src="js/utils/ui.js"></script>
+    <script src="js/utils/guard.js"></script>
+    <script src="js/services/client.js"></script>
+    <script src="js/services/auth.js"></script>
+    <script src="js/pages/register.js"></script>
+</body>
+</html>
