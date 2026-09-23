@@ -25,31 +25,24 @@
         el.hidden = false;
     }
 
-    function badgeFor(r) {
-        if (!r.is_open) return { cls: 'badge-muted',   text: 'Cerrado' };
-
-        const a = r.available_tables;
-        if (a === 0)  return { cls: 'badge-danger',  text: 'Sin disponibilidad' };
-        if (a <= 2)   return { cls: 'badge-warning', text: 'Disponibilidad limitada' };
-        if (a <= 5)   return { cls: 'badge-info',    text: 'Buena disponibilidad' };
-        return          { cls: 'badge-success', text: 'Excelente disponibilidad' };
-    }
-
     function buildCard(r, index) {
         const available = r.available_tables;
         const total     = r.total_tables;
         const pct       = total > 0 ? (available / total) * 100 : 0;
-        const badge     = badgeFor(r);
 
-        // Animación escalonada (cada tarjeta aparece un poquito después)
+        // Animación escalonada
         const delay = Math.min(index * 40, 400);
+
+        // Mapa embebido (sin API key)
+        const mapQuery = encodeURIComponent(r.address || '');
+        const mapEmbed = `https://maps.google.com/maps?q=${mapQuery}&z=16&output=embed`;
+        const mapLink  = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
 
         return `
             <article class="card restaurant-card" data-id="${r.id}"
                      style="animation-delay: ${delay}ms">
                 <div class="restaurant-card__header">
                     <h3 class="restaurant-card__name">${UI.escape(r.name)}</h3>
-                    <span class="badge ${badge.cls}">${badge.text}</span>
                 </div>
 
                 <ul class="restaurant-card__meta">
@@ -60,6 +53,22 @@
                 ${r.description
                     ? `<p class="restaurant-card__description">"${UI.escape(r.description)}"</p>`
                     : ''}
+
+                <a href="${mapLink}"
+                   target="_blank"
+                   rel="noopener"
+                   class="restaurant-card__map"
+                   title="Abrir ubicación en Google Maps">
+                    <iframe
+                        src="${mapEmbed}"
+                        width="100%"
+                        height="140"
+                        style="border:0; pointer-events:none; display:block;"
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="Ubicación de ${UI.escape(r.name)}">
+                    </iframe>
+                </a>
 
                 <div class="restaurant-card__availability">
                     <div class="availability-number">
