@@ -1,5 +1,5 @@
 /* =========================================================
-   Spinner
+   Spinner (usado en estados de carga)
    ========================================================= */
 .spinner {
     width: 42px;
@@ -14,61 +14,7 @@
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* =========================================================
-   Toasts
-   ========================================================= */
-.toast {
-    position: fixed;
-    top: 24px;
-    right: 24px;
-    padding: 14px 22px;
-    border-radius: var(--radius-sm);
-    color: #fff;
-    font-size: 0.9rem;
-    font-weight: 500;
-    box-shadow: var(--shadow-lg);
-    z-index: 10000;
-    animation: slideIn 0.25s ease-out;
-    max-width: 360px;
-}
-
-.toast-success { background: var(--success); }
-.toast-error   { background: var(--danger);  }
-.toast-info    { background: var(--info);    }
-
-.toast-hide {
-    opacity: 0;
-    transform: translateX(20px);
-    transition: opacity 0.3s, transform 0.3s;
-}
-
-@keyframes slideIn {
-    from { opacity: 0; transform: translateX(20px); }
-    to   { opacity: 1; transform: translateX(0);    }
-}
-
-/* =========================================================
-   Badges
-   ========================================================= */
-.badge {
-    display: inline-block;
-    padding: 5px 12px;
-    border-radius: var(--radius-full);
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    white-space: nowrap;
-    line-height: 1.4;
-}
-
-.badge-success { background: var(--success-bg); color: var(--success); }
-.badge-warning { background: var(--warning-bg); color: var(--warning); }
-.badge-danger  { background: var(--danger-bg);  color: var(--danger);  }
-.badge-info    { background: var(--info-bg);    color: var(--info);    }
-.badge-muted   { background: var(--muted-bg);   color: var(--muted);   }
-
-/* =========================================================
-   Card base
+   Card base (con borde superior decorativo)
    ========================================================= */
 .card {
     background: var(--surface);
@@ -93,7 +39,7 @@
     to   { opacity: 1; transform: translateY(0);    }
 }
 
-/* Borde superior decorativo (color vino) */
+/* Borde superior decorativo (vino → dorado) */
 .card::before {
     content: '';
     display: block;
@@ -102,7 +48,7 @@
 }
 
 /* =========================================================
-   Restaurant card
+   Restaurant card (vista pública)
    ========================================================= */
 .restaurant-card {
     display: flex;
