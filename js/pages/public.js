@@ -19,6 +19,35 @@
 
     let allRestaurants = [];
 
+    /* ---------------------------------------------------------
+       Embeds personalizados por restaurante.
+       Si un restaurante no está acá, se genera automáticamente
+       usando su dirección + ", Crespo, Entre Ríos, Argentina".
+       --------------------------------------------------------- */
+    const RESTAURANT_MAPS = {
+        1: { // Darcy Resto
+            embed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4275.12590393613!2d-60.30417862599889!3d-32.029261125179566!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95b4235f38bf165d%3A0x7c27b02d8ffadf76!2sDarcy%20Resto!5e1!3m2!1ses-419!2sar!4v1790182368116!5m2!1ses-419!2sar'
+        },
+        2: { // Punto y Coma
+            embed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d384.2646340251881!2d-60.30463374571947!3d-32.02682653284185!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95b4258e161316ab%3A0x245cfabdb7431177!2sPunto%20y%20Coma!5e1!3m2!1ses-419!2sar!4v1790182280572!5m2!1ses-419!2sar'
+        },
+        3: { // Der Fritz
+            embed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d663.2518857936408!2d-60.30743127871736!3d-32.029577099596615!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95b424a104b69e83%3A0xc41b7fa877c28b18!2sDer%20Fritz%20Restaurante!5e1!3m2!1ses-419!2sar!4v1790182304109!5m2!1ses-419!2sar'
+        },
+        6: { // Ándale
+            embed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d663.2397179372005!2d-60.309880215015646!3d-32.031257296070166!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95b424a22407a597%3A0xbdafc99f7b1961bb!2s%C3%81ndale%20Bar%20%26%20Comida%20Mexicana!5e1!3m2!1ses-419!2sar!4v1790182346970!5m2!1ses-419!2sar'
+        }
+    };
+
+    /* Genera el embed/link automático para un restaurante */
+    function autoMap(address) {
+        const query = encodeURIComponent((address || '') + ', Crespo, Entre Ríos, Argentina');
+        return {
+            embed: `https://maps.google.com/maps?q=${query}&z=16&output=embed`,
+            link:  `https://www.google.com/maps/search/?api=1&query=${query}`
+        };
+    }
+
     function show(el) {
         [loading, errorBox, emptyBox, grid, toolbar, statsSection]
             .forEach(e => e.hidden = true);
@@ -30,13 +59,13 @@
         const total     = r.total_tables;
         const pct       = total > 0 ? (available / total) * 100 : 0;
 
-        // Animación escalonada
         const delay = Math.min(index * 40, 400);
 
-        // Mapa embebido (sin API key)
-        const mapQuery = encodeURIComponent(r.address || '');
-        const mapEmbed = `https://maps.google.com/maps?q=${mapQuery}&z=16&output=embed`;
-        const mapLink  = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
+        // Mapa: custom si existe, si no automático
+        const custom = RESTAURANT_MAPS[r.id];
+        const fallback = autoMap(r.address);
+        const embed = custom?.embed || fallback.embed;
+        const link  = custom?.link  || fallback.link;
 
         return `
             <article class="card restaurant-card" data-id="${r.id}"
@@ -54,13 +83,13 @@
                     ? `<p class="restaurant-card__description">"${UI.escape(r.description)}"</p>`
                     : ''}
 
-                <a href="${mapLink}"
+                <a href="${link}"
                    target="_blank"
                    rel="noopener"
                    class="restaurant-card__map"
                    title="Abrir ubicación en Google Maps">
                     <iframe
-                        src="${mapEmbed}"
+                        src="${embed}"
                         width="100%"
                         height="140"
                         style="border:0; pointer-events:none; display:block;"
