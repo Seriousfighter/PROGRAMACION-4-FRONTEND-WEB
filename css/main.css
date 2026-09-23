@@ -1713,3 +1713,10 @@ a:hover { color: var(--wine-dark); text-decoration: none; }
 [hidden] {
     display: none !important;
 }
+
+/* =========================================================
+   Toasts por color de estado
+   ========================================================= */
+.toast-available { background: #16a34a; }
+.toast-occupied  { background: #dc2626; }
+.toast-reserved  { background: #f59e0b; }
