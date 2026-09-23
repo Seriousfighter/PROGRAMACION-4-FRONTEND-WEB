@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar restaurante — Messapi</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+    <!-- ============================================
+         Header
+         ============================================ -->
+    <header class="app-header">
+        <div class="container app-header__inner">
+            <a href="dashboard.html" class="app-header__logo">
+                <span class="logo-mark"></span>
+                <span class="logo-text">Messapi</span>
+            </a>
+
+            <div class="app-header__user">
+                <span class="app-header__greeting" id="user-greeting">Hola</span>
+                <button class="btn btn-outline btn-sm" id="logout-btn" type="button">
+                    Cerrar sesión
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================
+         Main
+         ============================================ -->
+    <main class="container restaurant-main">
+
+        <!-- Volver -->
+        <a href="dashboard.html" class="back-link">← Volver al panel</a>
+
+        <!-- Hero -->
+        <section class="restaurant-hero">
+            <p class="restaurant-hero__eyebrow">Editar restaurante</p>
+            <h1 class="restaurant-hero__title" id="hero-title">Cargando...</h1>
+        </section>
+
+        <!-- Loading -->
+        <div id="loading" class="state-block">
+            <div class="spinner"></div>
+            <p>Cargando restaurante...</p>
+        </div>
+
+        <!-- Error -->
+        <div id="error-box" class="state-block state-block--error" hidden>
+            <p id="error-message">Ocurrió un error.</p>
+            <a href="dashboard.html" class="btn btn-primary">Volver al panel</a>
+        </div>
+
+        <!-- Formulario -->
+        <form id="restaurant-form" class="restaurant-form" hidden novalidate>
+
+            <!-- Información básica -->
+            <div class="form-section">
+                <h2 class="form-section__title">Información del restaurante</h2>
+
+                <div class="form-group">
+                    <label for="name">Nombre</label>
+                    <input type="text" id="name" required maxlength="150"
+                           placeholder="Ej: La Parrilla del Tío">
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Dirección</label>
+                    <input type="text" id="address" required maxlength="255"
+                           placeholder="Ej: Av. Siempre Viva 742">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Teléfono</label>
+                    <input type="text" id="phone" maxlength="30"
+                           placeholder="Ej: 1145551234">
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Descripción</label>
+                    <textarea id="description" rows="3" maxlength="1000"
+                              placeholder="Ej: Carnes a la parrilla"></textarea>
+                </div>
+            </div>
+
+            <!-- Cantidad de mesas -->
+            <div class="form-section">
+                <h2 class="form-section__title">Cantidad de mesas</h2>
+                <p class="form-section__hint">
+                    Podés aumentar o reducir la cantidad de mesas. Las mesas nuevas
+                    se agregan con numeración automática; las que se eliminan son
+                    siempre las de mayor número.
+                </p>
+
+                <div class="numberbox" id="numberbox">
+                    <button type="button" class="numberbox__btn" id="btn-minus"
+                            aria-label="Restar una mesa">−</button>
+
+                    <input type="number" class="numberbox__input" id="tables-count"
+                           min="1" max="100" step="1" value="1">
+
+                    <button type="button" class="numberbox__btn" id="btn-plus"
+                            aria-label="Sumar una mesa">+</button>
+                </div>
+
+                <p class="numberbox__hint" id="numberbox-hint">
+                    Actualmente tenés <strong>1</strong> mesa.
+                </p>
+            </div>
+
+            <!-- Error del formulario -->
+            <div id="form-error" class="form-error" hidden></div>
+
+            <!-- Acciones -->
+            <div class="form-actions">
+                <a href="dashboard.html" class="btn btn-outline">Cancelar</a>
+                <button type="submit" class="btn btn-primary" id="submit-btn">
+                    Guardar cambios
+                </button>
+            </div>
+
+        </form>
+
+    </main>
+
+    <!-- ============================================
+         Modal: confirmación de cambios de mesas
+         ============================================ -->
+    <div class="modal-overlay" id="confirm-modal" hidden>
+        <div class="modal">
+            <h2 class="modal__title" id="confirm-title">Confirmar cambio</h2>
+            <p class="modal__message" id="confirm-message"></p>
+
+            <div class="modal__actions">
+                <button type="button" class="btn btn-outline" id="confirm-cancel">
+                    Cancelar
+                </button>
+                <button type="button" class="btn btn-primary" id="confirm-ok">
+                    Confirmar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         Modal: no se puede reducir (mesas ocupadas)
+         ============================================ -->
+    <div class="modal-overlay" id="blocked-modal" hidden>
+        <div class="modal">
+            <h2 class="modal__title">No se puede reducir la cantidad de mesas</h2>
+            <p class="modal__message" id="blocked-message"></p>
+
+            <div class="modal__actions">
+                <button type="button" class="btn btn-primary" id="blocked-ok">
+                    Entendido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <div class="container">
+            <p>&copy; 2026 Messapi — Panel de administración</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/utils/session.js"></script>
+    <script src="js/utils/ui.js"></script>
+    <script src="js/utils/guard.js"></script>
+    <script src="js/services/client.js"></script>
+    <script src="js/services/auth.js"></script>
+    <script src="js/services/restaurant.js"></script>
+    <script src="js/services/tables.js"></script>
+    <script src="js/pages/restaurant.js"></script>
+</body>
+</html>
