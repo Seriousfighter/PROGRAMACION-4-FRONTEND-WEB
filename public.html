@@ -12,21 +12,22 @@
 </head>
 <body class="public-page">
 
-    <!-- ============================================
-         Header
-         ============================================ -->
     <header class="app-header">
         <div class="container app-header__inner">
             <a href="public.html" class="app-header__logo">
                 <span class="logo-icon">🍽️</span>
-                <span class="logo-text">Mesas Disponibles</span>
+                <span class="logo-text">Messapi</span>
             </a>
             <nav class="app-header__nav">
-                <a href="index.html" class="btn btn-outline btn-sm">Iniciar sesión</a>
+                <a href="index.html" class="btn btn-outline btn-sm" id="nav-login">
+                    Iniciar sesión
+                </a>
+                <a href="dashboard.html" class="btn btn-primary btn-sm" id="nav-back" hidden>
+                    Volver al panel
+                </a>
             </nav>
         </div>
     </header>
-
     <!-- ============================================
          Hero
          ============================================ -->
@@ -121,6 +122,25 @@
     <script src="js/utils/ui.js"></script>
     <script src="js/services/client.js"></script>
     <script src="js/services/public.js"></script>
+        <script>
+        // Mostrar "Volver al panel" solo si venimos desde el dashboard
+        (function () {
+            const backBtn  = document.getElementById('nav-back');
+            const loginBtn = document.getElementById('nav-login');
+            if (!backBtn || !loginBtn) return;
+
+            const params  = new URLSearchParams(window.location.search);
+            const fromPanel = params.get('from') === 'panel';
+
+            if (fromPanel) {
+                backBtn.hidden = false;
+                loginBtn.hidden = true;
+            } else {
+                backBtn.hidden = true;
+                loginBtn.hidden = false;
+            }
+        })();
+    </script>
     <script src="js/pages/public.js"></script>
 </body>
 </html>
