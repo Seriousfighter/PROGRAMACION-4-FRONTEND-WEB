@@ -17,16 +17,17 @@
 
     <main class="contenedor">
         
-        <!-- VISTA PÚBLICA (Siempre visible para cualquier usuario) -->
+        <!-- VISTA PÚBLICA (Catálogo CSS Interactivos) -->
         <section id="vista-publica" class="tarjeta">
-            <h2>Catálogo de Restaurantes</h2>
-            <button id="btn-cargar-restaurantes" style="margin-bottom: 15px;">Actualizar Disponibilidad</button>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0; border: none; border-bottom: 3px solid #e60000; padding-bottom: 5px;">Disponibilidad de Mesas</h2>
+                <button id="btn-cargar-restaurantes">Actualizar Catálogo</button>
+            </div>
             
-            <!-- Aquí se inyectarán las tarjetas y mesas 3D desde JavaScript -->
             <div id="contenedor-restaurantes" class="contenedor-restaurantes"></div>
         </section>
 
-        <!-- Vista de Login (Solo para administradores) -->
+        <!-- Vista de Login -->
         <section id="vista-login" class="tarjeta">
             <h2>Acceso Administrativo</h2>
             <form id="form-login">
@@ -43,11 +44,9 @@
             </form>
         </section>
 
-        <!-- Vista del Dashboard (Privada, se muestra al loguear) -->
+        <!-- Vista del Dashboard (Privada) -->
         <section id="vista-dashboard" class="oculto tarjeta">
-            <h2>Panel de Gestión (Privado)</h2>
-            <p>Acciones administrativas protegidas por token.</p>
-            
+            <h2>Panel de Gestión</h2>
             <div style="margin-top: 20px; border: 2px dashed #000; padding: 20px;">
                 <h3>Rotar Estado de Mesa</h3>
                 <button id="btn-rotar-mesa" class="btn-rojo">Rotar Mesa #1</button>

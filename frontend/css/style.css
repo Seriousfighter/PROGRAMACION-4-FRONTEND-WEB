@@ -88,6 +88,24 @@ button:hover {
     border-color: #e60000;
 }
 
+/* Botón de Mapa */
+.btn-mapa {
+    display: inline-block;
+    background-color: #000000;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-left: 10px;
+    transition: background-color 0.2s;
+}
+
+.btn-mapa:hover {
+    background-color: #e60000;
+}
+
 .msj-error {
     color: #e60000;
     font-weight: bold;
@@ -114,73 +132,111 @@ button:hover {
 
 .tarjeta h2 {
     margin-top: 0;
-    border-bottom: 3px solid #e60000;
-    padding-bottom: 10px;
-    display: inline-block;
 }
 
-/* --- Grilla de Restaurantes (Catálogo Público) --- */
+/* --- Grilla de Restaurantes --- */
 .contenedor-restaurantes {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: 1fr;
+    gap: 30px;
+}
+
+.tarjeta-restaurante {
+    border: 2px solid #000000;
+    border-radius: 8px;
+    padding: 20px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Estados de los restaurantes */
+.restaurante-disponible {
+    background: #f0fdf4;
+    box-shadow: 4px 4px 0px #16a34a;
+}
+.restaurante-disponible:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 8px 8px 0px #16a34a;
+}
+
+.restaurante-medio {
+    background: #fefce8;
+    box-shadow: 4px 4px 0px #ca8a04;
+}
+.restaurante-medio:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 8px 8px 0px #ca8a04;
+}
+
+.restaurante-lleno {
+    background: #fef2f2;
+    box-shadow: 4px 4px 0px #dc2626;
+}
+.restaurante-lleno:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 8px 8px 0px #dc2626;
+}
+
+/* --- Mesas CSS 2.5D --- */
+.grilla-mesas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
     gap: 25px;
     margin-top: 20px;
 }
 
-.tarjeta-restaurante {
-    background: #ffffff;
-    border: 2px solid #000000;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 4px 4px 0px #000000;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.tarjeta-restaurante:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: 8px 8px 0px #e60000;
-}
-
-.tarjeta-restaurante h3 {
-    margin-top: 0;
-    border-bottom: 2px solid #000000;
-    padding-bottom: 10px;
-}
-
-/* --- Efecto 3D de las Mesas --- */
-.grilla-mesas {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
-    gap: 15px;
-    margin-top: 20px;
+.mesa-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
 
 .mesa-3d {
-    aspect-ratio: 1;
-    background: #ffffff;
-    border: 2px solid #000000;
+    --color-sombra: #000000; 
+    width: 60px;
+    height: 60px;
+    border: 3px solid #000000;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
-    font-size: 1.2rem;
-    cursor: default;
-    box-shadow: 0px 6px 0px #000000, 0px 8px 10px rgba(0,0,0,0.2);
+    font-weight: 900;
+    font-size: 1.4rem;
+    cursor: pointer;
+    box-shadow: 0px 6px 0px var(--color-sombra), 0px 8px 10px rgba(0,0,0,0.2);
     transition: all 0.15s ease;
-    position: relative;
 }
 
-/* Estado Libre */
-.mesa-libre {
-    background: #ffffff;
-    color: #000000;
+.mesa-3d:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 9px 0px var(--color-sombra), 0px 12px 15px rgba(0,0,0,0.3);
 }
 
-/* Estado Ocupada */
-.mesa-ocupada {
-    background: #e60000;
-    color: #ffffff;
-    border-color: #000000;
-    box-shadow: 0px 6px 0px #990000, 0px 8px 10px rgba(0,0,0,0.4);
+.mesa-3d:active {
+    transform: translateY(6px);
+    box-shadow: 0px 0px 0px var(--color-sombra), 0px 2px 5px rgba(0,0,0,0.2);
 }
+
+.mesa-info {
+    text-align: center;
+    line-height: 1.2;
+}
+.mesa-info .capacidad {
+    display: block;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+.mesa-info .detalle {
+    display: block;
+    font-size: 0.75rem;
+    color: #555555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90px;
+}
+
+/* Estados de mesas */
+.mesa-disponible { background: #ffffff; color: #000000; --color-sombra: #000000; }
+.mesa-ocupada { background: #e60000; color: #ffffff; --color-sombra: #990000; }
+.mesa-reservada { background: #ffaa00; color: #000000; --color-sombra: #cc8800; }

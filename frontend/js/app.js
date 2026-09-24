@@ -1,45 +1,97 @@
-// Referencias al DOM
 const vistaLogin = document.getElementById('vista-login');
 const vistaDashboard = document.getElementById('vista-dashboard');
 const formLogin = document.getElementById('form-login');
 const msjError = document.getElementById('msj-error');
 const btnLogout = document.getElementById('btn-logout');
 
-// --- LÓGICA PÚBLICA (Catálogo) ---
 async function cargarRestaurantes() {
     const contenedor = document.getElementById('contenedor-restaurantes');
     contenedor.innerHTML = '<p>Cargando disponibilidad de mesas...</p>';
     
     try {
-        const restaurantes = await api.obtenerRestaurantes();
-        contenedor.innerHTML = ''; // Limpiamos el texto de carga
+        const respuesta = await api.obtenerRestaurantes();
+        const restaurantes = Array.isArray(respuesta) ? respuesta : (respuesta.data || respuesta.datos || []);
+        
+        contenedor.innerHTML = ''; 
 
-        if (!restaurantes || restaurantes.length === 0) {
+        if (restaurantes.length === 0) {
             contenedor.innerHTML = '<p>No hay restaurantes disponibles.</p>';
             return;
         }
 
         restaurantes.forEach(restaurante => {
-            const card = document.createElement('div');
-            card.className = 'tarjeta-restaurante';
-            
-            // Título del restaurante
-            let htmlContenido = `<h3>${restaurante.name || restaurante.nombre || 'Restaurante'}</h3>`;
-            htmlContenido += `<div class="grilla-mesas">`;
+            const mesasDelLocal = restaurante.tables || [];
+            let totalMesas = mesasDelLocal.length;
+            let mesasOcupadas = 0;
 
-            // Verificamos si tiene mesas
-            const mesasDelLocal = restaurante.tables || restaurante.mesas || [];
+            mesasDelLocal.forEach(mesa => {
+                const estadoStr = mesa.status ? mesa.status.toLowerCase() : 'disponible';
+                if (estadoStr === 'ocupada' || estadoStr === 'reservada') {
+                    mesasOcupadas++;
+                }
+            });
+
+            let claseRestaurante = 'restaurante-disponible';
+            let textoEstado = 'Disponible';
+
+            if (totalMesas > 0) {
+                const porcentaje = (mesasOcupadas / totalMesas) * 100;
+                if (porcentaje === 100) {
+                    claseRestaurante = 'restaurante-lleno';
+                    textoEstado = 'Lleno';
+                } else if (porcentaje >= 50) {
+                    claseRestaurante = 'restaurante-medio';
+                    textoEstado = 'Ocupación Media';
+                }
+            }
+
+            const card = document.createElement('div');
+            card.className = `tarjeta-restaurante ${claseRestaurante}`;
+            const nombreLocal = restaurante.name || 'Restaurante';
+            const direccionLocal = restaurante.address || '';
             
-            if (mesasDelLocal.length > 0) {
+            // Botón de mapa dinámico
+            let botonMapa = '';
+            if (restaurante.latitude && restaurante.longitude) {
+                const urlMapa = `https://www.google.com/maps/dir/?api=1&destination=${restaurante.latitude},${restaurante.longitude}`;
+                botonMapa = `<a href="${urlMapa}" target="_blank" class="btn-mapa">📍 Cómo llegar</a>`;
+            }
+            
+            let htmlContenido = `
+                <div style="border-bottom: 2px solid #000000; padding-bottom: 10px; margin-bottom: 15px;">
+                    <h3 style="display: flex; justify-content: space-between; align-items: center; margin: 0 0 5px 0; border: none; padding: 0;">
+                        ${nombreLocal}
+                        <span style="font-size: 0.75rem; font-weight: bold; text-transform: uppercase; padding: 4px 8px; border-radius: 4px; background: rgba(0,0,0,0.08); color: #000000;">
+                            ${textoEstado}
+                        </span>
+                    </h3>
+                    <p style="margin: 0; font-size: 0.9rem; color: #555; display: flex; align-items: center;">
+                        ${direccionLocal} ${botonMapa}
+                    </p>
+                </div>
+                <div class="grilla-mesas">
+            `;
+            
+            if (totalMesas > 0) {
                 mesasDelLocal.forEach(mesa => {
-                    // Verificamos el estado para asignar color. Asumimos que id 2 es Ocupada, ajusta si es necesario.
-                    const estadoId = mesa.status_id || mesa.estado_id;
-                    const claseEstado = (estadoId === 2) ? 'mesa-ocupada' : 'mesa-libre';
-                    const numeroMesa = mesa.number || mesa.numero || '#';
+                    const estadoStr = mesa.status ? mesa.status.toLowerCase() : 'disponible';
+                    const numeroMesa = mesa.table_number || '#';
+                    const capacidad = mesa.chairs || 4;
+                    const detalle = mesa.details || 'General';
+
+                    let claseEstado = 'mesa-disponible';
+                    if (estadoStr === 'ocupada') claseEstado = 'mesa-ocupada';
+                    if (estadoStr === 'reservada') claseEstado = 'mesa-reservada';
                     
                     htmlContenido += `
-                        <div class="mesa-3d ${claseEstado}" title="Mesa ${numeroMesa}">
-                            ${numeroMesa}
+                        <div class="mesa-wrapper" title="${detalle} - Estado: ${estadoStr}">
+                            <div class="mesa-3d ${claseEstado}">
+                                ${numeroMesa}
+                            </div>
+                            <div class="mesa-info">
+                                <span class="capacidad">${capacidad} personas</span>
+                                <span class="detalle">${detalle}</span>
+                            </div>
                         </div>
                     `;
                 });
@@ -57,33 +109,22 @@ async function cargarRestaurantes() {
     }
 }
 
-// Cargar estado inicial al entrar a la página
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Cargar siempre el catálogo público
     cargarRestaurantes();
-
-    // 2. Comprobar estado de la sesión administrativa
     const token = localStorage.getItem('jwt_token');
-    if (token) {
-        mostrarDashboard();
-    }
+    if (token) mostrarDashboard();
 });
 
-// Botón manual para actualizar las mesas
 document.getElementById('btn-cargar-restaurantes').addEventListener('click', cargarRestaurantes);
 
-
-// --- LÓGICA DE AUTENTICACIÓN Y ADMINISTRACIÓN ---
 formLogin.addEventListener('submit', async (e) => {
     e.preventDefault();
     msjError.textContent = '';
-    
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
     try {
         const data = await api.login(email, password);
-        
         if (data.token) {
             localStorage.setItem('jwt_token', data.token);
             mostrarDashboard();
@@ -100,39 +141,30 @@ btnLogout.addEventListener('click', () => {
     vistaDashboard.classList.add('oculto');
     btnLogout.classList.add('oculto');
     vistaLogin.classList.remove('oculto');
-    
     document.getElementById('res-mesas').textContent = '';
     document.getElementById('mensaje-bienvenida').textContent = '';
 });
 
-// Endpoint Privado - Rotar Mesa
 document.getElementById('btn-rotar-mesa').addEventListener('click', async () => {
     const consola = document.getElementById('res-mesas');
     consola.textContent = 'Enviando petición...';
     try {
         const data = await api.rotarEstadoMesa(1); 
         consola.textContent = JSON.stringify(data, null, 2);
-        
-        // Opcional: Recargar el catálogo público para ver el cambio reflejado al instante
         cargarRestaurantes();
     } catch (error) {
         consola.textContent = 'Error: ' + error.message;
     }
 });
 
-// Utilidades
 function mostrarDashboard() {
     const token = localStorage.getItem('jwt_token');
-    
     if (token) {
         const datosUsuario = parsearJWT(token);
-        if (datosUsuario && datosUsuario.email) {
-            document.getElementById('mensaje-bienvenida').textContent = `Admin: ${datosUsuario.email}`;
-        } else if (datosUsuario && datosUsuario.name) {
-            document.getElementById('mensaje-bienvenida').textContent = `Admin: ${datosUsuario.name}`;
+        if (datosUsuario && (datosUsuario.email || datosUsuario.name)) {
+            document.getElementById('mensaje-bienvenida').textContent = `Admin: ${datosUsuario.email || datosUsuario.name}`;
         }
     }
-
     vistaLogin.classList.add('oculto');
     vistaDashboard.classList.remove('oculto');
     btnLogout.classList.remove('oculto');
@@ -145,7 +177,6 @@ function parsearJWT(token) {
         const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
             return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(''));
-
         return JSON.parse(jsonPayload);
     } catch (e) {
         return null;
