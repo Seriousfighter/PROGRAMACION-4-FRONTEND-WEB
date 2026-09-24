@@ -5,29 +5,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Restaurantes disponibles</title>
+    <title>Messapi | Encontrá tu restaurante</title>
 
     <link rel="stylesheet" href="main.css">
 </head>
 
-<body>
+<body class="pagina-publica">
 
-    <!-- ENCABEZADO -->
-    <header class="encabezado">
+    <!-- ==========================================
+         HEADER
+    =========================================== -->
 
-        <div class="contenedor barra-superior">
+    <header class="publico-header">
 
-            <div class="titulo-principal">
-                <h1>Restaurantes disponibles</h1>
+        <div class="contenedor publico-header-contenido">
+
+            <div class="publico-marca">
+
+                <h1>Messapi</h1>
 
                 <p>
-                    Encontrá rápidamente un lugar disponible para comer.
+                    Encontrá dónde comer sin dar vueltas.
                 </p>
+
             </div>
 
-            <!-- Acceso exclusivo para restaurantes -->
-            <a href="login.html" class="btn-restaurante">
-                Ingreso para restaurantes
+            <a href="login.html" class="publico-login">
+                Soy restaurante
             </a>
 
         </div>
@@ -35,53 +39,94 @@
     </header>
 
 
-    <!-- CONTENIDO PRINCIPAL -->
-    <main class="contenedor">
+    <!-- ==========================================
+         CONTENIDO PRINCIPAL
+    =========================================== -->
 
-        <!-- FILTROS -->
-        <section class="filtros">
+    <main class="contenedor publico-contenido">
 
-            <!-- Buscar por nombre -->
-            <input type="text" id="buscador" placeholder="Buscar restaurante...">
 
-            <!-- Buscar por cantidad de personas -->
-            <select id="personas">
+        <!-- PRESENTACIÓN -->
 
-                <option value="0">
-                    Cantidad de personas
-                </option>
+        <section class="publico-presentacion">
 
-                <option value="1">1 persona</option>
-                <option value="2">2 personas</option>
-                <option value="3">3 personas</option>
-                <option value="4">4 personas</option>
-                <option value="5">5 personas</option>
-                <option value="6">6 personas</option>
-                <option value="7">7 personas</option>
-                <option value="8">8 personas</option>
+            <h2>¿Dónde comemos?</h2>
 
-            </select>
+            <p>
+                Buscá un restaurante y consultá rápidamente
+                si tiene capacidad disponible.
+            </p>
 
         </section>
 
 
-        <!-- MENSAJES -->
-        <section id="mensaje">
-            <p>Cargando restaurantes...</p>
+        <!-- ==========================================
+             BUSCADOR
+        =========================================== -->
+
+        <section class="publico-buscador">
+
+            <div class="campo-busqueda">
+
+                <span class="icono-busqueda">
+                    🔎
+                </span>
+
+                <input type="text" id="buscador" placeholder="Buscar restaurante..." autocomplete="off">
+
+            </div>
+
         </section>
 
 
-        <!--
-            Acá JavaScript carga automáticamente
-            los restaurantes que vienen de la API.
-        -->
-        <section id="restaurantes" class="lista-restaurantes">
+        <!-- ==========================================
+             MENSAJES
+        =========================================== -->
+
+        <section id="mensaje" class="publico-mensaje">
+
+            <p>
+                Cargando restaurantes...
+            </p>
+
+        </section>
+
+
+        <!-- ==========================================
+             RESULTADOS
+        =========================================== -->
+
+        <section class="publico-resultados">
+
+            <div class="publico-resultados-titulo">
+
+                <h2>
+                    Restaurantes
+                </h2>
+
+                <p id="cantidad-resultados">
+                </p>
+
+            </div>
+
+
+            <!--
+                Las tarjetas de restaurantes
+                se generan desde main.js
+            -->
+
+            <div id="restaurantes" class="publico-grid">
+            </div>
+
         </section>
 
     </main>
 
 
-    <!-- JAVASCRIPT -->
+    <!-- ==========================================
+         JAVASCRIPT
+    =========================================== -->
+
     <script src="main.js"></script>
 
 </body>

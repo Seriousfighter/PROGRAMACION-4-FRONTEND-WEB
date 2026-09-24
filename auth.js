@@ -10,52 +10,205 @@ const API_URL =
 // LOGIN
 // ==========================================
 
-const loginForm = document.getElementById("form-login");
+const loginForm =
+    document.getElementById("form-login");
 
 if (loginForm) {
 
-    loginForm.addEventListener("submit", async function (event) {
+    loginForm.addEventListener(
+        "submit",
+        async function (event) {
 
-        event.preventDefault();
+            event.preventDefault();
 
-        // Obtener datos ingresados
-        const email =
-            document.getElementById("email").value.trim();
+            // Obtener datos ingresados
+            const email =
+                document
+                    .getElementById("email")
+                    .value
+                    .trim();
 
-        const password =
-            document.getElementById("password").value;
+            const password =
+                document
+                    .getElementById("password")
+                    .value;
 
-        try {
+            try {
 
-            // Enviar login al backend
-            const response = await fetch(
-                `${API_URL}/api/login`,
-                {
-                    method: "POST",
+                // Enviar login al backend
+                const response = await fetch(
+                    `${API_URL}/api/login`,
+                    {
+                        method: "POST",
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
 
-                    body: JSON.stringify({
-                        email: email,
-                        password: password
-                    })
+                        body: JSON.stringify({
+                            email: email,
+                            password: password
+                        })
+                    }
+                );
+
+                const resultado =
+                    await response.json();
+
+
+                // ==========================================
+                // VERIFICAR RESPUESTA
+                // ==========================================
+
+                if (
+                    !response.ok ||
+                    !resultado.success
+                ) {
+
+                    alert(
+                        resultado.message ||
+                        "No se pudo iniciar sesión."
+                    );
+
+                    return;
                 }
-            );
-
-            const resultado = await response.json();
 
 
-            // ==========================================
-            // VERIFICAR RESPUESTA
-            // ==========================================
+                // ==========================================
+                // GUARDAR DATOS DE LA SESIÓN
+                // ==========================================
 
-            if (!response.ok || !resultado.success) {
+                sessionStorage.setItem(
+                    "token",
+                    resultado.data.token
+                );
+
+                sessionStorage.setItem(
+                    "user_id",
+                    resultado.data.user_id
+                );
+
+                sessionStorage.setItem(
+                    "restaurant_id",
+                    resultado.data.restaurant_id
+                );
+
+                sessionStorage.setItem(
+                    "restaurant_name",
+                    resultado.data.restaurant_name
+                );
+
+
+                // ==========================================
+                // ENTRAR AL PANEL
+                // ==========================================
+
+                window.location.href =
+                    "panel.html";
+
+            } catch (error) {
+
+                console.error(
+                    "Error al iniciar sesión:",
+                    error
+                );
 
                 alert(
-                    resultado.message ||
-                    "No se pudo iniciar sesión."
+                    "No se pudo conectar con el servidor."
+                );
+            }
+
+        }
+    );
+}
+
+
+// ==========================================
+// REGISTRO DE RESTAURANTE
+// ==========================================
+
+const registroForm =
+    document.getElementById("form-registro");
+
+if (registroForm) {
+
+    registroForm.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+
+            // ==========================================
+            // OBTENER DATOS DEL FORMULARIO
+            // ==========================================
+
+            const restaurantName =
+                document
+                    .getElementById("nombre")
+                    .value
+                    .trim();
+
+            const address =
+                document
+                    .getElementById("direccion")
+                    .value
+                    .trim();
+
+            const city =
+                document
+                    .getElementById("ciudad")
+                    .value
+                    .trim();
+
+            const phone =
+                document
+                    .getElementById("telefono")
+                    .value
+                    .trim();
+
+            const description =
+                document
+                    .getElementById("descripcion")
+                    .value
+                    .trim();
+
+            const email =
+                document
+                    .getElementById("email")
+                    .value
+                    .trim();
+
+            const password =
+                document
+                    .getElementById("password")
+                    .value;
+
+            const repetirPassword =
+                document
+                    .getElementById("repetir-password")
+                    .value;
+
+
+            // ==========================================
+            // VALIDAR CONTRASEÑAS
+            // ==========================================
+
+            if (password !== repetirPassword) {
+
+                alert(
+                    "Las contraseñas no coinciden."
+                );
+
+                return;
+            }
+
+
+            if (password.length < 6) {
+
+                alert(
+                    "La contraseña debe tener al menos 6 caracteres."
                 );
 
                 return;
@@ -63,49 +216,98 @@ if (loginForm) {
 
 
             // ==========================================
-            // GUARDAR DATOS DE LA SESIÓN
+            // ENVIAR REGISTRO AL BACKEND
             // ==========================================
 
-            sessionStorage.setItem(
-                "token",
-                resultado.data.token
-            );
+            try {
 
-            sessionStorage.setItem(
-                "user_id",
-                resultado.data.user_id
-            );
+                const response = await fetch(
+                    `${API_URL}/api/register`,
+                    {
+                        method: "POST",
 
-            sessionStorage.setItem(
-                "restaurant_id",
-                resultado.data.restaurant_id
-            );
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
 
-            sessionStorage.setItem(
-                "restaurant_name",
-                resultado.data.restaurant_name
-            );
+                        body: JSON.stringify({
+
+                            restaurant_name:
+                                restaurantName,
+
+                            address:
+                                address,
+
+                            city:
+                                city,
+
+                            phone:
+                                phone,
+
+                            description:
+                                description,
+
+                            email:
+                                email,
+
+                            password:
+                                password
+                        })
+                    }
+                );
 
 
-            // ==========================================
-            // ENTRAR AL PANEL
-            // ==========================================
+                const resultado =
+                    await response.json();
 
-            window.location.href = "panel.html";
 
-        } catch (error) {
+                // ==========================================
+                // VERIFICAR RESPUESTA
+                // ==========================================
 
-            console.error(
-                "Error al iniciar sesión:",
-                error
-            );
+                if (
+                    !response.ok ||
+                    !resultado.success
+                ) {
 
-            alert(
-                "No se pudo conectar con el servidor."
-            );
+                    alert(
+                        resultado.message ||
+                        "No se pudo registrar el restaurante."
+                    );
+
+                    return;
+                }
+
+
+                // ==========================================
+                // REGISTRO CORRECTO
+                // ==========================================
+
+                alert(
+                    "Restaurante registrado correctamente."
+                );
+
+
+                // Ir al login
+                window.location.href =
+                    "login.html";
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error al registrar restaurante:",
+                    error
+                );
+
+                alert(
+                    "No se pudo conectar con el servidor."
+                );
+            }
+
         }
-
-    });
+    );
 }
 
 
@@ -117,5 +319,6 @@ function cerrarSesion() {
 
     sessionStorage.clear();
 
-    window.location.href = "login.html";
+    window.location.href =
+        "login.html";
 }

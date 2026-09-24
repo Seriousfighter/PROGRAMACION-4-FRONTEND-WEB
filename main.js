@@ -1,5 +1,14 @@
+// ==========================================
+// MESSAPI - VISTA PÚBLICA
+// ==========================================
+
 const API_URL =
-   "http://localhost/PROGRAMACION-4-BACKEND/messapi/api/public/restaurants";
+    "http://localhost/PROGRAMACION-4-BACKEND-PABLO/messapi/api/public/restaurants";
+
+
+// ==========================================
+// ELEMENTOS
+// ==========================================
 
 const listaRestaurantes =
     document.getElementById("restaurantes");
@@ -10,15 +19,197 @@ const mensaje =
 const buscador =
     document.getElementById("buscador");
 
-const filtroPersonas =
-    document.getElementById("personas");
+const cantidadResultados =
+    document.getElementById("cantidad-resultados");
+
+
+// ==========================================
+// DATOS
+// ==========================================
 
 let restaurantes = [];
 
 
-// ==============================
+// ==========================================
+// NORMALIZAR TEXTO
+// ==========================================
+
+function normalizarTexto(texto) {
+
+    return String(texto || "")
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+}
+
+
+// ==========================================
+// VERIFICAR RESTAURANTE ABIERTO
+// ==========================================
+
+function estaAbierto(restaurante) {
+
+    return (
+        restaurante.is_open === true ||
+        restaurante.is_open === 1 ||
+        restaurante.is_open === "1"
+    );
+}
+
+
+// ==========================================
+// VERIFICAR MESA LIBRE
+// ==========================================
+
+function estaLibre(mesa) {
+
+    if (!mesa.status) {
+        return false;
+    }
+
+    const estado =
+        String(mesa.status)
+            .toLowerCase()
+            .trim();
+
+    return (
+        estado === "disponible" ||
+        estado === "available" ||
+        estado === "libre"
+    );
+}
+
+
+// ==========================================
+// OBTENER MESAS
+// ==========================================
+
+function obtenerMesas(restaurante) {
+
+    return Array.isArray(restaurante.tables)
+        ? restaurante.tables
+        : [];
+}
+
+
+// ==========================================
+// CALCULAR ESTADO DE CAPACIDAD
+// ==========================================
+
+function calcularCapacidad(restaurante) {
+
+    const mesas =
+        obtenerMesas(restaurante);
+
+    const totalMesas =
+        mesas.length;
+
+    const mesasLibres =
+        mesas.filter(estaLibre).length;
+
+
+    // SIN MESAS CARGADAS
+
+    if (totalMesas === 0) {
+
+        return {
+            estado: "lleno",
+            texto: "Lleno",
+            clase: "restaurante-lleno"
+        };
+    }
+
+
+    // SIN MESAS DISPONIBLES
+
+    if (mesasLibres === 0) {
+
+        return {
+            estado: "lleno",
+            texto: "Lleno",
+            clase: "restaurante-lleno"
+        };
+    }
+
+
+    // PORCENTAJE DE MESAS DISPONIBLES
+
+    const porcentajeLibre =
+        (mesasLibres / totalMesas) * 100;
+
+
+    // MÁS DEL 30% LIBRE
+
+    if (porcentajeLibre > 30) {
+
+        return {
+            estado: "capacidad",
+            texto: "Con capacidad",
+            clase: "restaurante-con-capacidad"
+        };
+    }
+
+
+    // ENTRE 1% Y 30%
+
+    return {
+        estado: "poca",
+        texto: "Casi sin capacidad",
+        clase: "restaurante-poca-capacidad"
+    };
+}
+
+
+// ==========================================
+// CREAR URL DE GOOGLE MAPS
+// ==========================================
+
+function crearUrlMaps(restaurante) {
+
+    const direccion =
+        restaurante.address || "";
+
+    const ciudad =
+        restaurante.city || "";
+
+    const ubicacion =
+        [direccion, ciudad]
+            .filter(Boolean)
+            .join(", ");
+
+    if (!ubicacion) {
+        return "";
+    }
+
+    return (
+        "https://www.google.com/maps/search/?api=1&query=" +
+        encodeURIComponent(ubicacion)
+    );
+}
+
+
+// ==========================================
+// CREAR ENLACE DE TELÉFONO
+// ==========================================
+
+function crearUrlTelefono(telefono) {
+
+    if (!telefono) {
+        return "";
+    }
+
+    const telefonoLimpio =
+        String(telefono)
+            .replace(/[^\d+]/g, "");
+
+    return `tel:${telefonoLimpio}`;
+}
+
+
+// ==========================================
 // CARGAR RESTAURANTES
-// ==============================
+// ==========================================
 
 async function cargarRestaurantes() {
 
@@ -31,13 +222,21 @@ async function cargarRestaurantes() {
             await fetch(API_URL);
 
         if (!respuesta.ok) {
+
             throw new Error(
-                "No se pudo obtener la información"
+                "No se pudo obtener la información."
             );
         }
 
-        restaurantes =
+        const resultado =
             await respuesta.json();
+
+        restaurantes =
+            resultado.data || resultado;
+
+        if (!Array.isArray(restaurantes)) {
+            restaurantes = [];
+        }
 
         mensaje.innerHTML = "";
 
@@ -47,380 +246,265 @@ async function cargarRestaurantes() {
 
         console.error(error);
 
-        mensaje.innerHTML =
-            "<p>Error al conectar con la API.</p>";
+        mensaje.innerHTML = `
+            <p>
+                No pudimos cargar los restaurantes.
+            </p>
+        `;
     }
 }
 
 
-// ==============================
+// ==========================================
 // MOSTRAR RESTAURANTES
-// ==============================
+// ==========================================
 
 function mostrarRestaurantes() {
 
     const textoBusqueda =
-        buscador.value
-            .toLowerCase()
-            .trim();
-
-    const cantidadPersonas =
-        parseInt(filtroPersonas.value) || 0;
+        normalizarTexto(
+            buscador.value
+        );
 
 
     const restaurantesFiltrados =
         restaurantes.filter(restaurante => {
 
-            // Filtro por nombre
-            const coincideNombre =
-                restaurante.name
-                    .toLowerCase()
-                    .includes(textoBusqueda);
+            const nombre =
+                normalizarTexto(
+                    restaurante.name
+                );
 
-            if (!coincideNombre) {
+
+            // FILTRAR POR NOMBRE
+
+            if (!nombre.includes(textoBusqueda)) {
                 return false;
             }
 
 
-            // Si no eligió cantidad de personas
-            if (cantidadPersonas === 0) {
-                return true;
-            }
+            // SOLO MOSTRAR RESTAURANTES ABIERTOS
 
-
-            // Si está cerrado, no sirve
-            if (!restaurante.is_open) {
+            if (!estaAbierto(restaurante)) {
                 return false;
             }
 
 
-            // Buscar una mesa disponible
-            // que tenga suficientes sillas
-            const tieneMesaDisponible =
-                restaurante.tables.some(mesa => {
+            // IMPORTANTE:
+            // AHORA MOSTRAMOS TAMBIÉN LOS LLENOS
 
-                    const estado =
-                        mesa.status
-                            .toLowerCase();
-
-                    const disponible =
-                        estado === "disponible"
-                        ||
-                        estado === "available";
-
-                    return (
-                        disponible
-                        &&
-                        mesa.chairs >= cantidadPersonas
-                    );
-                });
-
-
-            return tieneMesaDisponible;
+            return true;
         });
 
 
     listaRestaurantes.innerHTML = "";
 
 
-    // ==============================
+    // ======================================
+    // CANTIDAD DE RESULTADOS
+    // ======================================
+
+    if (restaurantesFiltrados.length === 1) {
+
+        cantidadResultados.textContent =
+            "1 restaurante abierto";
+
+    } else {
+
+        cantidadResultados.textContent =
+            `${restaurantesFiltrados.length} restaurantes abiertos`;
+    }
+
+
+    // ======================================
     // SIN RESULTADOS
-    // ==============================
+    // ======================================
 
     if (restaurantesFiltrados.length === 0) {
 
+        cantidadResultados.textContent = "";
+
         listaRestaurantes.innerHTML = `
-            <p class="sin-resultados">
-                ${cantidadPersonas > 0
-                ? `No se encontraron restaurantes con mesas disponibles para ${cantidadPersonas} personas.`
-                : "No se encontraron restaurantes."
-            }
-            </p>
+
+            <div class="publico-sin-resultados">
+
+                <strong>
+                    No encontramos restaurantes
+                </strong>
+
+                <p>
+                    Probá buscando otro nombre.
+                </p>
+
+            </div>
         `;
 
         return;
     }
 
 
-    // ==============================
+    // ======================================
     // CREAR TARJETAS
-    // ==============================
+    // ======================================
 
     restaurantesFiltrados.forEach(
         restaurante => {
 
-            const tarjeta =
-                document.createElement("article");
-
-            tarjeta.classList.add(
-                "restaurante"
-            );
-
-
-            // Mesas disponibles reales
-            let mesasDisponibles = [];
-
-            if (restaurante.is_open) {
-
-                mesasDisponibles =
-                    restaurante.tables.filter(
-                        mesa => {
-
-                            const estado =
-                                mesa.status
-                                    .toLowerCase();
-
-                            return (
-                                estado === "disponible"
-                                ||
-                                estado === "available"
-                            );
-                        }
-                    );
-            }
-
-
-            // Cantidad total de lugares disponibles
-            const lugaresDisponibles =
-                mesasDisponibles.reduce(
-                    (total, mesa) =>
-                        total + mesa.chairs,
-                    0
-                );
-
-
-            // ==============================
-            // MESAS QUE SE VAN A MOSTRAR
-            // ==============================
-
-            const mesasParaMostrar =
-                restaurante.tables.filter(
-                    mesa => {
-
-                        // Sin filtro mostramos todas
-                        if (cantidadPersonas === 0) {
-                            return true;
-                        }
-
-                        const estado =
-                            mesa.status
-                                .toLowerCase();
-
-                        const disponible =
-                            estado === "disponible"
-                            ||
-                            estado === "available";
-
-                        // Con filtro:
-                        // solo disponibles y con suficientes sillas
-                        return (
-                            disponible
-                            &&
-                            mesa.chairs >= cantidadPersonas
-                        );
-                    }
-                );
-
-
-            // ==============================
-            // TARJETA
-            // ==============================
-
-            tarjeta.innerHTML = `
-
-                <h2>
-                    ${restaurante.name}
-                </h2>
-
-                <p class="direccion">
-                    📍 ${restaurante.address}
-                </p>
-
-                <p class="descripcion">
-                    ${restaurante.description ?? ""}
-                </p>
-
-                <p class="estado-restaurante">
-                    ${restaurante.is_open
-                    ? "🟢 Abierto"
-                    : "🔴 Cerrado"
-                }
-                </p>
-
-
-                <div class="resumen">
-
-                    ${restaurante.is_open
-
-                    ? `
-                            <p>
-                                Mesas disponibles:
-                                <strong>
-                                    ${mesasDisponibles.length}
-                                </strong>
-                            </p>
-
-                            <p>
-                                Lugares disponibles:
-                                <strong>
-                                    ${lugaresDisponibles}
-                                </strong>
-                            </p>
-                        `
-
-                    : `
-                            <p>
-                                <strong>
-                                    Restaurante cerrado
-                                </strong>
-                            </p>
-
-                            <p>
-                                Mesas disponibles:
-                                <strong>0</strong>
-                            </p>
-
-                            <p>
-                                Lugares disponibles:
-                                <strong>0</strong>
-                            </p>
-                        `
-                }
-
-                    <p>
-                        Mesas totales:
-                        <strong>
-                            ${restaurante.total_tables}
-                        </strong>
-                    </p>
-
-                </div>
-
-
-                <div class="mesas">
-
-                    ${mesasParaMostrar.length > 0
-
-                    ? mesasParaMostrar
-                        .map(
-                            mesa =>
-                                crearMesa(
-                                    mesa,
-                                    cantidadPersonas
-                                )
-                        )
-                        .join("")
-
-                    : `
-                            <p class="sin-mesas">
-                                No hay mesas disponibles
-                                para esta cantidad
-                                de personas.
-                            </p>
-                        `
-                }
-
-                </div>
-            `;
-
-
-            listaRestaurantes.appendChild(
-                tarjeta
+            crearTarjetaRestaurante(
+                restaurante
             );
         }
     );
 }
 
 
-// ==============================
-// CREAR UNA MESA
-// ==============================
+// ==========================================
+// CREAR TARJETA DEL RESTAURANTE
+// ==========================================
 
-function crearMesa(
-    mesa,
-    cantidadPersonas
-) {
+function crearTarjetaRestaurante(restaurante) {
 
-    const estado =
-        mesa.status
-            .toLowerCase();
+    const tarjeta =
+        document.createElement("article");
 
 
-    let claseEstado = estado;
+    // CALCULAR CAPACIDAD
+
+    const capacidad =
+        calcularCapacidad(restaurante);
 
 
-    if (estado === "available") {
-        claseEstado = "disponible";
-    }
+    // CLASES DE LA TARJETA
 
-    if (estado === "occupied") {
-        claseEstado = "ocupada";
-    }
-
-    if (estado === "reserved") {
-        claseEstado = "reservada";
-    }
+    tarjeta.classList.add(
+        "publico-restaurante",
+        capacidad.clase
+    );
 
 
-    let mensajePersonas = "";
+    // DATOS DEL RESTAURANTE
+
+    const nombre =
+        restaurante.name ||
+        "Restaurante";
+
+    const direccion =
+        restaurante.address ||
+        "Dirección no informada";
+
+    const telefono =
+        restaurante.phone || "";
+
+    const mapsUrl =
+        crearUrlMaps(restaurante);
+
+    const telefonoUrl =
+        crearUrlTelefono(telefono);
 
 
-    if (
-        cantidadPersonas > 0
-        &&
-        (
-            estado === "disponible"
-            ||
-            estado === "available"
-        )
-        &&
-        mesa.chairs >= cantidadPersonas
-    ) {
+    // ======================================
+    // HTML DE LA TARJETA
+    // ======================================
 
-        mensajePersonas = `
-            <p>
-                <strong>
-                    ✓ Sirve para ${cantidadPersonas} personas
-                </strong>
-            </p>
-        `;
-    }
+    tarjeta.innerHTML = `
 
-
-    return `
-
-        <div class="mesa ${claseEstado}">
+        <div class="publico-restaurante-info">
 
             <h3>
-                Mesa ${mesa.table_number}
+                ${nombre}
             </h3>
 
-            <p>
-                👥 ${mesa.chairs} sillas
+
+            <p class="publico-direccion">
+
+                <span class="publico-icono">
+                    📍
+                </span>
+
+                ${direccion}
+
             </p>
 
-            <p>
-                Estado:
-                <strong>
-                    ${mesa.status}
-                </strong>
-            </p>
 
-            ${mensajePersonas}
+            ${telefono
+            ? `
+                        <p class="publico-telefono">
 
-            ${mesa.details
-            ? `<p>${mesa.details}</p>`
+                            <span class="publico-icono">
+                                ☎
+                            </span>
+
+                            <a href="${telefonoUrl}">
+                                ${telefono}
+                            </a>
+
+                        </p>
+                    `
+            : `
+                        <p class="publico-telefono publico-dato-no-disponible">
+
+                            <span class="publico-icono">
+                                ☎
+                            </span>
+
+                            Teléfono no informado
+
+                        </p>
+                    `
+        }
+
+
+            ${mapsUrl
+            ? `
+                        <a
+                            href="${mapsUrl}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="publico-como-llegar"
+                        >
+                            <span>
+                                📍
+                            </span>
+
+                            Cómo llegar
+                        </a>
+                    `
             : ""
         }
 
         </div>
+
+
+        <div class="publico-capacidad publico-capacidad-${capacidad.estado}">
+
+            <span class="publico-punto-estado">
+            </span>
+
+            <div>
+
+                <small>
+                    Estado actual
+                </small>
+
+                <strong>
+                    ${capacidad.texto}
+                </strong>
+
+            </div>
+
+        </div>
     `;
+
+
+    listaRestaurantes.appendChild(
+        tarjeta
+    );
 }
 
 
-// ==============================
-// EVENTOS
-// ==============================
+// ==========================================
+// BUSCADOR
+// ==========================================
 
 buscador.addEventListener(
     "input",
@@ -428,14 +512,8 @@ buscador.addEventListener(
 );
 
 
-filtroPersonas.addEventListener(
-    "change",
-    mostrarRestaurantes
-);
-
-
-// ==============================
+// ==========================================
 // INICIAR
-// ==============================
+// ==========================================
 
 cargarRestaurantes();

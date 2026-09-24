@@ -47,15 +47,26 @@
 
                 <div>
 
-                    <p class="panel-etiqueta">
-                        Mi restaurante
-                    </p>
+                    <div class="restaurante-identidad">
 
-                    <h2 id="nombre-restaurante">
-                        Cargando...
-                    </h2>
+                        <span class="restaurante-etiqueta">
+                            RESTAURANTE
+                        </span>
 
-                    <p id="direccion-restaurante"></p>
+                        <h2 id="nombre-restaurante">
+                            Cargando...
+                        </h2>
+
+                        <p class="restaurante-direccion">
+                            <span>📍</span>
+                            <span id="direccion-restaurante"></span>
+                        </p>
+
+                    </div>
+
+                    <button type="button" id="btn-editar-restaurante" class="btn-secundario">
+                        Editar datos
+                    </button>
 
                 </div>
 
@@ -77,6 +88,106 @@
                 </div>
 
             </div>
+
+        </section>
+
+
+        <!-- =====================================
+             EDITAR DATOS DEL RESTAURANTE
+        ====================================== -->
+
+        <section id="editar-restaurante" class="formulario-mesa oculto">
+
+            <h2>
+                Editar datos del restaurante
+            </h2>
+
+            <form id="form-editar-restaurante">
+
+
+                <!-- NOMBRE -->
+
+                <div class="campo">
+
+                    <label for="editar-restaurante-nombre">
+                        Nombre
+                    </label>
+
+                    <input type="text" id="editar-restaurante-nombre" required>
+
+                </div>
+
+
+                <!-- DIRECCIÓN -->
+
+                <div class="campo">
+
+                    <label for="editar-restaurante-direccion">
+                        Dirección
+                    </label>
+
+                    <input type="text" id="editar-restaurante-direccion" required>
+
+                </div>
+
+
+                <!-- CIUDAD -->
+
+                <div class="campo">
+
+                    <label for="editar-restaurante-ciudad">
+                        Ciudad
+                    </label>
+
+                    <input type="text" id="editar-restaurante-ciudad" required>
+
+                </div>
+
+
+                <!-- TELÉFONO -->
+
+                <div class="campo">
+
+                    <label for="editar-restaurante-telefono">
+                        Teléfono
+                    </label>
+
+                    <input type="text" id="editar-restaurante-telefono">
+
+                </div>
+
+
+                <!-- DESCRIPCIÓN -->
+
+                <div class="campo">
+
+                    <label for="editar-restaurante-descripcion">
+                        Descripción
+                    </label>
+
+                    <input type="text" id="editar-restaurante-descripcion" placeholder="Ej: Restaurante familiar">
+
+                </div>
+
+
+                <!-- BOTONES -->
+
+                <div class="acciones-formulario">
+
+                    <button type="submit" class="btn-principal">
+                        Guardar cambios
+                    </button>
+
+                    <button type="button" id="btn-cancelar-editar-restaurante" class="btn-secundario">
+                        Cancelar
+                    </button>
+
+                </div>
+
+
+                <p id="mensaje-editar-restaurante"></p>
+
+            </form>
 
         </section>
 
@@ -149,7 +260,7 @@
                     </h2>
 
                     <p>
-                        Seleccioná una mesa para gestionarla.
+                        Un clic cambia el estado. Doble clic permite editar la mesa.
                     </p>
 
                 </div>
@@ -198,9 +309,6 @@
 
             <!-- =====================================
                  GRILLA DE MESAS
-
-                 VERDE = LIBRE
-                 ROJO = OCUPADA
             ====================================== -->
 
             <div id="panel-mesas" class="grilla-mesas">

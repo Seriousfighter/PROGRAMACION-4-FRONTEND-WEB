@@ -43,6 +43,24 @@
                     <input type="text" id="direccion" placeholder="Ej: San Martín 250" required>
                 </div>
 
+                <!-- CIUDAD -->
+                <div class="campo">
+                    <label for="ciudad">
+                        Ciudad
+                    </label>
+
+                    <input type="text" id="ciudad" placeholder="Ej: Crespo" required>
+                </div>
+
+                <!-- TELÉFONO -->
+                <div class="campo">
+                    <label for="telefono">
+                        Teléfono
+                    </label>
+
+                    <input type="tel" id="telefono" placeholder="Ej: 343 4567890" required>
+                </div>
+
                 <!-- DESCRIPCIÓN -->
                 <div class="campo">
                     <label for="descripcion">
@@ -67,7 +85,7 @@
                         Contraseña
                     </label>
 
-                    <input type="password" id="password" placeholder="Ingresá una contraseña" required>
+                    <input type="password" id="password" placeholder="Ingresá una contraseña" minlength="6" required>
                 </div>
 
                 <!-- REPETIR CONTRASEÑA -->
@@ -76,7 +94,8 @@
                         Repetir contraseña
                     </label>
 
-                    <input type="password" id="repetir-password" placeholder="Repetí la contraseña" required>
+                    <input type="password" id="repetir-password" placeholder="Repetí la contraseña" minlength="6"
+                        required>
                 </div>
 
                 <button type="submit" class="btn-ingresar">

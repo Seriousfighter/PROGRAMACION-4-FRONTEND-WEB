@@ -1,6 +1,6 @@
-/* ================================
-   CONFIGURACIÓN GENERAL
-================================ */
+/* ==================================================
+   MESSAPI - CONFIGURACIÓN GENERAL
+================================================== */
 
 * {
     box-sizing: border-box;
@@ -20,243 +20,14 @@ body {
     margin: 0 auto;
 }
 
-
-/* ================================
-   ENCABEZADO PÁGINA PÚBLICA
-================================ */
-
-.encabezado {
-    background-color: #222;
-    color: white;
-    padding: 30px 0;
-}
-
-.barra-superior {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-}
-
-.titulo-principal h1 {
-    font-size: 30px;
-    margin-bottom: 8px;
-}
-
-.titulo-principal p {
-    font-size: 16px;
-    color: #e5e5e5;
+.oculto {
+    display: none;
 }
 
 
-/* ================================
-   BOTÓN INGRESO RESTAURANTES
-================================ */
-
-.btn-restaurante {
-    display: inline-block;
-    padding: 12px 18px;
-
-    border: 1px solid white;
-    border-radius: 8px;
-
-    color: white;
-    text-decoration: none;
-
-    font-size: 14px;
-    font-weight: bold;
-
-    white-space: nowrap;
-    transition: 0.2s;
-}
-
-.btn-restaurante:hover {
-    background-color: white;
-    color: #222;
-}
-
-
-/* ================================
-   FILTROS PÁGINA PÚBLICA
-================================ */
-
-.filtros {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-
-    gap: 15px;
-    margin: 30px 0;
-}
-
-.filtros input,
-.filtros select {
-    width: 100%;
-    padding: 14px;
-
-    font-size: 16px;
-
-    border: 1px solid #cccccc;
-    border-radius: 8px;
-
-    background-color: white;
-    color: #333;
-
-    outline: none;
-}
-
-.filtros input:focus,
-.filtros select:focus {
-    border-color: #555;
-}
-
-
-/* ================================
-   MENSAJES
-================================ */
-
-#mensaje {
-    margin-bottom: 20px;
-}
-
-#mensaje p {
-    font-size: 16px;
-}
-
-
-/* ================================
-   LISTA DE RESTAURANTES
-================================ */
-
-.lista-restaurantes {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-
-    gap: 20px;
-    margin-bottom: 40px;
-}
-
-
-/* ================================
-   TARJETA RESTAURANTE
-================================ */
-
-.restaurante {
-    background-color: white;
-
-    padding: 20px;
-
-    border-radius: 10px;
-
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.10);
-}
-
-.restaurante h2 {
-    font-size: 23px;
-    margin-bottom: 10px;
-}
-
-.direccion {
-    margin-bottom: 10px;
-}
-
-.descripcion {
-    margin-bottom: 15px;
-}
-
-.estado-restaurante {
-    font-weight: bold;
-    margin-bottom: 15px;
-}
-
-
-/* ================================
-   RESUMEN RESTAURANTE PÚBLICO
-================================ */
-
-.resumen {
-    background-color: #f0f0f0;
-
-    padding: 12px;
-
-    border-radius: 8px;
-
-    margin-bottom: 15px;
-}
-
-.resumen p {
-    margin: 2px 0;
-}
-
-
-/* ================================
-   MESAS PÁGINA PÚBLICA
-================================ */
-
-.mesas {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.mesa {
-    background-color: white;
-
-    padding: 12px;
-
-    border: 1px solid #dddddd;
-    border-left: 5px solid #999;
-
-    border-radius: 7px;
-}
-
-.mesa h3 {
-    margin-bottom: 8px;
-    font-size: 18px;
-}
-
-.mesa p {
-    margin: 2px 0;
-}
-
-.mesa.disponible {
-    border-left-color: green;
-}
-
-.mesa.ocupada {
-    border-left-color: red;
-}
-
-.mesa.reservada {
-    border-left-color: orange;
-}
-
-
-/* ================================
-   SIN MESAS / SIN RESULTADOS
-================================ */
-
-.sin-mesas {
-    color: #666;
-    font-style: italic;
-}
-
-.sin-resultados {
-    background-color: white;
-
-    padding: 20px;
-
-    border-radius: 8px;
-
-    text-align: center;
-    color: #666;
-
-    grid-column: 1 / -1;
-}
-
-
-/* ================================
+/* ==================================================
    LOGIN Y REGISTRO
-================================ */
+================================================== */
 
 .pagina-login {
     min-height: 100vh;
@@ -265,42 +36,31 @@ body {
 
 .login-contenedor {
     min-height: 100vh;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     padding: 25px;
 }
 
 .login-tarjeta {
     width: 100%;
     max-width: 430px;
-
     background-color: white;
-
     padding: 35px;
-
     border-radius: 12px;
-
     box-shadow: 0 3px 15px rgba(0, 0, 0, 0.12);
 }
 
 .login-tarjeta h1 {
     font-size: 27px;
-
     margin-bottom: 10px;
-
     text-align: center;
 }
 
 .login-descripcion {
     color: #666;
-
     text-align: center;
-
     line-height: 1.5;
-
     margin-bottom: 25px;
 }
 
@@ -309,9 +69,9 @@ body {
 }
 
 
-/* ================================
-   CAMPOS FORMULARIOS
-================================ */
+/* ==================================================
+   CAMPOS DE FORMULARIOS
+================================================== */
 
 .campo {
     margin-bottom: 18px;
@@ -319,9 +79,7 @@ body {
 
 .campo label {
     display: block;
-
     font-weight: bold;
-
     margin-bottom: 7px;
 }
 
@@ -329,17 +87,12 @@ body {
 .campo textarea,
 .campo select {
     width: 100%;
-
     padding: 13px;
-
     border: 1px solid #ccc;
     border-radius: 7px;
-
     font-family: Arial, Helvetica, sans-serif;
     font-size: 15px;
-
     background-color: white;
-
     outline: none;
 }
 
@@ -354,26 +107,20 @@ body {
 }
 
 
-/* ================================
+/* ==================================================
    BOTÓN LOGIN / REGISTRO
-================================ */
+================================================== */
 
 .btn-ingresar {
     width: 100%;
-
     padding: 13px;
-
     background-color: #222;
     color: white;
-
     border: none;
     border-radius: 7px;
-
     font-size: 16px;
     font-weight: bold;
-
     cursor: pointer;
-
     transition: 0.2s;
 }
 
@@ -382,17 +129,14 @@ body {
 }
 
 
-/* ================================
+/* ==================================================
    ENLACES LOGIN / REGISTRO
-================================ */
+================================================== */
 
 .registro-restaurante {
     margin-top: 25px;
-
     padding-top: 20px;
-
     border-top: 1px solid #ddd;
-
     text-align: center;
 }
 
@@ -408,13 +152,9 @@ body {
 
 .volver {
     display: block;
-
     margin-top: 25px;
-
     text-align: center;
-
     color: #555;
-
     text-decoration: none;
 }
 
@@ -423,14 +163,13 @@ body {
 }
 
 
-/* ==========================================
+/* ==================================================
    PANEL DEL RESTAURANTE
-========================================== */
+================================================== */
 
 .panel-encabezado {
     background-color: #222;
     color: white;
-
     padding: 25px 0;
 }
 
@@ -438,7 +177,6 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     gap: 20px;
 }
 
@@ -451,31 +189,18 @@ body {
     color: #ddd;
 }
 
-
-/* ================================
-   CERRAR SESIÓN
-================================ */
-
 .btn-salir {
     display: inline-block;
-
     padding: 11px 17px;
-
     border: 1px solid white;
     border-radius: 7px;
-
     background-color: transparent;
-
     color: white;
-
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     font-weight: bold;
-
     white-space: nowrap;
-
     cursor: pointer;
-
     transition: 0.2s;
 }
 
@@ -484,30 +209,21 @@ body {
     color: #222;
 }
 
-
-/* ================================
-   CONTENIDO DEL PANEL
-================================ */
-
 .panel-contenido {
     padding-top: 30px;
     padding-bottom: 50px;
 }
 
 
-/* ================================
-   INFORMACIÓN RESTAURANTE
-================================ */
+/* ==================================================
+   INFORMACIÓN DEL RESTAURANTE - PANEL
+================================================== */
 
 .panel-restaurante {
     background-color: white;
-
     padding: 25px;
-
     border-radius: 12px;
-
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-
     margin-bottom: 20px;
 }
 
@@ -515,21 +231,17 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     gap: 30px;
 }
 
 .panel-etiqueta {
     color: #777;
-
     font-size: 14px;
-
     margin-bottom: 5px;
 }
 
 .panel-restaurante h2 {
     font-size: 27px;
-
     margin-bottom: 6px;
 }
 
@@ -538,57 +250,47 @@ body {
 }
 
 
-/* ================================
-   ESTADO DEL RESTAURANTE
-================================ */
+/* ==================================================
+   ESTADO DEL RESTAURANTE - PANEL
+================================================== */
 
 .estado-local {
     min-width: 210px;
-
     text-align: right;
 }
 
 .estado-local>p {
     font-size: 14px;
-
     color: #666;
-
     margin-bottom: 7px;
 }
 
 #estado-restaurante-panel {
     display: block;
-
     font-weight: bold;
-
     margin-bottom: 10px;
 }
 
 
-/* ================================
+/* ==================================================
    BOTONES GENERALES DEL PANEL
-================================ */
+================================================== */
 
 .btn-secundario,
 .btn-principal,
 .btn-cambiar-disponibilidad {
     border: none;
     border-radius: 7px;
-
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
-
     cursor: pointer;
-
     transition: 0.2s;
 }
 
 .btn-secundario {
     padding: 10px 15px;
-
     background-color: #eeeeee;
     color: #222;
-
     border: 1px solid #ccc;
 }
 
@@ -598,10 +300,8 @@ body {
 
 .btn-principal {
     padding: 12px 18px;
-
     background-color: #222;
     color: white;
-
     font-size: 15px;
 }
 
@@ -617,37 +317,28 @@ body {
 }
 
 
-/* ================================
+/* ==================================================
    RESUMEN DEL PANEL
-================================ */
+================================================== */
 
 .panel-resumen {
     display: grid;
-
-    grid-template-columns: repeat(4, 1fr);
-
+    grid-template-columns: repeat(3, 1fr);
     gap: 15px;
-
     margin-bottom: 30px;
 }
 
 .resumen-caja {
     background-color: white;
-
     padding: 20px;
-
     border-radius: 10px;
-
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
 }
 
 .resumen-caja span {
     display: block;
-
     color: #666;
-
     font-size: 14px;
-
     margin-bottom: 7px;
 }
 
@@ -656,41 +347,28 @@ body {
 }
 
 
-/* ==========================================
+/* ==================================================
    SECCIÓN ESTADO DE MESAS
-========================================== */
+================================================== */
 
 .seccion-estado-mesas {
     background-color: white;
-
     padding: 25px;
-
     border-radius: 12px;
-
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-
     margin-bottom: 25px;
 }
 
-
-/* ================================
-   TÍTULO DE MESAS
-================================ */
-
 .panel-titulo {
     display: flex;
-
     justify-content: space-between;
     align-items: center;
-
     gap: 20px;
-
     margin-bottom: 20px;
 }
 
 .panel-titulo h2 {
     font-size: 25px;
-
     margin-bottom: 5px;
 }
 
@@ -699,42 +377,31 @@ body {
 }
 
 
-/* ==========================================
-   REFERENCIAS VERDE / ROJO
-========================================== */
+/* ==================================================
+   REFERENCIAS DE MESAS
+================================================== */
 
 .referencias-mesas {
     display: flex;
-
     align-items: center;
-
     gap: 20px;
-
     margin-bottom: 25px;
-
     padding-bottom: 18px;
-
     border-bottom: 1px solid #eeeeee;
 }
 
 .referencia {
     display: flex;
-
     align-items: center;
-
     gap: 7px;
-
     color: #555;
-
     font-size: 14px;
 }
 
 .referencia-color {
     width: 14px;
     height: 14px;
-
     display: inline-block;
-
     border-radius: 4px;
 }
 
@@ -747,62 +414,44 @@ body {
 }
 
 
-/* ==========================================
+/* ==================================================
    GRILLA DE MESAS
-========================================== */
+================================================== */
 
 .grilla-mesas {
     display: grid;
-
-    grid-template-columns:
-        repeat(4, minmax(0, 1fr));
-
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 18px;
-
     width: 100%;
 }
 
 .cargando-mesas,
 .sin-mesas-panel {
     grid-column: 1 / -1;
-
     padding: 25px;
-
     text-align: center;
-
     color: #666;
 }
 
 
-/* ==========================================
-   BOTÓN DE MESA
-========================================== */
+/* ==================================================
+   BOTONES DE MESAS
+================================================== */
 
 .boton-mesa {
     width: 100%;
-
     min-height: 125px;
-
     display: flex;
     flex-direction: column;
-
     justify-content: center;
     align-items: center;
-
     gap: 8px;
-
     padding: 20px;
-
     border: none;
     border-radius: 12px;
-
     font-family: Arial, Helvetica, sans-serif;
-
     cursor: pointer;
-
-    box-shadow:
-        0 3px 8px rgba(0, 0, 0, 0.16);
-
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.16);
     transition:
         transform 0.15s,
         box-shadow 0.15s,
@@ -811,10 +460,7 @@ body {
 
 .boton-mesa:hover {
     transform: translateY(-3px);
-
-    box-shadow:
-        0 6px 14px rgba(0, 0, 0, 0.20);
-
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.20);
     filter: brightness(1.04);
 }
 
@@ -822,122 +468,72 @@ body {
     transform: translateY(0);
 }
 
-
-/* ==========================================
-   MESA DISPONIBLE - VERDE
-========================================== */
-
 .boton-mesa.disponible {
-    background-color: #42a846;
-
-    color: white;
+    background-color: #8cfca4;
+    color: #1f1f1f;
 }
-
-
-/* ==========================================
-   MESA NO DISPONIBLE - ROJO
-========================================== */
 
 .boton-mesa.no-disponible {
-    background-color: #d9534f;
-
-    color: white;
+    background-color: #ff6961;
+    color: #ffffff;
 }
 
-
-/* ==========================================
-   NÚMERO Y CAPACIDAD DE LA MESA
-========================================== */
 
 .numero-mesa-panel {
     display: block;
-
     font-size: 22px;
-
     font-weight: bold;
-
     text-transform: uppercase;
 }
 
 .capacidad-mesa-panel {
     display: block;
-
     font-size: 14px;
-
     font-weight: normal;
-
     opacity: 0.95;
 }
 
 
-/* ==========================================
+/* ==================================================
    FORMULARIOS DE MESA
-========================================== */
+================================================== */
 
 .formulario-mesa {
     background-color: white;
-
     padding: 25px;
-
     border-radius: 14px;
-
     margin-bottom: 25px;
-
-    box-shadow:
-        0 4px 15px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
 .formulario-mesa h2 {
     margin-bottom: 20px;
 }
 
-
-/* ==========================================
-   OCULTAR
-========================================== */
-
-.oculto {
-    display: none;
-}
-
-
-/* ==========================================
-   ACCIONES AGREGAR MESA
-========================================== */
-
 .acciones-formulario {
     display: flex;
-
     gap: 10px;
-
     margin-top: 20px;
-
     flex-wrap: wrap;
 }
 
 #mensaje-mesa {
     margin-top: 15px;
-
     font-weight: 600;
 }
 
 
-/* ==========================================
-   CABECERA GESTIONAR MESA
-========================================== */
+/* ==================================================
+   GESTIONAR MESA
+================================================== */
 
 .cabecera-gestion-mesa {
     display: flex;
-
     justify-content: space-between;
     align-items: center;
-
     gap: 20px;
-
     margin-bottom: 20px;
-
     padding-bottom: 15px;
-
     border-bottom: 1px solid #eeeeee;
 }
 
@@ -945,86 +541,47 @@ body {
     margin-bottom: 0;
 }
 
-
-/* ==========================================
-   INDICADOR DE ESTADO
-========================================== */
-
 .indicador-estado {
     display: inline-block;
-
     padding: 8px 14px;
-
     border-radius: 20px;
-
     font-size: 13px;
-
     font-weight: bold;
-
     white-space: nowrap;
 }
 
 .indicador-estado.disponible {
     background-color: #e6f5e7;
-
     color: #217525;
-
     border: 1px solid #b9dfbb;
 }
 
 .indicador-estado.no-disponible {
     background-color: #fde8e8;
-
     color: #a32622;
-
     border: 1px solid #efb8b6;
 }
 
-
-/* ==========================================
-   ESTADO ACTUAL EN GESTIÓN
-========================================== */
-
 #gestionar-estado {
     display: inline-block;
-
     padding: 10px 14px;
-
     background-color: #f3f3f3;
-
     border: 1px solid #dddddd;
     border-radius: 7px;
-
     font-weight: bold;
 }
 
-
-/* ==========================================
-   ACCIONES GESTIONAR MESA
-========================================== */
-
 .acciones-gestionar {
     display: flex;
-
     flex-wrap: wrap;
-
     gap: 10px;
-
     margin-top: 22px;
 }
 
-
-/* ==========================================
-   CAMBIAR ESTADO
-========================================== */
-
 .btn-cambiar-disponibilidad {
     padding: 12px 18px;
-
     background-color: #555;
-
     color: white;
-
     font-size: 15px;
 }
 
@@ -1032,27 +589,15 @@ body {
     background-color: #333;
 }
 
-
-/* ==========================================
-   ELIMINAR MESA
-========================================== */
-
 .btn-eliminar-gestion {
     padding: 11px 16px;
-
     background-color: #fff0f0;
-
     color: #a00000;
-
     border: 1px solid #d7b0b0;
     border-radius: 7px;
-
     font-family: Arial, Helvetica, sans-serif;
-
     font-weight: bold;
-
     cursor: pointer;
-
     transition: 0.2s;
 }
 
@@ -1062,93 +607,547 @@ body {
 
 .btn-eliminar-gestion:disabled {
     opacity: 0.6;
-
     cursor: not-allowed;
 }
 
-
-/* ==========================================
-   MENSAJE GESTIÓN
-========================================== */
-
 #mensaje-gestion {
     margin-top: 15px;
-
     font-weight: 600;
 }
 
 
-/* ==========================================
+/* ==================================================
+   ABRIR / CERRAR RESTAURANTE
+================================================== */
+
+#btn-estado-restaurante {
+    min-width: 190px;
+    padding: 13px 22px;
+    border: none;
+    border-radius: 9px;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition:
+        background-color 0.2s,
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+
+#btn-estado-restaurante.cerrar-restaurante {
+    background-color: #d9534f;
+    color: white;
+}
+
+#btn-estado-restaurante.cerrar-restaurante:hover {
+    background-color: #c64541;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.18);
+}
+
+#btn-estado-restaurante.abrir-restaurante {
+    background-color: #42a846;
+    color: white;
+}
+
+#btn-estado-restaurante.abrir-restaurante:hover {
+    background-color: #368c3a;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.18);
+}
+
+#btn-estado-restaurante:active {
+    transform: translateY(0);
+}
+
+#btn-estado-restaurante:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+}
+
+
+/* ==================================================
+   PÁGINA PÚBLICA
+================================================== */
+
+.pagina-publica {
+    min-height: 100vh;
+    background: #f5f6f7;
+    color: #1d1d1f;
+}
+
+
+/* ==================================================
+   HEADER PÚBLICO
+================================================== */
+
+.publico-header {
+    background: #ffffff;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.publico-header-contenido {
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+}
+
+.publico-marca h1 {
+    margin: 0 0 4px;
+    font-size: 30px;
+    line-height: 1;
+    letter-spacing: -0.5px;
+}
+
+.publico-marca p {
+    margin: 0;
+    color: #707070;
+    font-size: 14px;
+}
+
+.publico-login {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0 18px;
+    border: 1px solid #d5d5d5;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #222222;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.publico-login:hover {
+    background: #f2f2f2;
+}
+
+
+/* ==================================================
+   CONTENIDO PÚBLICO
+================================================== */
+
+.publico-contenido {
+    padding-top: 38px;
+    padding-bottom: 70px;
+}
+
+.publico-presentacion {
+    margin-bottom: 24px;
+}
+
+.publico-presentacion h2 {
+    margin: 0 0 7px;
+    font-size: 28px;
+    letter-spacing: -0.4px;
+}
+
+.publico-presentacion p {
+    margin: 0;
+    color: #6d6d6d;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+
+/* ==================================================
+   BUSCADOR PÚBLICO
+================================================== */
+
+.publico-buscador {
+    display: block;
+    padding: 12px;
+    margin-bottom: 38px;
+    background: #ffffff;
+    border: 1px solid #e2e2e2;
+    border-radius: 14px;
+    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.04);
+}
+
+.campo-busqueda {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    background: #f8f8f8;
+    border: 1px solid #e1e1e1;
+    border-radius: 9px;
+}
+
+.icono-busqueda {
+    padding-left: 16px;
+    padding-right: 10px;
+    font-size: 16px;
+}
+
+.campo-busqueda input {
+    width: 100%;
+    height: 100%;
+    padding: 0 15px 0 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 15px;
+}
+
+
+/* ==================================================
+   MENSAJES Y RESULTADOS
+================================================== */
+
+.publico-mensaje {
+    color: #666666;
+}
+
+.publico-mensaje p {
+    margin-bottom: 20px;
+}
+
+.publico-resultados-titulo {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 18px;
+}
+
+.publico-resultados-titulo h2 {
+    margin: 0;
+    font-size: 21px;
+}
+
+.publico-resultados-titulo p {
+    margin: 0;
+    color: #777777;
+    font-size: 13px;
+}
+
+.publico-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    align-items: start;
+}
+
+
+/* ==================================================
+   TARJETA PÚBLICA DEL RESTAURANTE
+================================================== */
+
+.publico-restaurante {
+    min-width: 0;
+    padding: 22px;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.055);
+    align-self: start;
+    overflow: hidden;
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+
+.publico-restaurante:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.09);
+}
+
+
+/* ==================================================
+   COLORES SEGÚN CAPACIDAD
+================================================== */
+
+.publico-restaurante.restaurante-con-capacidad {
+    background: #edf8ef;
+    border: 1px solid #b8dfbd;
+}
+
+.publico-restaurante.restaurante-poca-capacidad {
+    background: #fff9e6;
+    border: 1px solid #ead68a;
+}
+
+.publico-restaurante.restaurante-lleno {
+    background: #fceeee;
+    border: 1px solid #e5b7b7;
+}
+
+
+/* ==================================================
+   INFORMACIÓN DE LA TARJETA
+================================================== */
+
+.publico-restaurante-info h3 {
+    margin: 0 0 16px;
+    color: #202020;
+    font-size: 21px;
+    line-height: 1.2;
+}
+
+.publico-direccion,
+.publico-telefono {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin: 8px 0;
+    color: #4f4f4f;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.publico-icono {
+    width: 20px;
+    flex-shrink: 0;
+    text-align: center;
+}
+
+.publico-telefono a {
+    color: #3f3f3f;
+    text-decoration: none;
+}
+
+.publico-telefono a:hover {
+    text-decoration: underline;
+}
+
+.publico-dato-no-disponible {
+    color: #777777;
+}
+
+
+/* ==================================================
+   BOTÓN CÓMO LLEGAR
+================================================== */
+
+.publico-como-llegar {
+    width: fit-content;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 14px;
+    padding: 9px 13px;
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
+    color: #252525;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    transition:
+        background 0.2s,
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+
+.publico-como-llegar:hover {
+    background: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ==================================================
+   ESTADO GENERAL DE CAPACIDAD
+================================================== */
+
+.publico-capacidad {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin-top: 20px;
+    padding: 13px 14px;
+    background: rgba(255, 255, 255, 0.62);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 9px;
+}
+
+.publico-capacidad div {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.publico-capacidad small {
+    color: #6d6d6d;
+    font-size: 11px;
+}
+
+.publico-capacidad strong {
+    font-size: 14px;
+}
+
+.publico-punto-estado {
+    width: 11px;
+    height: 11px;
+    display: block;
+    flex-shrink: 0;
+    border-radius: 50%;
+}
+
+
+/* CON CAPACIDAD */
+
+.publico-capacidad-capacidad .publico-punto-estado {
+    background: #3ca34a;
+}
+
+.publico-capacidad-capacidad strong {
+    color: #267632;
+}
+
+
+/* CASI SIN CAPACIDAD */
+
+.publico-capacidad-poca .publico-punto-estado {
+    background: #d7a91d;
+}
+
+.publico-capacidad-poca strong {
+    color: #896b0e;
+}
+
+
+/* LLENO */
+
+.publico-capacidad-lleno .publico-punto-estado {
+    background: #d9534f;
+}
+
+.publico-capacidad-lleno strong {
+    color: #a33330;
+}
+
+
+/* ==================================================
+   SIN RESULTADOS
+================================================== */
+
+.publico-sin-resultados {
+    grid-column: 1 / -1;
+    padding: 45px 20px;
+    background: #ffffff;
+    border: 1px solid #e4e4e4;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.publico-sin-resultados strong {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 17px;
+}
+
+.publico-sin-resultados p {
+    margin: 0;
+    color: #777777;
+    font-size: 14px;
+}
+
+
+/* ==================================================
    TABLET
-========================================== */
+================================================== */
+
+@media (max-width: 950px) {
+
+    .publico-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
 
 @media (max-width: 900px) {
 
-    .lista-restaurantes {
-        grid-template-columns:
-            repeat(2, 1fr);
-    }
-
     .panel-resumen {
-        grid-template-columns:
-            repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
     }
 
     .grilla-mesas {
-        grid-template-columns:
-            repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
 }
 
 
-/* ==========================================
+/* ==================================================
    CELULAR
-========================================== */
+================================================== */
+
+@media (max-width: 650px) {
+
+    .publico-header-contenido {
+        min-height: auto;
+        padding-top: 18px;
+        padding-bottom: 18px;
+        align-items: flex-start;
+    }
+
+    .publico-marca h1 {
+        font-size: 25px;
+    }
+
+    .publico-marca p {
+        font-size: 12px;
+    }
+
+    .publico-login {
+        min-height: 38px;
+        padding: 0 12px;
+        font-size: 12px;
+    }
+
+    .publico-contenido {
+        padding-top: 27px;
+    }
+
+    .publico-presentacion h2 {
+        font-size: 24px;
+    }
+
+    .publico-buscador {
+        margin-bottom: 30px;
+    }
+
+    .publico-resultados-titulo {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .publico-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .publico-restaurante {
+        padding: 18px;
+    }
+
+    .publico-como-llegar {
+        width: 100%;
+        justify-content: center;
+        min-height: 42px;
+    }
+
+}
+
+
+/* ==================================================
+   PANEL EN CELULAR
+================================================== */
 
 @media (max-width: 600px) {
 
     .contenedor {
         width: 92%;
     }
-
-
-    /* PÁGINA PÚBLICA */
-
-    .encabezado {
-        padding: 25px 0;
-    }
-
-    .barra-superior {
-        flex-direction: column;
-
-        text-align: center;
-    }
-
-    .titulo-principal h1 {
-        font-size: 25px;
-    }
-
-    .btn-restaurante {
-        width: 100%;
-
-        text-align: center;
-    }
-
-    .filtros {
-        grid-template-columns: 1fr;
-    }
-
-    .lista-restaurantes {
-        grid-template-columns: 1fr;
-    }
-
-    .restaurante {
-        padding: 16px;
-    }
-
-
-    /* LOGIN / REGISTRO */
 
     .login-contenedor {
         padding: 15px;
@@ -1162,41 +1161,36 @@ body {
         font-size: 24px;
     }
 
-
-    /* PANEL */
-
     .panel-barra {
         flex-direction: column;
-
         align-items: flex-start;
     }
 
     .btn-salir {
         width: 100%;
-
         text-align: center;
     }
 
     .panel-restaurante-info {
         flex-direction: column;
-
         align-items: flex-start;
     }
 
     .estado-local {
         width: 100%;
-
         text-align: left;
     }
 
+    #btn-estado-restaurante {
+        width: 100%;
+    }
+
     .panel-resumen {
-        grid-template-columns:
-            repeat(2, 1fr);
+        grid-template-columns: 1fr;
     }
 
     .panel-titulo {
         flex-direction: column;
-
         align-items: flex-start;
     }
 
@@ -1204,28 +1198,18 @@ body {
         width: 100%;
     }
 
-
-    /* REFERENCIAS */
-
     .referencias-mesas {
         flex-wrap: wrap;
-
         gap: 12px;
     }
 
-
-    /* MESAS */
-
     .grilla-mesas {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 12px;
     }
 
     .boton-mesa {
         min-height: 105px;
-
         padding: 15px;
     }
 
@@ -1233,27 +1217,17 @@ body {
         font-size: 19px;
     }
 
-
-    /* GESTIONAR */
-
     .cabecera-gestion-mesa {
         align-items: flex-start;
-
         flex-direction: column;
     }
 
-    .acciones-gestionar {
-        flex-direction: column;
-    }
-
-    .acciones-gestionar button {
-        width: 100%;
-    }
-
+    .acciones-gestionar,
     .acciones-formulario {
         flex-direction: column;
     }
 
+    .acciones-gestionar button,
     .acciones-formulario button {
         width: 100%;
     }
@@ -1261,19 +1235,77 @@ body {
 }
 
 
-/* ==========================================
+/* ==================================================
    CELULARES PEQUEÑOS
-========================================== */
+================================================== */
 
 @media (max-width: 400px) {
 
-    .panel-resumen {
-        grid-template-columns: 1fr;
-    }
-
     .grilla-mesas {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
+}
+
+/* BOTÓN EDITAR DATOS DEL RESTAURANTE */
+
+#btn-editar-restaurante {
+    background-color: #222222;
+    color: #ffffff;
+    border: 1px solid #222222;
+}
+
+#btn-editar-restaurante:hover {
+    background-color: #000000;
+    border-color: #000000;
+}
+
+/* ==========================================
+   IDENTIDAD DEL RESTAURANTE EN EL PANEL
+========================================== */
+
+.restaurante-identidad {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.restaurante-etiqueta {
+    display: inline-block;
+    margin-bottom: 7px;
+    padding: 4px 8px;
+
+    background-color: #f1f1f1;
+    border-radius: 5px;
+
+    color: #666666;
+
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.restaurante-identidad h2 {
+    margin: 0 0 7px;
+
+    color: #1f1f1f;
+
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.restaurante-direccion {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    margin: 0 0 14px;
+
+    color: #666666;
+
+    font-size: 14px;
+}
+
+.restaurante-direccion span:first-child {
+    font-size: 14px;
 }
