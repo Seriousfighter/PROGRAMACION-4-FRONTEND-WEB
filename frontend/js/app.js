@@ -1,11 +1,9 @@
-// Referencias al DOM base
 const vistaLogin = document.getElementById('vista-login');
 const vistaDashboard = document.getElementById('vista-dashboard');
 const formLogin = document.getElementById('form-login');
 const msjError = document.getElementById('msj-error');
 const btnLogout = document.getElementById('btn-logout');
 
-// --- LÓGICA DEL CATÁLOGO PÚBLICO (CSS 2.5D) ---
 async function cargarRestaurantes() {
     const contenedor = document.getElementById('contenedor-restaurantes');
     contenedor.innerHTML = '<p>Cargando disponibilidad de mesas...</p>';
@@ -26,7 +24,6 @@ async function cargarRestaurantes() {
             let totalMesas = mesasDelLocal.length;
             let mesasOcupadas = 0;
 
-            // 1. Calculamos la ocupación del restaurante antes de dibujarlo
             mesasDelLocal.forEach(mesa => {
                 const estadoStr = mesa.status ? mesa.status.toLowerCase() : 'disponible';
                 if (estadoStr === 'ocupada' || estadoStr === 'reservada') {
@@ -34,7 +31,6 @@ async function cargarRestaurantes() {
                 }
             });
 
-            // 2. Determinamos la clase CSS y el texto según el porcentaje
             let claseRestaurante = 'restaurante-disponible';
             let textoEstado = 'Disponible';
 
@@ -49,23 +45,33 @@ async function cargarRestaurantes() {
                 }
             }
 
-            // 3. Creamos la tarjeta general del restaurante
             const card = document.createElement('div');
             card.className = `tarjeta-restaurante ${claseRestaurante}`;
-            
             const nombreLocal = restaurante.name || 'Restaurante';
+            const direccionLocal = restaurante.address || '';
+            
+            // Botón de mapa dinámico
+            let botonMapa = '';
+            if (restaurante.latitude && restaurante.longitude) {
+                const urlMapa = `https://www.google.com/maps/dir/?api=1&destination=${restaurante.latitude},${restaurante.longitude}`;
+                botonMapa = `<a href="${urlMapa}" target="_blank" class="btn-mapa">📍 Cómo llegar</a>`;
+            }
             
             let htmlContenido = `
-                <h3 style="display: flex; justify-content: space-between; align-items: center;">
-                    ${nombreLocal}
-                    <span style="font-size: 0.75rem; font-weight: bold; text-transform: uppercase; padding: 4px 8px; border-radius: 4px; background: rgba(0,0,0,0.08); color: #000000;">
-                        ${textoEstado}
-                    </span>
-                </h3>
+                <div style="border-bottom: 2px solid #000000; padding-bottom: 10px; margin-bottom: 15px;">
+                    <h3 style="display: flex; justify-content: space-between; align-items: center; margin: 0 0 5px 0; border: none; padding: 0;">
+                        ${nombreLocal}
+                        <span style="font-size: 0.75rem; font-weight: bold; text-transform: uppercase; padding: 4px 8px; border-radius: 4px; background: rgba(0,0,0,0.08); color: #000000;">
+                            ${textoEstado}
+                        </span>
+                    </h3>
+                    <p style="margin: 0; font-size: 0.9rem; color: #555; display: flex; align-items: center;">
+                        ${direccionLocal} ${botonMapa}
+                    </p>
+                </div>
                 <div class="grilla-mesas">
             `;
             
-            // 4. Dibujamos las mesas internamente
             if (totalMesas > 0) {
                 mesasDelLocal.forEach(mesa => {
                     const estadoStr = mesa.status ? mesa.status.toLowerCase() : 'disponible';
@@ -83,7 +89,7 @@ async function cargarRestaurantes() {
                                 ${numeroMesa}
                             </div>
                             <div class="mesa-info">
-                                <span class= "capacidad"> Capacidad: ${capacidad} </span>
+                                <span class="capacidad">${capacidad} personas</span>
                                 <span class="detalle">${detalle}</span>
                             </div>
                         </div>
@@ -103,19 +109,14 @@ async function cargarRestaurantes() {
     }
 }
 
-// Cargar estado inicial
 document.addEventListener('DOMContentLoaded', () => {
     cargarRestaurantes();
-
     const token = localStorage.getItem('jwt_token');
-    if (token) {
-        mostrarDashboard();
-    }
+    if (token) mostrarDashboard();
 });
 
 document.getElementById('btn-cargar-restaurantes').addEventListener('click', cargarRestaurantes);
 
-// --- LÓGICA DE AUTENTICACIÓN Y ADMINISTRACIÓN ---
 formLogin.addEventListener('submit', async (e) => {
     e.preventDefault();
     msjError.textContent = '';
@@ -140,27 +141,22 @@ btnLogout.addEventListener('click', () => {
     vistaDashboard.classList.add('oculto');
     btnLogout.classList.add('oculto');
     vistaLogin.classList.remove('oculto');
-    
     document.getElementById('res-mesas').textContent = '';
     document.getElementById('mensaje-bienvenida').textContent = '';
 });
 
-// Endpoint Privado - Rotar Mesa
 document.getElementById('btn-rotar-mesa').addEventListener('click', async () => {
     const consola = document.getElementById('res-mesas');
     consola.textContent = 'Enviando petición...';
     try {
         const data = await api.rotarEstadoMesa(1); 
         consola.textContent = JSON.stringify(data, null, 2);
-        
-        // Recargar el catálogo público para ver el cambio reflejado al instante
         cargarRestaurantes();
     } catch (error) {
         consola.textContent = 'Error: ' + error.message;
     }
 });
 
-// Utilidades JWT
 function mostrarDashboard() {
     const token = localStorage.getItem('jwt_token');
     if (token) {
