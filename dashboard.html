@@ -86,7 +86,18 @@
 
         <!-- Hero -->
         <section class="tables-hero">
-            <h1 class="tables-hero__title">PANEL GENERAL DE MESAS</h1>
+            <div class="tables-hero__head">
+                <h1 class="tables-hero__title">PANEL GENERAL DE MESAS</h1>
+
+                <!-- Toggle ON/OFF (abierto / cerrado) -->
+                <label class="toggle" id="open-toggle" title="Abrir o cerrar el restaurante">
+                    <input type="checkbox" id="open-checkbox">
+                    <span class="toggle__track">
+                        <span class="toggle__thumb"></span>
+                    </span>
+                    <span class="toggle__label" id="toggle-label">—</span>
+                </label>
+            </div>
             <p class="tables-hero__subtitle" id="restaurant-info">Cargando...</p>
         </section>
 
