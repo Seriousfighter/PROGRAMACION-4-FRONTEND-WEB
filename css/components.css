@@ -175,3 +175,39 @@
     transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: var(--radius-full);
 }
+/* =========================================================
+   Puntito de estado (abierto / cerrado)
+   ========================================================= */
+.status-dot {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.9), 0 1px 3px rgba(0, 0, 0, 0.15);
+    margin-top: 4px;
+}
+
+.status-dot--open {
+    background: #16a34a;
+    animation: statusPulse 2s ease-in-out infinite;
+}
+
+.status-dot--closed {
+    background: #dc2626;
+}
+
+@keyframes statusPulse {
+    0%, 100% {
+        box-shadow:
+            0 0 0 3px rgba(255, 255, 255, 0.9),
+            0 0 0 0 rgba(22, 163, 74, 0.5),
+            0 1px 3px rgba(0, 0, 0, 0.15);
+    }
+    50% {
+        box-shadow:
+            0 0 0 3px rgba(255, 255, 255, 0.9),
+            0 0 0 8px rgba(22, 163, 74, 0),
+            0 1px 3px rgba(0, 0, 0, 0.15);
+    }
+}

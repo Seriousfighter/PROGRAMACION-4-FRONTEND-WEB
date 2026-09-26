@@ -72,6 +72,8 @@
                      style="animation-delay: ${delay}ms">
                 <div class="restaurant-card__header">
                     <h3 class="restaurant-card__name">${UI.escape(r.name)}</h3>
+                    <span class="status-dot status-dot--${r.is_open ? 'open' : 'closed'}"
+                          title="${r.is_open ? 'Abierto' : 'Cerrado'}"></span>
                 </div>
 
                 <ul class="restaurant-card__meta">
