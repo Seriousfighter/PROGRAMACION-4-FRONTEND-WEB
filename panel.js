@@ -1,9 +1,10 @@
 // ==========================================
 // MESSAPI - PANEL DE ADMINISTRACIÓN
+// BACKEND: INDI
 // ==========================================
 
 const API_BASE =
-    "http://localhost/PROGRAMACION-4-BACKEND-PABLO/messapi/api";
+    "http://localhost/PROGRAMACION-4-BACKEND/messapi/api";
 
 
 // ==========================================
@@ -13,14 +14,12 @@ const API_BASE =
 const TOKEN =
     sessionStorage.getItem("token");
 
-const USER_ID =
-    sessionStorage.getItem("user_id");
-
 const RESTAURANTE_ID =
     parseInt(sessionStorage.getItem("restaurant_id"));
 
 
-if (!TOKEN || !USER_ID || !RESTAURANTE_ID) {
+// Si no hay sesión, volvemos al login
+if (!TOKEN || !RESTAURANTE_ID) {
 
     sessionStorage.clear();
 
@@ -46,7 +45,7 @@ const btnEstadoRestaurante =
 
 
 // ==========================================
-// EDITAR DATOS DEL RESTAURANTE
+// EDITAR RESTAURANTE
 // ==========================================
 
 const btnEditarRestaurante =
@@ -93,6 +92,9 @@ const mesasDisponibles =
 const mesasOcupadas =
     document.getElementById("mesas-ocupadas");
 
+const mesasReservadas =
+    document.getElementById("mesas-reservadas");
+
 
 // ==========================================
 // GRILLA DE MESAS
@@ -102,6 +104,52 @@ const contenedorMesas =
     document.getElementById("panel-mesas");
 
 
+// ==========================================
+// VISTAS DEL PANEL
+// ==========================================
+
+const btnVistaMesas =
+    document.getElementById("btn-vista-mesas");
+
+const btnVistaConfiguracion =
+    document.getElementById("btn-vista-configuracion");
+
+const vistaMesas =
+    document.getElementById("vista-mesas");
+
+const vistaConfiguracion =
+    document.getElementById("vista-configuracion");
+
+const listaConfiguracionMesas =
+    document.getElementById("lista-configuracion-mesas");
+
+const btnVistaCliente =
+    document.getElementById("btn-vista-cliente");
+
+const vistaCliente =
+    document.getElementById("vista-cliente");
+
+// ==========================================
+// VISTA CLIENTE
+// ==========================================
+
+const clienteNombreRestaurante =
+    document.getElementById("cliente-nombre-restaurante");
+
+const clienteDireccionRestaurante =
+    document.getElementById("cliente-direccion-restaurante");
+
+const clienteTelefonoRestaurante =
+    document.getElementById("cliente-telefono-restaurante");
+
+const clienteComoLlegar =
+    document.getElementById("cliente-como-llegar");
+
+const clienteCapacidad =
+    document.getElementById("cliente-capacidad");
+
+const clienteEstadoCapacidad =
+    document.getElementById("cliente-estado-capacidad");
 // ==========================================
 // AGREGAR MESA
 // ==========================================
@@ -203,6 +251,31 @@ function headersPrivados(conJson = false) {
 
 
 // ==========================================
+// LEER RESPUESTA DEL BACKEND
+// ==========================================
+
+async function leerRespuesta(respuesta) {
+
+    // Algunos DELETE devuelven 204 sin JSON
+    if (respuesta.status === 204) {
+        return null;
+    }
+
+    const texto = await respuesta.text();
+
+    if (!texto) {
+        return null;
+    }
+
+    try {
+        return JSON.parse(texto);
+    } catch {
+        return null;
+    }
+}
+
+
+// ==========================================
 // VERIFICAR SESIÓN
 // ==========================================
 
@@ -216,7 +289,8 @@ function verificarSesion(respuesta) {
             "La sesión venció. Iniciá sesión nuevamente."
         );
 
-        window.location.href = "login.html";
+        window.location.href =
+            "login.html";
 
         return false;
     }
@@ -226,7 +300,7 @@ function verificarSesion(respuesta) {
 
 
 // ==========================================
-// NORMALIZAR ESTADO
+// NORMALIZAR ESTADO DE MESA
 // ==========================================
 
 function normalizarEstado(estado) {
@@ -255,6 +329,10 @@ function normalizarEstado(estado) {
     return estado;
 }
 
+function obtenerEstadoMesa(mesa) {
+    return normalizarEstado(mesa?.status ?? mesa?.status_name);
+}
+
 
 // ==========================================
 // FORMATEAR ESTADO
@@ -269,12 +347,84 @@ function formatearEstado(estado) {
         return "Libre";
     }
 
+    if (estado === "reservada") {
+        return "Reservada";
+    }
+
     return "Ocupada";
+}
+// ==========================================
+// CAMBIAR VISTA DEL PANEL
+// ==========================================
+// ==========================================
+// CAMBIAR VISTAS DEL PANEL
+// ==========================================
+
+function desactivarVistas() {
+
+    vistaMesas.classList.add("oculto");
+    vistaCliente.classList.add("oculto");
+    vistaConfiguracion.classList.add("oculto");
+
+    btnVistaMesas.classList.remove("activo");
+    btnVistaCliente.classList.remove("activo");
+    btnVistaConfiguracion.classList.remove("activo");
 }
 
 
+function mostrarVistaMesas() {
+
+    desactivarVistas();
+
+    vistaMesas.classList.remove("oculto");
+
+    btnVistaMesas.classList.add("activo");
+}
+
+
+function mostrarVistaCliente() {
+
+    desactivarVistas();
+
+    vistaCliente.classList.remove("oculto");
+
+    btnVistaCliente.classList.add("activo");
+
+    actualizarVistaCliente();
+}
+
+
+function mostrarVistaConfiguracion() {
+
+    desactivarVistas();
+
+    vistaConfiguracion.classList.remove("oculto");
+
+    btnVistaConfiguracion.classList.add("activo");
+
+    mostrarListaConfiguracionMesas();
+}
+
+
+btnVistaMesas.addEventListener(
+    "click",
+    mostrarVistaMesas
+);
+
+
+btnVistaCliente.addEventListener(
+    "click",
+    mostrarVistaCliente
+);
+
+
+btnVistaConfiguracion.addEventListener(
+    "click",
+    mostrarVistaConfiguracion
+);
+
 // ==========================================
-// CARGAR PANEL
+// CARGAR RESTAURANTE Y MESAS
 // ==========================================
 
 async function cargarRestaurante() {
@@ -282,13 +432,14 @@ async function cargarRestaurante() {
     try {
 
         // ==================================
-        // CARGAR RESTAURANTE
+        // RESTAURANTE
         // ==================================
 
         const respuestaRestaurante =
             await fetch(
                 `${API_BASE}/restaurants/${RESTAURANTE_ID}`,
                 {
+                    method: "GET",
                     headers: headersPrivados()
                 }
             );
@@ -300,24 +451,25 @@ async function cargarRestaurante() {
 
 
         const resultadoRestaurante =
-            await respuestaRestaurante.json();
+            await leerRespuesta(
+                respuestaRestaurante
+            );
 
 
         if (!respuestaRestaurante.ok) {
 
             throw new Error(
-                resultadoRestaurante.message ||
+                resultadoRestaurante?.message ||
                 "No se pudo cargar el restaurante."
             );
         }
 
 
         const restaurante =
-            resultadoRestaurante.data ||
+            resultadoRestaurante?.data ||
             resultadoRestaurante;
 
 
-        // Guardamos los datos actuales
         restauranteActual =
             restaurante;
 
@@ -338,13 +490,14 @@ async function cargarRestaurante() {
 
 
         // ==================================
-        // CARGAR MESAS
+        // MESAS
         // ==================================
 
         const respuestaMesas =
             await fetch(
                 `${API_BASE}/restaurants/${RESTAURANTE_ID}/tables`,
                 {
+                    method: "GET",
                     headers: headersPrivados()
                 }
             );
@@ -356,21 +509,24 @@ async function cargarRestaurante() {
 
 
         const resultadoMesas =
-            await respuestaMesas.json();
+            await leerRespuesta(
+                respuestaMesas
+            );
 
 
         if (!respuestaMesas.ok) {
 
             throw new Error(
-                resultadoMesas.message ||
+                resultadoMesas?.message ||
                 "No se pudieron cargar las mesas."
             );
         }
 
 
         let mesas =
-            resultadoMesas.data ||
-            resultadoMesas;
+            resultadoMesas?.data ||
+            resultadoMesas ||
+            [];
 
 
         if (
@@ -378,33 +534,36 @@ async function cargarRestaurante() {
             !Array.isArray(mesas) &&
             Array.isArray(mesas.tables)
         ) {
-
-            mesas =
-                mesas.tables;
+            mesas = mesas.tables;
         }
 
 
         if (!Array.isArray(mesas)) {
-
             mesas = [];
         }
 
 
-        mesasActuales =
-            mesas;
+        // GUARDAMOS LAS MESAS CARGADAS
+        mesasActuales = mesas;
 
 
         mostrarMesas();
 
         actualizarResumen();
 
+        mostrarListaConfiguracionMesas();
+
+        actualizarVistaCliente();
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "Error al cargar el panel:",
+            error
+        );
 
-        contenedorMesas.innerHTML =
-            "";
+
+        contenedorMesas.innerHTML = "";
 
 
         const mensaje =
@@ -412,6 +571,7 @@ async function cargarRestaurante() {
 
 
         mensaje.textContent =
+            error.message ||
             "No se pudo cargar la información.";
 
 
@@ -435,7 +595,6 @@ function mostrarEstadoRestaurante(abierto) {
 
 
     if (estadoRestaurante) {
-
         estadoRestaurante.style.display =
             "none";
     }
@@ -458,16 +617,294 @@ function mostrarEstadoRestaurante(abierto) {
             "btn-estado abrir-restaurante";
     }
 }
+// ==========================================
+// LISTA DE MESAS - CONFIGURACIÓN
+// ==========================================
 
 
 // ==========================================
-// MOSTRAR MESAS EN LA GRILLA
+// VISTA PREVIA DEL CLIENTE
+// ==========================================
+// ==========================================
+// VISTA PREVIA DEL CLIENTE
 // ==========================================
 
-function mostrarMesas() {
+function actualizarVistaCliente() {
 
-    contenedorMesas.innerHTML =
-        "";
+    if (!restauranteActual) {
+        return;
+    }
+
+
+    // ======================================
+    // DATOS DEL RESTAURANTE
+    // ======================================
+
+    clienteNombreRestaurante.textContent =
+        restauranteActual.name || "Restaurante";
+
+
+    const direccion =
+        restauranteActual.address ||
+        "Dirección no disponible";
+
+
+    clienteDireccionRestaurante.textContent =
+        direccion;
+
+
+    clienteTelefonoRestaurante.textContent =
+        restauranteActual.phone ||
+        "Teléfono no disponible";
+
+
+    // ======================================
+    // GOOGLE MAPS
+    // ======================================
+
+    if (
+        restauranteActual.address &&
+        restauranteActual.address.trim() !== ""
+    ) {
+
+        const ubicacionCompleta = [
+            restauranteActual.address,
+            restauranteActual.city,
+            "Entre Ríos",
+            "Argentina"
+        ]
+            .filter(Boolean)
+            .join(", ");
+
+        const direccionGoogle =
+            encodeURIComponent(
+                ubicacionCompleta
+            );
+
+
+        clienteComoLlegar.href =
+            `https://www.google.com/maps/search/?api=1&query=${direccionGoogle}`;
+
+
+        clienteComoLlegar.classList.remove(
+            "oculto"
+        );
+
+    } else {
+
+        clienteComoLlegar.classList.add(
+            "oculto"
+        );
+    }
+
+
+    // ======================================
+    // RESTAURANTE ABIERTO / CERRADO
+    // ======================================
+
+    const restauranteAbierto =
+        restauranteActual.is_open === true ||
+        restauranteActual.is_open === 1 ||
+        restauranteActual.is_open === "1";
+
+
+    // Reiniciamos clases
+    clienteCapacidad.className =
+        "cliente-capacidad";
+
+
+    // ======================================
+    // CERRADO
+    // ======================================
+
+    if (!restauranteAbierto) {
+
+        clienteCapacidad.classList.add(
+            "cerrado"
+        );
+
+        clienteEstadoCapacidad.textContent =
+            "Cerrado";
+
+        return;
+    }
+
+
+    // ======================================
+    // CALCULAR MESAS DISPONIBLES
+    // ======================================
+
+    const totalMesas =
+        mesasActuales.length;
+
+
+    const mesasLibres =
+        mesasActuales.filter(
+            mesa =>
+                obtenerEstadoMesa(mesa) ===
+                "disponible"
+        ).length;
+
+
+    // ======================================
+    // SIN MESAS / SIN DISPONIBILIDAD
+    // ======================================
+
+    if (
+        totalMesas === 0 ||
+        mesasLibres === 0
+    ) {
+
+        clienteCapacidad.classList.add(
+            "lleno"
+        );
+
+        clienteEstadoCapacidad.textContent =
+            "Lleno";
+
+        return;
+    }
+
+
+    // ======================================
+    // PORCENTAJE DISPONIBLE
+    // ======================================
+
+    const porcentajeLibre =
+        (mesasLibres / totalMesas) * 100;
+
+
+    // ======================================
+    // MÁS DEL 30% LIBRE
+    // ======================================
+
+    if (porcentajeLibre > 30) {
+
+        clienteCapacidad.classList.add(
+            "con-capacidad"
+        );
+
+        clienteEstadoCapacidad.textContent =
+            "Con capacidad";
+
+        return;
+    }
+
+
+    // ======================================
+    // ENTRE 1% Y 30% LIBRE
+    // ======================================
+
+    clienteCapacidad.classList.add(
+        "poca-capacidad"
+    );
+
+    clienteEstadoCapacidad.textContent =
+        "Casi sin capacidad";
+}
+
+
+function mostrarMesasCliente() {
+
+    clienteMesas.innerHTML = "";
+
+
+    if (mesasActuales.length === 0) {
+
+        clienteMesas.innerHTML =
+            `<p class="sin-mesas-panel">
+                No hay mesas registradas.
+            </p>`;
+
+        clienteResumenMesas.textContent =
+            "Sin mesas";
+
+        return;
+    }
+
+
+    let libres = 0;
+
+
+    const mesasOrdenadas =
+        [...mesasActuales].sort(
+            (a, b) =>
+                Number(a.table_number) -
+                Number(b.table_number)
+        );
+
+
+    mesasOrdenadas.forEach(
+        mesa => {
+
+            const estado =
+                obtenerEstadoMesa(mesa);
+
+
+            if (estado === "disponible") {
+                libres++;
+            }
+
+
+            const tarjeta =
+                document.createElement("div");
+
+
+            tarjeta.className =
+                `boton-mesa ${estado}`;
+
+
+            const numero =
+                document.createElement("span");
+
+            numero.className =
+                "numero-mesa-panel";
+
+            numero.textContent =
+                `Mesa ${mesa.table_number}`;
+
+
+            const capacidad =
+                document.createElement("span");
+
+            capacidad.className =
+                "capacidad-mesa-panel";
+
+            capacidad.textContent =
+                `${mesa.chairs} personas`;
+
+
+            tarjeta.appendChild(
+                numero
+            );
+
+            tarjeta.appendChild(
+                capacidad
+            );
+
+
+            clienteMesas.appendChild(
+                tarjeta
+            );
+        }
+    );
+
+
+    clienteResumenMesas.textContent =
+        libres === 1
+            ? "1 mesa libre"
+            : `${libres} mesas libres`;
+}
+
+
+function mostrarListaConfiguracionMesas() {
+
+    if (!listaConfiguracionMesas) {
+        return;
+    }
+
+
+    listaConfiguracionMesas.innerHTML = "";
 
 
     if (mesasActuales.length === 0) {
@@ -475,14 +912,131 @@ function mostrarMesas() {
         const mensaje =
             document.createElement("p");
 
-
         mensaje.className =
             "sin-mesas-panel";
-
 
         mensaje.textContent =
             "Todavía no hay mesas registradas.";
 
+        listaConfiguracionMesas.appendChild(
+            mensaje
+        );
+
+        return;
+    }
+
+
+    const mesasOrdenadas =
+        [...mesasActuales].sort(
+            (a, b) =>
+                Number(a.table_number) -
+                Number(b.table_number)
+        );
+
+
+    mesasOrdenadas.forEach(
+        mesa => {
+
+            const fila =
+                document.createElement("div");
+
+            fila.className =
+                "configuracion-mesa-item";
+
+
+            // INFORMACIÓN
+
+            const informacion =
+                document.createElement("div");
+
+            informacion.className =
+                "configuracion-mesa-info";
+
+
+            const nombre =
+                document.createElement("strong");
+
+            nombre.textContent =
+                `Mesa ${mesa.table_number}`;
+
+
+            const capacidad =
+                document.createElement("span");
+
+            capacidad.textContent =
+                `${mesa.chairs} personas`;
+
+
+            informacion.appendChild(
+                nombre
+            );
+
+            informacion.appendChild(
+                capacidad
+            );
+
+
+            // BOTÓN EDITAR
+
+            const botonEditar =
+                document.createElement("button");
+
+            botonEditar.type =
+                "button";
+
+            botonEditar.className =
+                "btn-secundario";
+
+            botonEditar.textContent =
+                "Editar";
+
+
+            botonEditar.addEventListener(
+                "click",
+                function () {
+
+                    abrirGestionMesa(
+                        mesa.id
+                    );
+                }
+            );
+
+
+            fila.appendChild(
+                informacion
+            );
+
+            fila.appendChild(
+                botonEditar
+            );
+
+
+            listaConfiguracionMesas.appendChild(
+                fila
+            );
+        }
+    );
+}
+
+// ==========================================
+// MOSTRAR MESAS
+// ==========================================
+
+function mostrarMesas() {
+
+    contenedorMesas.innerHTML = "";
+
+
+    if (mesasActuales.length === 0) {
+
+        const mensaje =
+            document.createElement("p");
+
+        mensaje.className =
+            "sin-mesas-panel";
+
+        mensaje.textContent =
+            "Todavía no hay mesas registradas.";
 
         contenedorMesas.appendChild(
             mensaje
@@ -504,13 +1058,8 @@ function mostrarMesas() {
         mesa => {
 
             const estado =
-                normalizarEstado(
-                    mesa.status
-                );
+                obtenerEstadoMesa(mesa);
 
-
-            const disponible =
-                estado === "disponible";
 
 
             const boton =
@@ -523,10 +1072,21 @@ function mostrarMesas() {
                 "button";
 
 
-            boton.className =
-                disponible
-                    ? "boton-mesa disponible"
-                    : "boton-mesa no-disponible";
+            if (estado === "disponible") {
+
+                boton.className =
+                    "boton-mesa disponible";
+
+            } else if (estado === "reservada") {
+
+                boton.className =
+                    "boton-mesa reservada";
+
+            } else {
+
+                boton.className =
+                    "boton-mesa no-disponible";
+            }
 
 
             boton.setAttribute(
@@ -535,95 +1095,46 @@ function mostrarMesas() {
             );
 
 
-            // NÚMERO
-
+            // Número de mesa
             const numero =
                 document.createElement(
                     "span"
                 );
 
-
             numero.className =
                 "numero-mesa-panel";
-
 
             numero.textContent =
                 `Mesa ${mesa.table_number}`;
 
 
-            // CAPACIDAD
-
+            // Capacidad
             const capacidad =
                 document.createElement(
                     "small"
                 );
 
-
             capacidad.className =
                 "capacidad-mesa-panel";
-
 
             capacidad.textContent =
                 `${mesa.chairs} personas`;
 
 
-            boton.appendChild(
-                numero
-            );
+            boton.appendChild(numero);
 
-
-            boton.appendChild(
-                capacidad
-            );
+            boton.appendChild(capacidad);
 
 
             // ==================================
-            // CLICK SIMPLE = CAMBIAR ESTADO
-            // DOBLE CLICK = EDITAR
+            // CLICK = CAMBIAR ESTADO
             // ==================================
-
-            let clickTimer =
-                null;
-
 
             boton.addEventListener(
                 "click",
                 function () {
 
-                    clearTimeout(
-                        clickTimer
-                    );
-
-
-                    clickTimer =
-                        setTimeout(
-                            function () {
-
-                                cambiarEstadoRapido(
-                                    mesa.id
-                                );
-
-                            },
-                            300
-                        );
-                }
-            );
-
-
-            boton.addEventListener(
-                "dblclick",
-                function () {
-
-                    clearTimeout(
-                        clickTimer
-                    );
-
-
-                    clickTimer =
-                        null;
-
-
-                    abrirGestionMesa(
+                    cambiarEstadoRapido(
                         mesa.id
                     );
                 }
@@ -642,9 +1153,7 @@ function mostrarMesas() {
 // CAMBIAR ESTADO RÁPIDO
 // ==========================================
 
-async function cambiarEstadoRapido(
-    mesaId
-) {
+async function cambiarEstadoRapido(mesaId) {
 
     try {
 
@@ -653,7 +1162,6 @@ async function cambiarEstadoRapido(
                 `${API_BASE}/tables/${mesaId}/status`,
                 {
                     method: "PATCH",
-
                     headers:
                         headersPrivados(true)
                 }
@@ -666,13 +1174,15 @@ async function cambiarEstadoRapido(
 
 
         const resultado =
-            await respuesta.json();
+            await leerRespuesta(
+                respuesta
+            );
 
 
         if (!respuesta.ok) {
 
             throw new Error(
-                resultado.message ||
+                resultado?.message ||
                 "No se pudo cambiar el estado de la mesa."
             );
         }
@@ -685,7 +1195,6 @@ async function cambiarEstadoRapido(
 
         console.error(error);
 
-
         alert(
             error.message ||
             "No se pudo cambiar el estado de la mesa."
@@ -695,7 +1204,7 @@ async function cambiarEstadoRapido(
 
 
 // ==========================================
-// ACTUALIZAR RESUMEN
+// RESUMEN DE MESAS
 // ==========================================
 
 function actualizarResumen() {
@@ -703,31 +1212,32 @@ function actualizarResumen() {
     const libres =
         mesasActuales.filter(
             mesa =>
-                normalizarEstado(
-                    mesa.status
-                ) === "disponible"
+                obtenerEstadoMesa(mesa) === "disponible"
         ).length;
-
 
     const ocupadas =
         mesasActuales.filter(
             mesa =>
-                normalizarEstado(
-                    mesa.status
-                ) !== "disponible"
+                obtenerEstadoMesa(mesa) === "ocupada"
         ).length;
 
+    const reservadas =
+        mesasActuales.filter(
+            mesa =>
+                obtenerEstadoMesa(mesa) === "reservada"
+        ).length;
 
     totalMesas.textContent =
         mesasActuales.length;
 
-
     mesasDisponibles.textContent =
         libres;
 
-
     mesasOcupadas.textContent =
         ocupadas;
+
+    mesasReservadas.textContent =
+        reservadas;
 }
 
 
@@ -735,9 +1245,9 @@ function actualizarResumen() {
 // ABRIR GESTIÓN DE MESA
 // ==========================================
 
-function abrirGestionMesa(
-    mesaId
-) {
+function abrirGestionMesa(mesaId) {
+
+    mostrarVistaConfiguracion();
 
     const mesa =
         mesasActuales.find(
@@ -757,40 +1267,34 @@ function abrirGestionMesa(
     }
 
 
-    // Cerramos otros formularios
+    // Cerrar otros formularios
 
-    formularioMesa.classList.add(
+    formularioMesa?.classList.add(
+        "oculto"
+    );
+
+    seccionEditarRestaurante?.classList.add(
         "oculto"
     );
 
 
-    seccionEditarRestaurante.classList.add(
-        "oculto"
-    );
-
-
-    // Cargamos los datos
+    // Cargar datos
 
     gestionarId.value =
         mesa.id;
 
-
     gestionarNumero.value =
         mesa.table_number;
 
-
     gestionarSillas.value =
         mesa.chairs;
-
 
     gestionarDetalle.value =
         mesa.details || "";
 
 
     const estado =
-        normalizarEstado(
-            mesa.status
-        );
+        obtenerEstadoMesa(mesa);
 
 
     gestionarEstado.textContent =
@@ -825,29 +1329,47 @@ function abrirGestionMesa(
 
 
 // ==========================================
-// INDICADOR GESTIÓN DE MESA
+// INDICADOR DE ESTADO
 // ==========================================
 
-function actualizarIndicadorGestion(
-    estado
-) {
+function actualizarIndicadorGestion(estado) {
 
-    const disponible =
-        normalizarEstado(
-            estado
-        ) === "disponible";
-
+    const estadoNormalizado =
+        normalizarEstado(estado);
 
     indicadorEstadoGestion.className =
-        disponible
-            ? "indicador-estado disponible"
-            : "indicador-estado no-disponible";
+        "indicador-estado";
 
+    if (estadoNormalizado === "disponible") {
+
+        indicadorEstadoGestion.classList.add(
+            "disponible"
+        );
+
+        indicadorEstadoGestion.textContent =
+            "Libre";
+
+        return;
+    }
+
+    if (estadoNormalizado === "reservada") {
+
+        indicadorEstadoGestion.classList.add(
+            "reservada"
+        );
+
+        indicadorEstadoGestion.textContent =
+            "Reservada";
+
+        return;
+    }
+
+    indicadorEstadoGestion.classList.add(
+        "no-disponible"
+    );
 
     indicadorEstadoGestion.textContent =
-        disponible
-            ? "Libre"
-            : "Ocupada";
+        "Ocupada";
 }
 
 
@@ -861,16 +1383,11 @@ function cerrarGestion() {
         "oculto"
     );
 
-
     formGestion.reset();
 
+    gestionarId.value = "";
 
-    gestionarId.value =
-        "";
-
-
-    mensajeGestion.textContent =
-        "";
+    mensajeGestion.textContent = "";
 }
 
 
@@ -885,7 +1402,7 @@ btnCancelarGestion.addEventListener(
 
 
 // ==========================================
-// GUARDAR CAMBIOS DE MESA
+// EDITAR MESA
 // ==========================================
 
 formGestion.addEventListener(
@@ -922,6 +1439,8 @@ formGestion.addEventListener(
 
 
         if (
+            !Number.isInteger(datos.table_number) ||
+            !Number.isInteger(datos.chairs) ||
             datos.table_number < 1 ||
             datos.chairs < 1
         ) {
@@ -962,20 +1481,18 @@ formGestion.addEventListener(
 
 
             const resultado =
-                await respuesta.json();
+                await leerRespuesta(
+                    respuesta
+                );
 
 
             if (!respuesta.ok) {
 
                 throw new Error(
-                    resultado.message ||
+                    resultado?.message ||
                     "No se pudo modificar la mesa."
                 );
             }
-
-
-            mensajeGestion.textContent =
-                "Mesa actualizada correctamente.";
 
 
             await cargarRestaurante();
@@ -994,9 +1511,9 @@ formGestion.addEventListener(
 
             console.error(error);
 
-
             mensajeGestion.textContent =
-                error.message;
+                error.message ||
+                "No se pudo modificar la mesa.";
         }
     }
 );
@@ -1030,7 +1547,6 @@ btnCambiarEstadoGestion.addEventListener(
                     `${API_BASE}/tables/${mesaId}/status`,
                     {
                         method: "PATCH",
-
                         headers:
                             headersPrivados(true)
                     }
@@ -1043,13 +1559,15 @@ btnCambiarEstadoGestion.addEventListener(
 
 
             const resultado =
-                await respuesta.json();
+                await leerRespuesta(
+                    respuesta
+                );
 
 
             if (!respuesta.ok) {
 
                 throw new Error(
-                    resultado.message ||
+                    resultado?.message ||
                     "No se pudo cambiar el estado."
                 );
             }
@@ -1069,9 +1587,7 @@ btnCambiarEstadoGestion.addEventListener(
             if (mesaActualizada) {
 
                 const estado =
-                    normalizarEstado(
-                        mesaActualizada.status
-                    );
+                    obtenerEstadoMesa(mesaActualizada);
 
 
                 gestionarEstado.textContent =
@@ -1091,7 +1607,8 @@ btnCambiarEstadoGestion.addEventListener(
             console.error(error);
 
             alert(
-                error.message
+                error.message ||
+                "No se pudo cambiar el estado."
             );
 
 
@@ -1114,7 +1631,6 @@ btnEliminarGestion.addEventListener(
 
         const mesaId =
             gestionarId.value;
-
 
         const numero =
             gestionarNumero.value;
@@ -1147,7 +1663,6 @@ btnEliminarGestion.addEventListener(
                     `${API_BASE}/tables/${mesaId}`,
                     {
                         method: "DELETE",
-
                         headers:
                             headersPrivados()
                     }
@@ -1160,20 +1675,21 @@ btnEliminarGestion.addEventListener(
 
 
             const resultado =
-                await respuesta.json();
+                await leerRespuesta(
+                    respuesta
+                );
 
 
             if (!respuesta.ok) {
 
                 throw new Error(
-                    resultado.message ||
+                    resultado?.message ||
                     "No se pudo eliminar la mesa."
                 );
             }
 
 
             cerrarGestion();
-
 
             await cargarRestaurante();
 
@@ -1182,9 +1698,9 @@ btnEliminarGestion.addEventListener(
 
             console.error(error);
 
-
             alert(
-                error.message
+                error.message ||
+                "No se pudo eliminar la mesa."
             );
 
 
@@ -1208,7 +1724,7 @@ btnAgregarMesa.addEventListener(
         cerrarGestion();
 
 
-        seccionEditarRestaurante.classList.add(
+        seccionEditarRestaurante?.classList.add(
             "oculto"
         );
 
@@ -1245,12 +1761,9 @@ btnCancelarMesa.addEventListener(
             "oculto"
         );
 
-
         formAgregarMesa.reset();
 
-
-        mensajeMesa.textContent =
-            "";
+        mensajeMesa.textContent = "";
     }
 );
 
@@ -1284,6 +1797,8 @@ formAgregarMesa.addEventListener(
 
 
         if (
+            !Number.isInteger(nuevaMesa.table_number) ||
+            !Number.isInteger(nuevaMesa.chairs) ||
             nuevaMesa.table_number < 1 ||
             nuevaMesa.chairs < 1
         ) {
@@ -1324,13 +1839,15 @@ formAgregarMesa.addEventListener(
 
 
             const resultado =
-                await respuesta.json();
+                await leerRespuesta(
+                    respuesta
+                );
 
 
             if (!respuesta.ok) {
 
                 throw new Error(
-                    resultado.message ||
+                    resultado?.message ||
                     "No se pudo crear la mesa."
                 );
             }
@@ -1353,9 +1870,7 @@ formAgregarMesa.addEventListener(
                         "oculto"
                     );
 
-
-                    mensajeMesa.textContent =
-                        "";
+                    mensajeMesa.textContent = "";
 
                 },
                 700
@@ -1366,9 +1881,9 @@ formAgregarMesa.addEventListener(
 
             console.error(error);
 
-
             mensajeMesa.textContent =
-                error.message;
+                error.message ||
+                "No se pudo crear la mesa.";
         }
     }
 );
@@ -1378,76 +1893,73 @@ formAgregarMesa.addEventListener(
 // ABRIR EDICIÓN DEL RESTAURANTE
 // ==========================================
 
-btnEditarRestaurante.addEventListener(
+
+
+btnEditarRestaurante?.addEventListener(
     "click",
     function () {
 
         if (!restauranteActual) {
-
             alert(
                 "Todavía no se cargaron los datos del restaurante."
             );
-
             return;
         }
 
-
-        // Cerramos los otros formularios
-
         cerrarGestion();
 
-
-        formularioMesa.classList.add(
+        formularioMesa?.classList.add(
             "oculto"
         );
 
+        // Cargamos solamente los campos
+        // que realmente existen en el HTML.
 
-        // Cargamos los datos actuales
+        if (editarRestauranteNombre) {
+            editarRestauranteNombre.value =
+                restauranteActual.name || "";
+        }
 
-        editarRestauranteNombre.value =
-            restauranteActual.name || "";
+        if (editarRestauranteDireccion) {
+            editarRestauranteDireccion.value =
+                restauranteActual.address || "";
+        }
 
+        if (editarRestauranteCiudad) {
+            editarRestauranteCiudad.value =
+                restauranteActual.city || "";
+        }
 
-        editarRestauranteDireccion.value =
-            restauranteActual.address || "";
+        if (editarRestauranteTelefono) {
+            editarRestauranteTelefono.value =
+                restauranteActual.phone || "";
+        }
 
+        if (editarRestauranteDescripcion) {
+            editarRestauranteDescripcion.value =
+                restauranteActual.description || "";
+        }
 
-        editarRestauranteCiudad.value =
-            restauranteActual.city || "";
+        if (mensajeEditarRestaurante) {
+            mensajeEditarRestaurante.textContent = "";
+        }
 
-
-        editarRestauranteTelefono.value =
-            restauranteActual.phone || "";
-
-
-        editarRestauranteDescripcion.value =
-            restauranteActual.description || "";
-
-
-        mensajeEditarRestaurante.textContent =
-            "";
-
-
-        // Mostramos formulario
-
-        seccionEditarRestaurante.classList.remove(
+        seccionEditarRestaurante?.classList.remove(
             "oculto"
         );
 
-
-        seccionEditarRestaurante.scrollIntoView({
+        seccionEditarRestaurante?.scrollIntoView({
             behavior: "smooth",
             block: "start"
         });
     }
 );
 
-
 // ==========================================
-// CANCELAR EDICIÓN DEL RESTAURANTE
+// CANCELAR EDICIÓN RESTAURANTE
 // ==========================================
 
-btnCancelarEditarRestaurante.addEventListener(
+btnCancelarEditarRestaurante?.addEventListener(
     "click",
     function () {
 
@@ -1455,21 +1967,18 @@ btnCancelarEditarRestaurante.addEventListener(
             "oculto"
         );
 
-
         formEditarRestaurante.reset();
 
-
-        mensajeEditarRestaurante.textContent =
-            "";
+        mensajeEditarRestaurante.textContent = "";
     }
 );
 
 
 // ==========================================
-// GUARDAR DATOS DEL RESTAURANTE
+// GUARDAR RESTAURANTE
 // ==========================================
 
-formEditarRestaurante.addEventListener(
+formEditarRestaurante?.addEventListener(
     "submit",
     async function (event) {
 
@@ -1479,25 +1988,36 @@ formEditarRestaurante.addEventListener(
         const datos = {
 
             name:
-                editarRestauranteNombre.value.trim(),
+                editarRestauranteNombre
+                    ? editarRestauranteNombre.value.trim()
+                    : restauranteActual?.name || "",
 
             address:
-                editarRestauranteDireccion.value.trim(),
+                editarRestauranteDireccion
+                    ? editarRestauranteDireccion.value.trim()
+                    : restauranteActual?.address || "",
 
             city:
-                editarRestauranteCiudad.value.trim(),
+                editarRestauranteCiudad
+                    ? editarRestauranteCiudad.value.trim()
+                    : restauranteActual?.city || "",
 
             phone:
-                editarRestauranteTelefono.value.trim(),
+                editarRestauranteTelefono
+                    ? editarRestauranteTelefono.value.trim()
+                    : restauranteActual?.phone || "",
 
             description:
-                editarRestauranteDescripcion.value.trim()
+                editarRestauranteDescripcion
+                    ? editarRestauranteDescripcion.value.trim()
+                    : restauranteActual?.description || "",
+
+            is_open:
+                restauranteActual?.is_open === true ||
+                restauranteActual?.is_open === 1 ||
+                restauranteActual?.is_open === "1"
         };
 
-
-        // ==================================
-        // VALIDACIONES
-        // ==================================
 
         if (datos.name === "") {
 
@@ -1512,15 +2032,6 @@ formEditarRestaurante.addEventListener(
 
             mensajeEditarRestaurante.textContent =
                 "Ingresá la dirección.";
-
-            return;
-        }
-
-
-        if (datos.city === "") {
-
-            mensajeEditarRestaurante.textContent =
-                "Ingresá la ciudad.";
 
             return;
         }
@@ -1555,13 +2066,15 @@ formEditarRestaurante.addEventListener(
 
 
             const resultado =
-                await respuesta.json();
+                await leerRespuesta(
+                    respuesta
+                );
 
 
             if (!respuesta.ok) {
 
                 throw new Error(
-                    resultado.message ||
+                    resultado?.message ||
                     "No se pudieron actualizar los datos."
                 );
             }
@@ -1571,12 +2084,8 @@ formEditarRestaurante.addEventListener(
                 "Datos actualizados correctamente.";
 
 
-            // Recargamos restaurante y mesas
             await cargarRestaurante();
 
-
-            // Cerramos el formulario después
-            // de mostrar el mensaje brevemente.
 
             setTimeout(
                 function () {
@@ -1584,7 +2093,6 @@ formEditarRestaurante.addEventListener(
                     seccionEditarRestaurante.classList.add(
                         "oculto"
                     );
-
 
                     mensajeEditarRestaurante.textContent =
                         "";
@@ -1598,7 +2106,6 @@ formEditarRestaurante.addEventListener(
 
             console.error(error);
 
-
             mensajeEditarRestaurante.textContent =
                 error.message ||
                 "No se pudieron actualizar los datos.";
@@ -1609,11 +2116,17 @@ formEditarRestaurante.addEventListener(
 
 // ==========================================
 // ABRIR / CERRAR RESTAURANTE
+// BACKEND INDI: SE HACE CON PUT
 // ==========================================
 
 btnEstadoRestaurante.addEventListener(
     "click",
     async function () {
+
+        if (!restauranteActual) {
+            return;
+        }
+
 
         try {
 
@@ -1621,14 +2134,44 @@ btnEstadoRestaurante.addEventListener(
                 true;
 
 
+            const estaAbierto =
+                restauranteActual.is_open === true ||
+                restauranteActual.is_open === 1 ||
+                restauranteActual.is_open === "1";
+
+
+            const datos = {
+
+                name:
+                    restauranteActual.name,
+
+                address:
+                    restauranteActual.address,
+
+                phone:
+                    restauranteActual.phone || "",
+
+                description:
+                    restauranteActual.description || "",
+
+                is_open:
+                    !estaAbierto
+            };
+
+
             const respuesta =
                 await fetch(
-                    `${API_BASE}/restaurants/${RESTAURANTE_ID}/status`,
+                    `${API_BASE}/restaurants/${RESTAURANTE_ID}`,
                     {
-                        method: "PATCH",
+                        method: "PUT",
 
                         headers:
-                            headersPrivados(true)
+                            headersPrivados(true),
+
+                        body:
+                            JSON.stringify(
+                                datos
+                            )
                     }
                 );
 
@@ -1639,13 +2182,15 @@ btnEstadoRestaurante.addEventListener(
 
 
             const resultado =
-                await respuesta.json();
+                await leerRespuesta(
+                    respuesta
+                );
 
 
             if (!respuesta.ok) {
 
                 throw new Error(
-                    resultado.message ||
+                    resultado?.message ||
                     "No se pudo cambiar el estado del restaurante."
                 );
             }
@@ -1658,9 +2203,9 @@ btnEstadoRestaurante.addEventListener(
 
             console.error(error);
 
-
             alert(
-                error.message
+                error.message ||
+                "No se pudo cambiar el estado del restaurante."
             );
 
 

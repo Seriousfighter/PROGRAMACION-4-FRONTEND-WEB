@@ -1,9 +1,10 @@
 // ==========================================
 // MESSAPI - VISTA PÚBLICA
+// BACKEND: INDI
 // ==========================================
 
 const API_URL =
-    "http://localhost/PROGRAMACION-4-BACKEND-PABLO/messapi/api/public/restaurants";
+    "http://localhost/PROGRAMACION-4-BACKEND/messapi/api/public/restaurants";
 
 
 // ==========================================
@@ -59,54 +60,16 @@ function estaAbierto(restaurante) {
 
 
 // ==========================================
-// VERIFICAR MESA LIBRE
-// ==========================================
-
-function estaLibre(mesa) {
-
-    if (!mesa.status) {
-        return false;
-    }
-
-    const estado =
-        String(mesa.status)
-            .toLowerCase()
-            .trim();
-
-    return (
-        estado === "disponible" ||
-        estado === "available" ||
-        estado === "libre"
-    );
-}
-
-
-// ==========================================
-// OBTENER MESAS
-// ==========================================
-
-function obtenerMesas(restaurante) {
-
-    return Array.isArray(restaurante.tables)
-        ? restaurante.tables
-        : [];
-}
-
-
-// ==========================================
 // CALCULAR ESTADO DE CAPACIDAD
 // ==========================================
 
 function calcularCapacidad(restaurante) {
 
-    const mesas =
-        obtenerMesas(restaurante);
-
     const totalMesas =
-        mesas.length;
+        Number(restaurante.total_tables) || 0;
 
     const mesasLibres =
-        mesas.filter(estaLibre).length;
+        Number(restaurante.available_tables) || 0;
 
 
     // SIN MESAS CARGADAS
@@ -167,24 +130,23 @@ function calcularCapacidad(restaurante) {
 
 function crearUrlMaps(restaurante) {
 
-    const direccion =
-        restaurante.address || "";
-
-    const ciudad =
-        restaurante.city || "";
-
-    const ubicacion =
-        [direccion, ciudad]
-            .filter(Boolean)
-            .join(", ");
-
-    if (!ubicacion) {
+    if (!restaurante || !restaurante.address) {
         return "";
     }
 
+    const ubicacionCompleta = [
+        restaurante.address,
+        "Crespo",
+        "Entre Ríos",
+        "Argentina"
+    ].join(", ");
+
+    const direccionGoogle =
+        encodeURIComponent(ubicacionCompleta);
+
     return (
         "https://www.google.com/maps/search/?api=1&query=" +
-        encodeURIComponent(ubicacion)
+        direccionGoogle
     );
 }
 
@@ -282,16 +244,12 @@ function mostrarRestaurantes() {
                 return false;
             }
 
+            // MOSTRAR RESTAURANTES ABIERTOS Y CERRADOS
 
-            // SOLO MOSTRAR RESTAURANTES ABIERTOS
-
-            if (!estaAbierto(restaurante)) {
-                return false;
-            }
+            return true;
 
 
-            // IMPORTANTE:
-            // AHORA MOSTRAMOS TAMBIÉN LOS LLENOS
+            // MOSTRAMOS TAMBIÉN LOS RESTAURANTES LLENOS
 
             return true;
         });
@@ -307,12 +265,12 @@ function mostrarRestaurantes() {
     if (restaurantesFiltrados.length === 1) {
 
         cantidadResultados.textContent =
-            "1 restaurante abierto";
+            "1 restaurante";
 
     } else {
 
         cantidadResultados.textContent =
-            `${restaurantesFiltrados.length} restaurantes abiertos`;
+            `${restaurantesFiltrados.length} restaurantes`;
     }
 
 
@@ -368,10 +326,22 @@ function crearTarjetaRestaurante(restaurante) {
         document.createElement("article");
 
 
-    // CALCULAR CAPACIDAD
+    // VERIFICAR SI EL RESTAURANTE ESTÁ ABIERTO
+
+    const abierto =
+        estaAbierto(restaurante);
+
+
+    // CALCULAR ESTADO
 
     const capacidad =
-        calcularCapacidad(restaurante);
+        abierto
+            ? calcularCapacidad(restaurante)
+            : {
+                estado: "cerrado",
+                texto: "Cerrado",
+                clase: "restaurante-cerrado"
+            };
 
 
     // CLASES DE LA TARJETA
@@ -414,7 +384,6 @@ function crearTarjetaRestaurante(restaurante) {
                 ${nombre}
             </h3>
 
-
             <p class="publico-direccion">
 
                 <span class="publico-icono">
@@ -425,50 +394,48 @@ function crearTarjetaRestaurante(restaurante) {
 
             </p>
 
-
             ${telefono
             ? `
-                        <p class="publico-telefono">
+                    <p class="publico-telefono">
 
-                            <span class="publico-icono">
-                                ☎
-                            </span>
+                        <span class="publico-icono">
+                            ☎
+                        </span>
 
-                            <a href="${telefonoUrl}">
-                                ${telefono}
-                            </a>
+                        <a href="${telefonoUrl}">
+                            ${telefono}
+                        </a>
 
-                        </p>
-                    `
+                    </p>
+                `
             : `
-                        <p class="publico-telefono publico-dato-no-disponible">
+                    <p class="publico-telefono publico-dato-no-disponible">
 
-                            <span class="publico-icono">
-                                ☎
-                            </span>
+                        <span class="publico-icono">
+                            ☎
+                        </span>
 
-                            Teléfono no informado
+                        Teléfono no informado
 
-                        </p>
-                    `
+                    </p>
+                `
         }
-
 
             ${mapsUrl
             ? `
-                        <a
-                            href="${mapsUrl}"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="publico-como-llegar"
-                        >
-                            <span>
-                                📍
-                            </span>
+                    <a
+                        href="${mapsUrl}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="publico-como-llegar"
+                    >
+                        <span>
+                            📍
+                        </span>
 
-                            Cómo llegar
-                        </a>
-                    `
+                        Cómo llegar
+                    </a>
+                `
             : ""
         }
 

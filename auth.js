@@ -1,9 +1,10 @@
 // ==========================================
 // MESSAPI - AUTENTICACIÓN
+// BACKEND: INDI
 // ==========================================
 
 const API_URL =
-    "http://localhost/PROGRAMACION-4-BACKEND-PABLO/messapi";
+    "http://localhost/PROGRAMACION-4-BACKEND/messapi/api";
 
 
 // ==========================================
@@ -21,7 +22,6 @@ if (loginForm) {
 
             event.preventDefault();
 
-            // Obtener datos ingresados
             const email =
                 document
                     .getElementById("email")
@@ -35,15 +35,17 @@ if (loginForm) {
 
             try {
 
-                // Enviar login al backend
+                // ==========================================
+                // 1. INICIAR SESIÓN
+                // ==========================================
+
                 const response = await fetch(
-                    `${API_URL}/api/login`,
+                    `${API_URL}/login`,
                     {
                         method: "POST",
 
                         headers: {
-                            "Content-Type":
-                                "application/json"
+                            "Content-Type": "application/json"
                         },
 
                         body: JSON.stringify({
@@ -57,14 +59,7 @@ if (loginForm) {
                     await response.json();
 
 
-                // ==========================================
-                // VERIFICAR RESPUESTA
-                // ==========================================
-
-                if (
-                    !response.ok ||
-                    !resultado.success
-                ) {
+                if (!response.ok) {
 
                     alert(
                         resultado.message ||
@@ -76,36 +71,116 @@ if (loginForm) {
 
 
                 // ==========================================
-                // GUARDAR DATOS DE LA SESIÓN
+                // 2. OBTENER TOKEN Y USUARIO
+                // ==========================================
+
+                const token =
+                    resultado.token;
+
+                const usuario =
+                    resultado.user;
+
+
+                if (!token || !usuario) {
+
+                    alert(
+                        "La respuesta del servidor no es válida."
+                    );
+
+                    return;
+                }
+
+
+                // ==========================================
+                // 3. BUSCAR RESTAURANTES DEL USUARIO
+                // ==========================================
+
+                const restaurantesResponse =
+                    await fetch(
+                        `${API_URL}/restaurants`,
+                        {
+                            method: "GET",
+
+                            headers: {
+                                "Authorization":
+                                    `Bearer ${token}`
+                            }
+                        }
+                    );
+
+
+                const restaurantesResultado =
+                    await restaurantesResponse.json();
+
+
+                if (!restaurantesResponse.ok) {
+
+                    alert(
+                        restaurantesResultado.message ||
+                        "No se pudo obtener el restaurante."
+                    );
+
+                    return;
+                }
+
+
+                const restaurantes =
+                    restaurantesResultado.data || [];
+
+
+                if (
+                    !Array.isArray(restaurantes) ||
+                    restaurantes.length === 0
+                ) {
+
+                    alert(
+                        "Este usuario no tiene un restaurante registrado."
+                    );
+
+                    return;
+                }
+
+
+                // ==========================================
+                // 4. TOMAR RESTAURANTE
+                // ==========================================
+
+                const restaurante =
+                    restaurantes[0];
+
+
+                // ==========================================
+                // 5. GUARDAR SESIÓN
                 // ==========================================
 
                 sessionStorage.setItem(
                     "token",
-                    resultado.data.token
+                    token
                 );
 
                 sessionStorage.setItem(
                     "user_id",
-                    resultado.data.user_id
+                    usuario.id
                 );
 
                 sessionStorage.setItem(
                     "restaurant_id",
-                    resultado.data.restaurant_id
+                    restaurante.id
                 );
 
                 sessionStorage.setItem(
                     "restaurant_name",
-                    resultado.data.restaurant_name
+                    restaurante.name
                 );
 
 
                 // ==========================================
-                // ENTRAR AL PANEL
+                // 6. ENTRAR AL PANEL
                 // ==========================================
 
                 window.location.href =
                     "panel.html";
+
 
             } catch (error) {
 
@@ -118,14 +193,13 @@ if (loginForm) {
                     "No se pudo conectar con el servidor."
                 );
             }
-
         }
     );
 }
 
 
 // ==========================================
-// REGISTRO DE RESTAURANTE
+// REGISTRO
 // ==========================================
 
 const registroForm =
@@ -141,7 +215,7 @@ if (registroForm) {
 
 
             // ==========================================
-            // OBTENER DATOS DEL FORMULARIO
+            // DATOS DEL RESTAURANTE
             // ==========================================
 
             const restaurantName =
@@ -156,12 +230,6 @@ if (registroForm) {
                     .value
                     .trim();
 
-            const city =
-                document
-                    .getElementById("ciudad")
-                    .value
-                    .trim();
-
             const phone =
                 document
                     .getElementById("telefono")
@@ -173,6 +241,11 @@ if (registroForm) {
                     .getElementById("descripcion")
                     .value
                     .trim();
+
+
+            // ==========================================
+            // DATOS DEL USUARIO
+            // ==========================================
 
             const email =
                 document
@@ -192,7 +265,7 @@ if (registroForm) {
 
 
             // ==========================================
-            // VALIDAR CONTRASEÑAS
+            // VALIDACIONES
             // ==========================================
 
             if (password !== repetirPassword) {
@@ -215,65 +288,58 @@ if (registroForm) {
             }
 
 
-            // ==========================================
-            // ENVIAR REGISTRO AL BACKEND
-            // ==========================================
-
             try {
 
-                const response = await fetch(
-                    `${API_URL}/api/register`,
-                    {
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body: JSON.stringify({
-
-                            restaurant_name:
-                                restaurantName,
-
-                            address:
-                                address,
-
-                            city:
-                                city,
-
-                            phone:
-                                phone,
-
-                            description:
-                                description,
-
-                            email:
-                                email,
-
-                            password:
-                                password
-                        })
-                    }
-                );
-
-
-                const resultado =
-                    await response.json();
-
-
                 // ==========================================
-                // VERIFICAR RESPUESTA
+                // 1. CREAR USUARIO
                 // ==========================================
 
-                if (
-                    !response.ok ||
-                    !resultado.success
-                ) {
+                const registroResponse =
+                    await fetch(
+                        `${API_URL}/register`,
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+                                name: restaurantName,
+                                email: email,
+                                password: password
+                            })
+                        }
+                    );
+
+
+                const registroResultado =
+                    await registroResponse.json();
+
+
+                if (!registroResponse.ok) {
 
                     alert(
-                        resultado.message ||
-                        "No se pudo registrar el restaurante."
+                        registroResultado.message ||
+                        "No se pudo realizar el registro."
+                    );
+
+                    return;
+                }
+
+
+                const token =
+                    registroResultado.token;
+
+                const usuario =
+                    registroResultado.user;
+
+
+                if (!token || !usuario) {
+
+                    alert(
+                        "El servidor no devolvió los datos necesarios."
                     );
 
                     return;
@@ -281,7 +347,51 @@ if (registroForm) {
 
 
                 // ==========================================
-                // REGISTRO CORRECTO
+                // 2. CREAR RESTAURANTE
+                // ==========================================
+
+                const restauranteResponse =
+                    await fetch(
+                        `${API_URL}/restaurants`,
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json",
+
+                                "Authorization":
+                                    `Bearer ${token}`
+                            },
+
+                            body: JSON.stringify({
+                                name: restaurantName,
+                                address: address,
+                                phone: phone,
+                                description: description,
+                                is_open: true
+                            })
+                        }
+                    );
+
+
+                const restauranteResultado =
+                    await restauranteResponse.json();
+
+
+                if (!restauranteResponse.ok) {
+
+                    alert(
+                        restauranteResultado.message ||
+                        "El usuario fue creado, pero no se pudo crear el restaurante."
+                    );
+
+                    return;
+                }
+
+
+                // ==========================================
+                // 3. REGISTRO COMPLETADO
                 // ==========================================
 
                 alert(
@@ -289,7 +399,10 @@ if (registroForm) {
                 );
 
 
-                // Ir al login
+                // ==========================================
+                // 4. IR AL LOGIN
+                // ==========================================
+
                 window.location.href =
                     "login.html";
 
@@ -297,7 +410,7 @@ if (registroForm) {
             } catch (error) {
 
                 console.error(
-                    "Error al registrar restaurante:",
+                    "Error al registrar:",
                     error
                 );
 
@@ -305,7 +418,6 @@ if (registroForm) {
                     "No se pudo conectar con el servidor."
                 );
             }
-
         }
     );
 }

@@ -12,9 +12,9 @@
 
 <body>
 
-    <!-- =====================================
+    <!-- ==========================================
          ENCABEZADO
-    ====================================== -->
+    =========================================== -->
 
     <header class="panel-encabezado">
 
@@ -22,7 +22,10 @@
 
             <div>
                 <h1>Panel del restaurante</h1>
-                <p>Administrá la disponibilidad de tus mesas.</p>
+
+                <p>
+                    Administrá tu restaurante y tus mesas.
+                </p>
             </div>
 
             <button type="button" class="btn-salir" onclick="cerrarSesion()">
@@ -34,379 +37,293 @@
     </header>
 
 
+    <!-- ==========================================
+         NAVEGACIÓN DEL PANEL
+    =========================================== -->
+
+    <nav class="panel-navegacion">
+
+        <div class="contenedor panel-navegacion-contenido">
+
+            <button type="button" id="btn-vista-mesas" class="panel-nav-boton activo">
+                Mesas
+            </button>
+
+            <button type="button" id="btn-vista-cliente" class="panel-nav-boton">
+                Cliente
+            </button>
+
+            <button type="button" id="btn-vista-configuracion" class="panel-nav-boton">
+                Configuración
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ==========================================
+         CONTENIDO
+    =========================================== -->
+
     <main class="contenedor panel-contenido">
 
 
-        <!-- =====================================
-             INFORMACIÓN DEL RESTAURANTE
-        ====================================== -->
+        <!-- ==========================================
+             VISTA: MESAS
+        =========================================== -->
 
-        <section class="panel-restaurante">
+        <section id="vista-mesas" class="panel-vista">
 
-            <div class="panel-restaurante-info">
 
-                <div>
+            <!-- ======================================
+                 RESUMEN
+            ======================================= -->
 
-                    <div class="restaurante-identidad">
+            <section class="panel-resumen">
 
-                        <span class="restaurante-etiqueta">
-                            RESTAURANTE
-                        </span>
+                <div class="resumen-caja">
 
-                        <h2 id="nombre-restaurante">
-                            Cargando...
+                    <span>
+                        Mesas totales
+                    </span>
+
+                    <strong id="total-mesas">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="resumen-caja">
+
+                    <span>
+                        Libres
+                    </span>
+
+                    <strong id="mesas-disponibles">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="resumen-caja">
+
+                    <span>
+                        Ocupadas
+                    </span>
+
+                    <strong id="mesas-ocupadas">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="resumen-caja">
+
+                    <span>
+                        Reservadas
+                    </span>
+
+                    <strong id="mesas-reservadas">
+                        0
+                    </strong>
+
+                </div>
+
+            </section>
+
+
+            <!-- ======================================
+                 ESTADO DE MESAS
+            ======================================= -->
+
+            <section class="seccion-estado-mesas">
+
+                <div class="panel-titulo">
+
+                    <div>
+
+                        <h2>
+                            Estado de mesas
                         </h2>
 
-                        <p class="restaurante-direccion">
-                            <span>📍</span>
-                            <span id="direccion-restaurante"></span>
+                        <p>
+                            Tocá una mesa para cambiar su estado.
                         </p>
 
                     </div>
 
-                    <button type="button" id="btn-editar-restaurante" class="btn-secundario">
-                        Editar datos
-                    </button>
+                </div>
+
+
+                <!-- REFERENCIAS -->
+
+                <div class="referencias-mesas">
+
+                    <div class="referencia">
+
+                        <span class="referencia-color disponible"></span>
+
+                        <span>
+                            Libre
+                        </span>
+
+                    </div>
+
+
+                    <div class="referencia">
+
+                        <span class="referencia-color no-disponible"></span>
+
+                        <span>
+                            Ocupada
+                        </span>
+
+                    </div>
+
+
+                    <div class="referencia">
+
+                        <span class="referencia-color reservada"></span>
+
+                        <span>
+                            Reservada
+                        </span>
+
+                    </div>
 
                 </div>
 
 
-                <div class="estado-local">
+                <!-- GRILLA DE MESAS -->
 
-                    <p>
-                        Estado del restaurante
-                    </p>
+                <div id="panel-mesas" class="grilla-mesas">
 
-                    <span id="estado-restaurante-panel">
-                        Cargando...
-                    </span>
-
-                    <button type="button" id="btn-estado-restaurante" class="btn-secundario">
-                        Cambiar estado
-                    </button>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =====================================
-             EDITAR DATOS DEL RESTAURANTE
-        ====================================== -->
-
-        <section id="editar-restaurante" class="formulario-mesa oculto">
-
-            <h2>
-                Editar datos del restaurante
-            </h2>
-
-            <form id="form-editar-restaurante">
-
-
-                <!-- NOMBRE -->
-
-                <div class="campo">
-
-                    <label for="editar-restaurante-nombre">
-                        Nombre
-                    </label>
-
-                    <input type="text" id="editar-restaurante-nombre" required>
-
-                </div>
-
-
-                <!-- DIRECCIÓN -->
-
-                <div class="campo">
-
-                    <label for="editar-restaurante-direccion">
-                        Dirección
-                    </label>
-
-                    <input type="text" id="editar-restaurante-direccion" required>
-
-                </div>
-
-
-                <!-- CIUDAD -->
-
-                <div class="campo">
-
-                    <label for="editar-restaurante-ciudad">
-                        Ciudad
-                    </label>
-
-                    <input type="text" id="editar-restaurante-ciudad" required>
-
-                </div>
-
-
-                <!-- TELÉFONO -->
-
-                <div class="campo">
-
-                    <label for="editar-restaurante-telefono">
-                        Teléfono
-                    </label>
-
-                    <input type="text" id="editar-restaurante-telefono">
-
-                </div>
-
-
-                <!-- DESCRIPCIÓN -->
-
-                <div class="campo">
-
-                    <label for="editar-restaurante-descripcion">
-                        Descripción
-                    </label>
-
-                    <input type="text" id="editar-restaurante-descripcion" placeholder="Ej: Restaurante familiar">
-
-                </div>
-
-
-                <!-- BOTONES -->
-
-                <div class="acciones-formulario">
-
-                    <button type="submit" class="btn-principal">
-                        Guardar cambios
-                    </button>
-
-                    <button type="button" id="btn-cancelar-editar-restaurante" class="btn-secundario">
-                        Cancelar
-                    </button>
-
-                </div>
-
-
-                <p id="mensaje-editar-restaurante"></p>
-
-            </form>
-
-        </section>
-
-
-        <!-- =====================================
-             RESUMEN
-        ====================================== -->
-
-        <section class="panel-resumen">
-
-            <!-- TOTAL -->
-
-            <div class="resumen-caja">
-
-                <span>
-                    Mesas totales
-                </span>
-
-                <strong id="total-mesas">
-                    0
-                </strong>
-
-            </div>
-
-
-            <!-- LIBRES -->
-
-            <div class="resumen-caja">
-
-                <span>
-                    Libres
-                </span>
-
-                <strong id="mesas-disponibles">
-                    0
-                </strong>
-
-            </div>
-
-
-            <!-- OCUPADAS -->
-
-            <div class="resumen-caja">
-
-                <span>
-                    Ocupadas
-                </span>
-
-                <strong id="mesas-ocupadas">
-                    0
-                </strong>
-
-            </div>
-
-        </section>
-
-
-        <!-- =====================================
-             ESTADO DE MESAS
-        ====================================== -->
-
-        <section class="seccion-estado-mesas">
-
-            <div class="panel-titulo">
-
-                <div>
-
-                    <h2>
-                        Estado de mesas
-                    </h2>
-
-                    <p>
-                        Un clic cambia el estado. Doble clic permite editar la mesa.
+                    <p class="cargando-mesas">
+                        Cargando mesas...
                     </p>
 
                 </div>
 
+            </section>
 
-                <button type="button" id="btn-agregar-mesa" class="btn-principal">
-                    + Agregar mesa
-                </button>
+        </section>
+        <!-- =====================================================
+     VISTA CLIENTE
+===================================================== -->
 
-            </div>
+        <!-- =====================================================
+     VISTA CLIENTE
+===================================================== -->
 
+        <section id="vista-cliente" class="panel-vista oculto">
 
-            <!-- =====================================
-                 REFERENCIAS
-            ====================================== -->
+            <div class="cliente-encabezado">
 
-            <div class="referencias-mesas">
+                <p class="panel-etiqueta">
+                    VISTA DEL CLIENTE
+                </p>
 
-                <!-- LIBRE -->
+                <h2>
+                    Así ven tu restaurante
+                </h2>
 
-                <div class="referencia">
-
-                    <span class="referencia-color disponible"></span>
-
-                    <span>
-                        Libre
-                    </span>
-
-                </div>
-
-
-                <!-- OCUPADA -->
-
-                <div class="referencia">
-
-                    <span class="referencia-color no-disponible"></span>
-
-                    <span>
-                        Ocupada
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- =====================================
-                 GRILLA DE MESAS
-            ====================================== -->
-
-            <div id="panel-mesas" class="grilla-mesas">
-
-                <p class="cargando-mesas">
-                    Cargando mesas...
+                <p>
+                    Esta vista te permite comprobar cómo aparece
+                    tu restaurante para los clientes.
                 </p>
 
             </div>
 
-        </section>
+
+            <!-- TARJETA DEL RESTAURANTE -->
+
+            <article class="cliente-tarjeta-publica">
+
+                <!-- INFORMACIÓN -->
+
+                <div class="cliente-tarjeta-info">
+
+                    <h2 id="cliente-nombre-restaurante">
+                        Restaurante
+                    </h2>
 
 
-        <!-- =====================================
-             AGREGAR MESA
-        ====================================== -->
+                    <p class="cliente-dato">
 
-        <section id="formulario-mesa" class="formulario-mesa oculto">
+                        <span>📍</span>
 
-            <h2>
-                Agregar mesa
-            </h2>
+                        <span id="cliente-direccion-restaurante">
+                            Dirección
+                        </span>
 
-
-            <form id="form-agregar-mesa">
+                    </p>
 
 
-                <!-- NÚMERO -->
+                    <p class="cliente-dato">
 
-                <div class="campo">
+                        <span>☎</span>
 
-                    <label for="numero-mesa">
-                        Número de mesa
-                    </label>
+                        <span id="cliente-telefono-restaurante">
+                            Teléfono
+                        </span>
 
-                    <input type="number" id="numero-mesa" min="1" required>
-
-                </div>
+                    </p>
 
 
-                <!-- CAPACIDAD -->
+                    <a id="cliente-como-llegar" href="#" target="_blank" rel="noopener noreferrer"
+                        class="cliente-como-llegar">
 
-                <div class="campo">
+                        <span>📍</span>
 
-                    <label for="cantidad-sillas">
-                        Cantidad de personas
-                    </label>
+                        Cómo llegar
 
-                    <input type="number" id="cantidad-sillas" min="1" required>
-
-                </div>
-
-
-                <!-- DETALLE -->
-
-                <div class="campo">
-
-                    <label for="detalle-mesa">
-                        Detalle
-                    </label>
-
-                    <input type="text" id="detalle-mesa" placeholder="Ej: Cerca de la ventana">
+                    </a>
 
                 </div>
 
 
-                <!-- BOTONES -->
+                <!-- ESTADO -->
 
-                <div class="acciones-formulario">
+                <div id="cliente-capacidad" class="cliente-capacidad con-capacidad">
 
-                    <button type="submit" class="btn-principal">
-                        Guardar mesa
-                    </button>
+                    <span id="cliente-punto-capacidad" class="cliente-punto-capacidad">
+                    </span>
 
+                    <div>
 
-                    <button type="button" id="btn-cancelar-mesa" class="btn-secundario">
-                        Cancelar
-                    </button>
+                        <small>
+                            Estado actual
+                        </small>
+
+                        <strong id="cliente-estado-capacidad">
+                            Con capacidad
+                        </strong>
+
+                    </div>
 
                 </div>
 
-
-                <p id="mensaje-mesa"></p>
-
-            </form>
+            </article>
 
         </section>
 
 
-        <!-- =====================================
-             GESTIONAR MESA
-        ====================================== -->
+        <!-- ==========================================
+             VISTA: CONFIGURACIÓN
+        =========================================== -->
 
-        <section id="gestionar-mesa" class="formulario-mesa gestionar-mesa oculto">
+        <section id="vista-configuracion" class="panel-vista oculto">
 
-            <!-- CABECERA -->
 
-            <div class="cabecera-gestion-mesa">
+            <!-- ======================================
+                 TÍTULO CONFIGURACIÓN
+            ======================================= -->
+
+            <div class="configuracion-encabezado">
 
                 <div>
 
@@ -414,121 +331,454 @@
                         Administración
                     </p>
 
-                    <h2 id="titulo-gestionar-mesa">
-                        Gestionar mesa
+                    <h2>
+                        Configuración
                     </h2>
 
-                </div>
-
-
-                <span id="indicador-estado-gestion" class="indicador-estado">
-                    Estado
-                </span>
-
-            </div>
-
-
-            <form id="form-gestionar-mesa">
-
-
-                <!-- ID OCULTO -->
-
-                <input type="hidden" id="gestionar-mesa-id">
-
-
-                <!-- NÚMERO -->
-
-                <div class="campo">
-
-                    <label for="gestionar-numero">
-                        Número de mesa
-                    </label>
-
-                    <input type="number" id="gestionar-numero" min="1" required>
-
-                </div>
-
-
-                <!-- CAPACIDAD -->
-
-                <div class="campo">
-
-                    <label for="gestionar-sillas">
-                        Cantidad de personas
-                    </label>
-
-                    <input type="number" id="gestionar-sillas" min="1" required>
-
-                </div>
-
-
-                <!-- DETALLE -->
-
-                <div class="campo">
-
-                    <label for="gestionar-detalle">
-                        Detalle
-                    </label>
-
-                    <input type="text" id="gestionar-detalle" placeholder="Ej: Sector principal">
-
-                </div>
-
-
-                <!-- ESTADO -->
-
-                <div class="campo">
-
-                    <label>
-                        Estado actual
-                    </label>
-
-                    <p id="gestionar-estado">
-                        -
+                    <p>
+                        Modificá los datos del restaurante
+                        y administrá sus mesas.
                     </p>
 
                 </div>
 
-
-                <!-- ACCIONES -->
-
-                <div class="acciones-gestionar">
-
-                    <button type="button" id="btn-cambiar-estado-gestion" class="btn-cambiar-disponibilidad">
-                        Cambiar estado
-                    </button>
+            </div>
 
 
-                    <button type="submit" class="btn-principal">
-                        Guardar cambios
-                    </button>
+            <!-- ======================================
+                 RESTAURANTE
+            ======================================= -->
+
+            <section class="panel-restaurante">
+
+                <div class="panel-restaurante-info">
+
+                    <div>
+
+                        <div class="restaurante-identidad">
+
+                            <span class="restaurante-etiqueta">
+                                RESTAURANTE
+                            </span>
+
+                            <h2 id="nombre-restaurante">
+                                Cargando...
+                            </h2>
+
+                            <p class="restaurante-direccion">
+
+                                <span>
+                                    📍
+                                </span>
+
+                                <span id="direccion-restaurante">
+                                </span>
+
+                            </p>
+
+                        </div>
 
 
-                    <button type="button" id="btn-eliminar-gestion" class="btn-eliminar-gestion">
-                        Eliminar mesa
-                    </button>
+                        <button type="button" id="btn-editar-restaurante" class="btn-secundario">
+                            Editar datos
+                        </button>
+
+                    </div>
 
 
-                    <button type="button" id="btn-cancelar-gestion" class="btn-secundario">
-                        Cancelar
+                    <!-- ABRIR / CERRAR -->
+
+                    <div class="estado-local">
+
+                        <p>
+                            Estado del restaurante
+                        </p>
+
+                        <span id="estado-restaurante-panel">
+                            Cargando...
+                        </span>
+
+                        <button type="button" id="btn-estado-restaurante" class="btn-secundario">
+                            Cambiar estado
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ======================================
+                 EDITAR RESTAURANTE
+            ======================================= -->
+
+            <section id="editar-restaurante" class="formulario-mesa oculto">
+
+                <h2>
+                    Editar datos del restaurante
+                </h2>
+
+
+                <form id="form-editar-restaurante">
+
+
+                    <!-- NOMBRE -->
+
+                    <div class="campo">
+
+                        <label for="editar-restaurante-nombre">
+                            Nombre
+                        </label>
+
+                        <input type="text" id="editar-restaurante-nombre" required>
+
+                    </div>
+
+
+                    <!-- DIRECCIÓN -->
+
+                    <div class="campo">
+                        <label for="editar-direccion-restaurante">
+                            Dirección completa
+                        </label>
+
+                        <input type="text" id="editar-restaurante-direccion"
+                            placeholder="Ej: San Martín 1250, Crespo, Entre Ríos" required>
+
+                        <small class="ayuda-campo">
+                            Ingresá calle, número, ciudad y provincia para ubicar correctamente el restaurante.
+                        </small>
+                    </div>
+
+
+                    <!-- CIUDAD -->
+
+                    <div class="campo">
+
+                        <label for="editar-restaurante-ciudad">
+                            Ciudad
+                        </label>
+
+                        <input type="text" id="editar-restaurante-ciudad">
+
+                    </div>
+
+
+                    <!-- TELÉFONO -->
+
+                    <div class="campo">
+
+                        <label for="editar-restaurante-telefono">
+                            Teléfono
+                        </label>
+
+                        <input type="text" id="editar-restaurante-telefono">
+
+                    </div>
+
+
+                    <!-- DESCRIPCIÓN -->
+
+                    <div class="campo">
+
+                        <label for="editar-restaurante-descripcion">
+                            Descripción
+                        </label>
+
+                        <input type="text" id="editar-restaurante-descripcion" placeholder="Ej: Restaurante familiar">
+
+                    </div>
+
+
+                    <!-- ACCIONES -->
+
+                    <div class="acciones-formulario">
+
+                        <button type="submit" class="btn-principal">
+                            Guardar cambios
+                        </button>
+
+
+                        <button type="button" id="btn-cancelar-editar-restaurante" class="btn-secundario">
+                            Cancelar
+                        </button>
+
+                    </div>
+
+
+                    <p id="mensaje-editar-restaurante">
+                    </p>
+
+                </form>
+
+            </section>
+
+
+            <!-- ======================================
+                 ADMINISTRACIÓN DE MESAS
+            ======================================= -->
+
+            <section class="configuracion-mesas">
+
+                <div class="panel-titulo">
+
+                    <div>
+
+                        <p class="panel-etiqueta">
+                            Mesas
+                        </p>
+
+                        <h2>
+                            Administración de mesas
+                        </h2>
+
+                        <p>
+                            Agregá, editá o eliminá las mesas
+                            del restaurante.
+                        </p>
+
+                    </div>
+
+
+                    <button type="button" id="btn-agregar-mesa" class="btn-principal">
+                        + Agregar mesa
                     </button>
 
                 </div>
 
 
-                <p id="mensaje-gestion"></p>
+                <!--
+                    Esta lista se va a completar
+                    desde panel.js.
+                -->
 
-            </form>
+                <div id="lista-configuracion-mesas" class="lista-configuracion-mesas">
+
+                    <p>
+                        Cargando mesas...
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- ======================================
+                 AGREGAR MESA
+            ======================================= -->
+
+            <section id="formulario-mesa" class="formulario-mesa oculto">
+
+                <h2>
+                    Agregar mesa
+                </h2>
+
+
+                <form id="form-agregar-mesa">
+
+
+                    <!-- NÚMERO -->
+
+                    <div class="campo">
+
+                        <label for="numero-mesa">
+                            Número de mesa
+                        </label>
+
+                        <input type="number" id="numero-mesa" min="1" required>
+
+                    </div>
+
+
+                    <!-- CAPACIDAD -->
+
+                    <div class="campo">
+
+                        <label for="cantidad-sillas">
+                            Cantidad de personas
+                        </label>
+
+                        <input type="number" id="cantidad-sillas" min="1" required>
+
+                    </div>
+
+
+                    <!-- DETALLE -->
+
+                    <div class="campo">
+
+                        <label for="detalle-mesa">
+                            Detalle
+                        </label>
+
+                        <input type="text" id="detalle-mesa" placeholder="Ej: Cerca de la ventana">
+
+                    </div>
+
+
+                    <!-- ACCIONES -->
+
+                    <div class="acciones-formulario">
+
+                        <button type="submit" class="btn-principal">
+                            Guardar mesa
+                        </button>
+
+
+                        <button type="button" id="btn-cancelar-mesa" class="btn-secundario">
+                            Cancelar
+                        </button>
+
+                    </div>
+
+
+                    <p id="mensaje-mesa">
+                    </p>
+
+                </form>
+
+            </section>
+
+
+            <!-- ======================================
+                 EDITAR / ELIMINAR MESA
+            ======================================= -->
+
+            <section id="gestionar-mesa" class="formulario-mesa gestionar-mesa oculto">
+
+
+                <!-- CABECERA -->
+
+                <div class="cabecera-gestion-mesa">
+
+                    <div>
+
+                        <p class="panel-etiqueta">
+                            Administración
+                        </p>
+
+                        <h2 id="titulo-gestionar-mesa">
+                            Gestionar mesa
+                        </h2>
+
+                    </div>
+
+
+                    <span id="indicador-estado-gestion" class="indicador-estado">
+                        Estado
+                    </span>
+
+                </div>
+
+
+                <form id="form-gestionar-mesa">
+
+
+                    <input type="hidden" id="gestionar-mesa-id">
+
+
+                    <!-- NÚMERO -->
+
+                    <div class="campo">
+
+                        <label for="gestionar-numero">
+                            Número de mesa
+                        </label>
+
+                        <input type="number" id="gestionar-numero" min="1" required>
+
+                    </div>
+
+
+                    <!-- CAPACIDAD -->
+
+                    <div class="campo">
+
+                        <label for="gestionar-sillas">
+                            Cantidad de personas
+                        </label>
+
+                        <input type="number" id="gestionar-sillas" min="1" required>
+
+                    </div>
+
+
+                    <!-- DETALLE -->
+
+                    <div class="campo">
+
+                        <label for="gestionar-detalle">
+                            Detalle
+                        </label>
+
+                        <input type="text" id="gestionar-detalle" placeholder="Ej: Sector principal">
+
+                    </div>
+
+
+                    <!-- ESTADO -->
+
+                    <div class="campo">
+
+                        <label>
+                            Estado actual
+                        </label>
+
+                        <p id="gestionar-estado">
+                            -
+                        </p>
+
+                    </div>
+
+
+                    <!-- ACCIONES -->
+
+                    <div class="acciones-gestionar">
+
+
+                        <!--
+                            Lo mantenemos porque panel.js
+                            actualmente lo utiliza.
+                        -->
+
+                        <button type="button" id="btn-cambiar-estado-gestion" class="btn-cambiar-disponibilidad">
+                            Cambiar estado
+                        </button>
+
+
+                        <button type="submit" class="btn-principal">
+                            Guardar cambios
+                        </button>
+
+
+                        <button type="button" id="btn-eliminar-gestion" class="btn-eliminar-gestion">
+                            Eliminar mesa
+                        </button>
+
+
+                        <button type="button" id="btn-cancelar-gestion" class="btn-secundario">
+                            Cancelar
+                        </button>
+
+                    </div>
+
+
+                    <p id="mensaje-gestion">
+                    </p>
+
+                </form>
+
+            </section>
 
         </section>
-
 
     </main>
 
 
-    <!-- =====================================
+    <!-- ==========================================
          JAVASCRIPT
-    ====================================== -->
+    =========================================== -->
 
     <script src="panel.js"></script>
 
