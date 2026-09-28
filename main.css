@@ -1,14 +1,7 @@
-/* =========================================================
-   MESSAPI
-   ESTILOS GENERALES
-========================================================= */
+/* MESSAPI - main.css limpio
+   Conserva los estilos y comportamiento visual actuales. */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
-
-/* =========================================================
-   RESET
-========================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap');
 
 * {
     margin: 0;
@@ -56,11 +49,6 @@ a {
     display: none !important;
 }
 
-
-/* =========================================================
-   BOTONES GENERALES
-========================================================= */
-
 .btn-principal,
 .btn-secundario,
 .btn-estado,
@@ -94,9 +82,6 @@ a {
         transform 0.12s ease;
 }
 
-
-/* PRINCIPAL */
-
 .btn-principal,
 .btn-ingresar,
 .publico-login {
@@ -116,9 +101,6 @@ a {
     transform: translateY(-1px);
 }
 
-
-/* SECUNDARIO */
-
 .btn-secundario {
     background-color: #ffffff;
     border: 1px solid #d6d9dd;
@@ -129,9 +111,6 @@ a {
     background-color: #f5f6f7;
     border-color: #b8bdc3;
 }
-
-
-/* CERRAR SESIÓN */
 
 .btn-salir {
     background-color: #ffffff;
@@ -145,9 +124,6 @@ a {
     color: #202124;
 }
 
-
-/* ELIMINAR */
-
 .btn-eliminar-gestion {
     background-color: #ffffff;
     border: 1px solid #e3a09d;
@@ -159,9 +135,6 @@ a {
     border-color: #d9534f;
 }
 
-
-/* CAMBIAR ESTADO */
-
 .btn-cambiar-disponibilidad {
     background-color: #fff8d9;
     border: 1px solid #e4c85e;
@@ -172,9 +145,6 @@ a {
     background-color: #ffefad;
 }
 
-
-/* EFECTO CLICK */
-
 .btn-principal:active,
 .btn-secundario:active,
 .btn-salir:active,
@@ -184,11 +154,6 @@ a {
 .publico-login:active {
     transform: scale(0.97);
 }
-
-
-/* =========================================================
-   CAMPOS / INPUTS
-========================================================= */
 
 .campo {
     margin-bottom: 18px;
@@ -242,11 +207,6 @@ a {
     box-shadow:
         0 0 0 3px rgba(32, 33, 36, 0.07);
 }
-
-
-/* =========================================================
-   LOGIN
-========================================================= */
 
 .pagina-login {
     min-height: 100vh;
@@ -354,11 +314,6 @@ a {
     color: #202124;
 }
 
-
-/* =========================================================
-   PANEL - HEADER
-========================================================= */
-
 .panel-encabezado {
     background-color: #ffffff;
 
@@ -393,11 +348,6 @@ a {
 
     font-size: 13px;
 }
-
-
-/* =========================================================
-   NAVEGACIÓN DEL PANEL
-========================================================= */
 
 .panel-navegacion {
     position: sticky;
@@ -459,11 +409,6 @@ a {
         0 3px 9px rgba(0, 0, 0, 0.12);
 }
 
-
-/* =========================================================
-   CONTENIDO DEL PANEL
-========================================================= */
-
 .panel-contenido {
     padding-top: 30px;
     padding-bottom: 60px;
@@ -472,11 +417,6 @@ a {
 .panel-vista {
     width: 100%;
 }
-
-
-/* =========================================================
-   RESUMEN DE MESAS
-========================================================= */
 
 .panel-resumen {
     display: grid;
@@ -526,11 +466,6 @@ a {
     font-weight: 800;
 }
 
-
-/* =========================================================
-   ESTADO DE MESAS - VISTA DE TRABAJO
-========================================================= */
-
 .seccion-estado-mesas {
     min-height: 500px;
 
@@ -571,11 +506,6 @@ a {
 
     font-size: 13px;
 }
-
-
-/* =========================================================
-   REFERENCIAS
-========================================================= */
 
 .referencias-mesas {
     display: flex;
@@ -629,11 +559,6 @@ a {
     background-color: #e0b52f;
 }
 
-
-/* =========================================================
-   GRILLA DE MESAS
-========================================================= */
-
 .grilla-mesas {
     display: grid;
 
@@ -653,11 +578,6 @@ a {
 
     text-align: center;
 }
-
-
-/* =========================================================
-   BOTONES DE MESAS
-========================================================= */
 
 .boton-mesa {
     position: relative;
@@ -700,9 +620,6 @@ a {
     transform: scale(0.97);
 }
 
-
-/* LIBRE */
-
 .boton-mesa.disponible {
     background-color: #b9f3c5;
     border-color: #83dc96;
@@ -710,18 +627,12 @@ a {
     color: #174c22;
 }
 
-
-/* OCUPADA */
-
 .boton-mesa.no-disponible {
     background-color: #f47b75;
     border-color: #e55d57;
 
     color: #ffffff;
 }
-
-
-/* RESERVADA */
 
 .boton-mesa.reservada {
     background-color: #f6dc77;
@@ -741,11 +652,6 @@ a {
 
     opacity: 0.82;
 }
-
-
-/* =========================================================
-   CONFIGURACIÓN
-========================================================= */
 
 .configuracion-encabezado {
     margin-bottom: 22px;
@@ -778,11 +684,6 @@ a {
 
     text-transform: uppercase;
 }
-
-
-/* =========================================================
-   INFORMACIÓN DEL RESTAURANTE
-========================================================= */
 
 .panel-restaurante {
     margin-bottom: 22px;
@@ -877,11 +778,6 @@ a {
     font-weight: 800;
 }
 
-
-/* =========================================================
-   ABRIR / CERRAR RESTAURANTE
-========================================================= */
-
 .abrir-restaurante {
     min-height: 42px;
 
@@ -923,11 +819,6 @@ a {
 .cerrar-restaurante:hover {
     background-color: #ffe2df;
 }
-
-
-/* =========================================================
-   CONFIGURACIÓN DE MESAS
-========================================================= */
 
 .configuracion-mesas {
     margin-top: 22px;
@@ -995,11 +886,6 @@ a {
     font-size: 12px;
 }
 
-
-/* =========================================================
-   FORMULARIOS DEL PANEL
-========================================================= */
-
 .formulario-mesa {
     margin-top: 22px;
     padding: 27px;
@@ -1042,11 +928,6 @@ a {
 
     font-size: 13px;
 }
-
-
-/* =========================================================
-   GESTIONAR MESA
-========================================================= */
 
 .cabecera-gestion-mesa {
     display: flex;
@@ -1098,11 +979,6 @@ a {
     color: #725a00;
 }
 
-
-/* =========================================================
-   PÁGINA PÚBLICA
-========================================================= */
-
 .pagina-publica {
     min-height: 100vh;
 
@@ -1110,11 +986,6 @@ a {
 
     color: #202124;
 }
-
-
-/* =========================================================
-   HEADER PÚBLICO
-========================================================= */
 
 .publico-header {
     background-color: #ffffff;
@@ -1151,11 +1022,6 @@ a {
     font-size: 13px;
 }
 
-
-/* =========================================================
-   CONTENIDO PÚBLICO
-========================================================= */
-
 .publico-contenido {
     padding-top: 42px;
     padding-bottom: 65px;
@@ -1184,11 +1050,6 @@ a {
     font-size: 14px;
     line-height: 1.65;
 }
-
-
-/* =========================================================
-   BUSCADOR
-========================================================= */
 
 .publico-buscador {
     margin-bottom: 36px;
@@ -1249,11 +1110,6 @@ a {
         0 0 0 3px rgba(32, 33, 36, 0.06);
 }
 
-
-/* =========================================================
-   MENSAJE PÚBLICO
-========================================================= */
-
 .publico-mensaje {
     margin-bottom: 15px;
 
@@ -1261,11 +1117,6 @@ a {
 
     font-size: 13px;
 }
-
-
-/* =========================================================
-   RESULTADOS
-========================================================= */
 
 .publico-resultados-titulo {
     display: flex;
@@ -1294,11 +1145,6 @@ a {
     font-size: 12px;
 }
 
-
-/* =========================================================
-   GRILLA DE RESTAURANTES
-========================================================= */
-
 .publico-grid {
     display: grid;
 
@@ -1307,11 +1153,6 @@ a {
 
     gap: 18px;
 }
-
-
-/* =========================================================
-   TARJETA DE RESTAURANTE
-========================================================= */
 
 .publico-restaurante {
     min-height: 200px;
@@ -1392,11 +1233,6 @@ a {
     color: #9a9da1;
 }
 
-
-/* =========================================================
-   CÓMO LLEGAR
-========================================================= */
-
 .publico-como-llegar {
     display: inline-flex;
     align-items: center;
@@ -1417,11 +1253,6 @@ a {
 .publico-como-llegar:hover {
     text-decoration: underline;
 }
-
-
-/* =========================================================
-   CAPACIDAD
-========================================================= */
 
 .publico-capacidad {
     min-width: 145px;
@@ -1465,9 +1296,6 @@ a {
     border-radius: 50%;
 }
 
-
-/* CON CAPACIDAD */
-
 .publico-capacidad-capacidad {
     background-color: #e3f7e7;
     border: 1px solid #a6ddaf;
@@ -1482,9 +1310,6 @@ a {
 .restaurante-con-capacidad {
     border-left: 5px solid #35a853;
 }
-
-
-/* POCA CAPACIDAD */
 
 .publico-capacidad-poca {
     background-color: #fff4c7;
@@ -1501,9 +1326,6 @@ a {
     border-left: 5px solid #e0b52f;
 }
 
-
-/* LLENO */
-
 .publico-capacidad-lleno {
     background-color: #ffe2e0;
     border: 1px solid #ee9994;
@@ -1518,11 +1340,6 @@ a {
 .restaurante-lleno {
     border-left: 5px solid #df4b47;
 }
-
-
-/* =========================================================
-   RESTAURANTE CERRADO
-========================================================= */
 
 .restaurante-cerrado {
     background-color: #eeeeef;
@@ -1560,11 +1377,6 @@ a {
     color: #777b7f;
 }
 
-
-/* =========================================================
-   SIN RESULTADOS
-========================================================= */
-
 .publico-sin-resultados {
     grid-column: 1 / -1;
 
@@ -1597,11 +1409,6 @@ a {
     font-size: 13px;
 }
 
-
-/* =========================================================
-   RESPONSIVE - TABLET
-========================================================= */
-
 @media (max-width: 900px) {
 
     .panel-resumen {
@@ -1618,19 +1425,11 @@ a {
     }
 }
 
-
-/* =========================================================
-   RESPONSIVE - CELULAR
-========================================================= */
-
 @media (max-width: 600px) {
 
     .contenedor {
         width: 92%;
     }
-
-
-    /* HEADER PANEL */
 
     .panel-barra {
         min-height: 0;
@@ -1650,9 +1449,6 @@ a {
         width: 100%;
     }
 
-
-    /* NAVEGACIÓN */
-
     .panel-navegacion-contenido {
         display: grid;
 
@@ -1667,9 +1463,6 @@ a {
         padding-left: 10px;
         padding-right: 10px;
     }
-
-
-    /* PANEL */
 
     .panel-contenido {
         padding-top: 20px;
@@ -1718,9 +1511,6 @@ a {
         min-height: 105px;
     }
 
-
-    /* CONFIGURACIÓN */
-
     .panel-restaurante {
         padding: 19px;
     }
@@ -1765,9 +1555,6 @@ a {
         width: 100%;
     }
 
-
-    /* LOGIN */
-
     .login-tarjeta {
         padding: 27px 21px;
     }
@@ -1775,9 +1562,6 @@ a {
     .login-tarjeta h1 {
         font-size: 24px;
     }
-
-
-    /* PÚBLICO */
 
     .publico-header-contenido {
         min-height: 0;
@@ -1825,11 +1609,6 @@ a {
     }
 }
 
-
-/* =========================================================
-   PANTALLAS MUY CHICAS
-========================================================= */
-
 @media (max-width: 380px) {
 
     .panel-resumen {
@@ -1841,10 +1620,6 @@ a {
     }
 }
 
-/* =========================================================
-   AYUDA EN CAMPOS
-========================================================= */
-
 .ayuda-campo {
     display: block;
 
@@ -1855,10 +1630,6 @@ a {
     font-size: 11px;
     line-height: 1.4;
 }
-
-/* =========================================================
-   VISTA PREVIA DEL CLIENTE
-========================================================= */
 
 .cliente-encabezado {
     margin-bottom: 24px;
@@ -1873,9 +1644,6 @@ a {
     margin: 0;
     color: #6b7075;
 }
-
-
-/* TARJETA */
 
 .cliente-tarjeta-publica {
     width: 100%;
@@ -1897,9 +1665,6 @@ a {
     box-shadow:
         0 4px 14px rgba(0, 0, 0, 0.05);
 }
-
-
-/* INFORMACIÓN */
 
 .cliente-tarjeta-info {
     flex: 1;
@@ -1924,9 +1689,6 @@ a {
     font-size: 14px;
 }
 
-
-/* CÓMO LLEGAR */
-
 .cliente-como-llegar {
     display: inline-flex;
     align-items: center;
@@ -1945,9 +1707,6 @@ a {
 .cliente-como-llegar:hover {
     text-decoration: underline;
 }
-
-
-/* ESTADO */
 
 .cliente-capacidad {
     min-width: 175px;
@@ -1988,9 +1747,6 @@ a {
     font-weight: 700;
 }
 
-
-/* CON CAPACIDAD */
-
 .cliente-capacidad.con-capacidad {
     background: #e3f6e8;
     border: 1px solid #8ed7a3;
@@ -2000,9 +1756,6 @@ a {
 .cliente-capacidad.con-capacidad::before {
     background: #32ad62;
 }
-
-
-/* CASI SIN CAPACIDAD */
 
 .cliente-capacidad.poca-capacidad {
     background: #fff5cf;
@@ -2014,9 +1767,6 @@ a {
     background: #e2b526;
 }
 
-
-/* LLENO */
-
 .cliente-capacidad.lleno {
     background: #fde7e7;
     border: 1px solid #e39b9b;
@@ -2027,9 +1777,6 @@ a {
     background: #dc4c4c;
 }
 
-
-/* CERRADO */
-
 .cliente-capacidad.cerrado {
     background: #eeeeee;
     border: 1px solid #c9c9c9;
@@ -2039,9 +1786,6 @@ a {
 .cliente-capacidad.cerrado::before {
     background: #777777;
 }
-
-
-/* BORDE DE LA TARJETA SEGÚN ESTADO */
 
 .cliente-tarjeta-publica:has(.cliente-capacidad.con-capacidad) {
     border-left-color: #32ad62;
@@ -2059,9 +1803,6 @@ a {
     border-left-color: #777777;
 }
 
-
-/* RESPONSIVE */
-
 @media (max-width: 700px) {
 
     .cliente-tarjeta-publica {
@@ -2076,11 +1817,6 @@ a {
     }
 }
 
-/* =========================================================
-   COLOR COMPLETO DE TARJETA SEGÚN DISPONIBILIDAD
-========================================================= */
-
-/* Quitamos la franja lateral de todas las tarjetas */
 .publico-restaurante {
     border-left: 1px solid #dfe3e6 !important;
 
@@ -2091,67 +1827,33 @@ a {
         transform 0.2s ease;
 }
 
-
-/* =========================================================
-   CON CAPACIDAD - VERDE
-========================================================= */
-
 .publico-restaurante.restaurante-con-capacidad {
     background: #eefaf1 !important;
     border: 1px solid #b8e4c4 !important;
 }
-
-
-/* =========================================================
-   CASI SIN CAPACIDAD - AMARILLO
-========================================================= */
 
 .publico-restaurante.restaurante-poca-capacidad {
     background: #fff9e6 !important;
     border: 1px solid #efd77b !important;
 }
 
-
-/* =========================================================
-   LLENO - ROJO
-========================================================= */
-
 .publico-restaurante.restaurante-lleno {
     background: #fff0f0 !important;
     border: 1px solid #efb4b4 !important;
 }
-
-
-/* =========================================================
-   CERRADO - GRIS
-========================================================= */
 
 .publico-restaurante.restaurante-cerrado {
     background: #f1f2f3 !important;
     border: 1px solid #d2d5d8 !important;
 }
 
-/* =========================================================
-   MESSAPI - TARJETAS PARA CELULAR
-   Lectura simple + botones grandes
-========================================================= */
-
 @media (max-width: 700px) {
-
-    /* ==========================================
-       CONTENEDOR DE RESTAURANTES
-    ========================================== */
 
     #restaurantes {
         display: grid;
         grid-template-columns: 1fr;
         gap: 16px;
     }
-
-
-    /* ==========================================
-       TARJETA
-    ========================================== */
 
     .publico-restaurante {
         display: flex;
@@ -2169,19 +1871,11 @@ a {
             0 3px 10px rgba(0, 0, 0, 0.06);
     }
 
-
-    /* ==========================================
-       INFORMACIÓN
-    ========================================== */
-
     .publico-restaurante-info {
         width: 100%;
         display: flex;
         flex-direction: column;
     }
-
-
-    /* NOMBRE */
 
     .publico-restaurante-info h3 {
         margin: 0 0 16px;
@@ -2190,11 +1884,6 @@ a {
         line-height: 1.2;
         font-weight: 800;
     }
-
-
-    /* ==========================================
-       ESTADO - LO MOSTRAMOS ARRIBA
-    ========================================== */
 
     .publico-capacidad {
         order: -1;
@@ -2236,11 +1925,6 @@ a {
         flex-shrink: 0;
     }
 
-
-    /* ==========================================
-       DIRECCIÓN
-    ========================================== */
-
     .publico-direccion {
         display: flex;
         align-items: flex-start;
@@ -2251,11 +1935,6 @@ a {
         font-size: 16px;
         line-height: 1.5;
     }
-
-
-    /* ==========================================
-       TELÉFONO
-    ========================================== */
 
     .publico-telefono {
         display: flex;
@@ -2274,11 +1953,6 @@ a {
         text-decoration: none;
     }
 
-
-    /* ==========================================
-       ÍCONOS
-    ========================================== */
-
     .publico-icono {
         width: 22px;
 
@@ -2287,11 +1961,6 @@ a {
 
         flex-shrink: 0;
     }
-
-
-    /* ==========================================
-       BOTÓN CÓMO LLEGAR
-    ========================================== */
 
     .publico-como-llegar {
         width: 100%;
@@ -2325,19 +1994,10 @@ a {
         transform: scale(0.98);
     }
 
-
-    /* ==========================================
-       MÁS ESPACIO ENTRE TARJETAS
-    ========================================== */
-
     .publico-restaurante+.publico-restaurante {
         margin-top: 0;
     }
 }
-
-/* =========================================================
-   TARJETAS PÚBLICAS - DISEÑO MÁS CLARO
-========================================================= */
 
 .publico-restaurante {
     display: grid;
@@ -2354,11 +2014,6 @@ a {
         0 3px 10px rgba(0, 0, 0, 0.05);
 }
 
-
-/* ==========================================
-   INFORMACIÓN
-========================================== */
-
 .publico-restaurante-info {
     display: flex;
     flex-direction: column;
@@ -2367,9 +2022,6 @@ a {
     width: 100%;
 }
 
-
-/* NOMBRE DEL RESTAURANTE */
-
 .publico-restaurante-info h3 {
     margin: 0 0 18px;
 
@@ -2377,9 +2029,6 @@ a {
     line-height: 1.2;
     font-weight: 800;
 }
-
-
-/* DIRECCIÓN Y TELÉFONO */
 
 .publico-direccion,
 .publico-telefono {
@@ -2397,11 +2046,6 @@ a {
     color: inherit;
     text-decoration: none;
 }
-
-
-/* ==========================================
-   ESTADO
-========================================== */
 
 .publico-capacidad {
     align-self: start;
@@ -2433,11 +2077,6 @@ a {
     font-weight: 800;
 }
 
-
-/* ==========================================
-   CÓMO LLEGAR
-========================================== */
-
 .publico-como-llegar {
     margin-top: auto;
     padding-top: 22px;
@@ -2458,11 +2097,6 @@ a {
     text-decoration: underline;
 }
 
-
-/* =========================================================
-   CELULAR
-========================================================= */
-
 @media (max-width: 700px) {
 
     .publico-restaurante {
@@ -2475,17 +2109,11 @@ a {
         gap: 0;
     }
 
-
-    /* NOMBRE MÁS GRANDE */
-
     .publico-restaurante-info h3 {
         margin-bottom: 14px;
 
         font-size: 23px;
     }
-
-
-    /* ESTADO DEBAJO DEL NOMBRE */
 
     .publico-capacidad {
         order: -1;
@@ -2501,18 +2129,12 @@ a {
         font-size: 18px;
     }
 
-
-    /* DATOS */
-
     .publico-direccion,
     .publico-telefono {
         font-size: 16px;
 
         margin: 6px 0;
     }
-
-
-    /* CÓMO LLEGAR */
 
     .publico-como-llegar {
         width: 100%;
@@ -2533,10 +2155,6 @@ a {
     }
 }
 
-/* =========================================================
-   ESTADO SIMPLE - SIN RECUADRO
-========================================================= */
-
 .publico-capacidad {
     min-width: 0;
 
@@ -2554,24 +2172,15 @@ a {
     box-shadow: none !important;
 }
 
-
-/* Ocultamos "Estado actual" */
-
 .publico-capacidad small {
     display: none;
 }
-
-
-/* TEXTO DEL ESTADO */
 
 .publico-capacidad strong {
     font-size: 17px;
     font-weight: 800;
     line-height: 1.2;
 }
-
-
-/* PUNTO */
 
 .publico-punto-estado {
     width: 10px;
@@ -2582,9 +2191,6 @@ a {
     border-radius: 50%;
 }
 
-
-/* VERDE */
-
 .publico-capacidad-capacidad strong {
     color: #16823d;
 }
@@ -2592,9 +2198,6 @@ a {
 .publico-capacidad-capacidad .publico-punto-estado {
     background: #2eae5e;
 }
-
-
-/* AMARILLO */
 
 .publico-capacidad-poca strong {
     color: #8a6900;
@@ -2604,9 +2207,6 @@ a {
     background: #e1b324;
 }
 
-
-/* ROJO */
-
 .publico-capacidad-lleno strong {
     color: #c43636;
 }
@@ -2615,9 +2215,6 @@ a {
     background: #e34a4a;
 }
 
-
-/* CERRADO */
-
 .publico-capacidad-cerrado strong {
     color: #666666;
 }
@@ -2625,11 +2222,6 @@ a {
 .publico-capacidad-cerrado .publico-punto-estado {
     background: #777777;
 }
-
-
-/* =========================================================
-   CELULAR
-========================================================= */
 
 @media (max-width: 700px) {
 
@@ -2654,52 +2246,29 @@ a {
     }
 }
 
-/* =========================================================
-   VISTA CLIENTE DEL ADMIN
-   MISMO ESTILO QUE LA VISTA PÚBLICA
-========================================================= */
-
-/* Sacamos la franja lateral */
 .cliente-tarjeta-publica {
     border-left: 1px solid #dfe3e6 !important;
 }
 
-
-/* =========================================================
-   FONDO SEGÚN ESTADO
-========================================================= */
-
-/* CON CAPACIDAD */
 .cliente-tarjeta-publica:has(.cliente-capacidad.con-capacidad) {
     background: #eefaf1 !important;
     border: 1px solid #b8e4c4 !important;
 }
 
-
-/* CASI SIN CAPACIDAD */
 .cliente-tarjeta-publica:has(.cliente-capacidad.poca-capacidad) {
     background: #fff9e6 !important;
     border: 1px solid #efd77b !important;
 }
 
-
-/* LLENO */
 .cliente-tarjeta-publica:has(.cliente-capacidad.lleno) {
     background: #fff0f0 !important;
     border: 1px solid #efb4b4 !important;
 }
 
-
-/* CERRADO */
 .cliente-tarjeta-publica:has(.cliente-capacidad.cerrado) {
     background: #f1f2f3 !important;
     border: 1px solid #d2d5d8 !important;
 }
-
-
-/* =========================================================
-   ESTADO SIMPLE
-========================================================= */
 
 .cliente-capacidad {
     min-width: 0;
@@ -2715,21 +2284,15 @@ a {
     box-shadow: none !important;
 }
 
-
-/* Sacamos "Estado actual" */
 .cliente-capacidad small {
     display: none;
 }
 
-
-/* TEXTO */
 .cliente-capacidad strong {
     font-size: 18px;
     font-weight: 800;
 }
 
-
-/* PUNTO */
 .cliente-capacidad::before {
     width: 10px;
     height: 10px;
@@ -2739,8 +2302,6 @@ a {
     border-radius: 50%;
 }
 
-
-/* VERDE */
 .cliente-capacidad.con-capacidad strong {
     color: #16823d;
 }
@@ -2749,8 +2310,6 @@ a {
     background: #2eae5e;
 }
 
-
-/* AMARILLO */
 .cliente-capacidad.poca-capacidad strong {
     color: #8a6900;
 }
@@ -2759,8 +2318,6 @@ a {
     background: #e1b324;
 }
 
-
-/* ROJO */
 .cliente-capacidad.lleno strong {
     color: #c43636;
 }
@@ -2769,8 +2326,6 @@ a {
     background: #e34a4a;
 }
 
-
-/* GRIS */
 .cliente-capacidad.cerrado strong {
     color: #666666;
 }
@@ -2779,38 +2334,25 @@ a {
     background: #777777;
 }
 
-/* =========================================================
-   ADMIN - MESAS A TODO EL ANCHO
-========================================================= */
-
-/* Solo la pantalla de mesas */
 .panel-contenido:has(#vista-mesas:not(.oculto)) {
     width: 96%;
     max-width: 1700px;
 }
 
-
-/* Vista de mesas */
 #vista-mesas {
     width: 100%;
     max-width: none;
     margin: 0;
 }
 
-
-/* Resumen */
 #vista-mesas .panel-resumen {
     width: 100%;
 }
 
-
-/* Panel principal */
 #vista-mesas .seccion-estado-mesas {
     width: 100%;
 }
 
-
-/* Grilla */
 #vista-mesas #panel-mesas {
     width: 100%;
 
@@ -2820,8 +2362,1844 @@ a {
     gap: 16px;
 }
 
-
-/* No hacemos las mesas gigantes */
 #vista-mesas .boton-mesa {
     min-height: 120px;
+}
+
+.pagina-publica {
+    --messapi-wine: #8B1E3F;
+    --messapi-wine-dark: #741832;
+    --messapi-bg: #f7f5f2;
+    --messapi-ink: #1f1f1f;
+    --messapi-soft: #666666;
+    --messapi-muted: #858585;
+    --messapi-border: #e5e2df;
+
+    min-height: 100vh;
+    margin: 0;
+
+    background: var(--messapi-bg);
+    color: var(--messapi-ink);
+
+    font-family: "Inter", Arial, sans-serif;
+}
+
+.pagina-publica .publico-header {
+    background: #ffffff;
+    border-bottom: 1px solid var(--messapi-border);
+}
+
+.pagina-publica .publico-header-contenido {
+    min-height: 88px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 24px;
+}
+
+.pagina-publica .publico-marca h1 {
+    margin: 0 0 3px;
+
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+
+    color: var(--messapi-wine);
+
+    letter-spacing: -0.02em;
+}
+
+.pagina-publica .publico-marca p {
+    margin: 0;
+
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 0.78rem;
+    line-height: 1.4;
+
+    color: var(--messapi-soft);
+}
+
+.pagina-publica .publico-login {
+    min-height: 42px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 18px;
+
+    background: var(--messapi-wine);
+    border: 1px solid var(--messapi-wine);
+    border-radius: 10px;
+
+    color: #ffffff;
+
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+
+    box-shadow: none;
+
+    transition:
+        background 0.15s ease,
+        transform 0.15s ease;
+}
+
+.pagina-publica .publico-login:hover {
+    background: var(--messapi-wine-dark);
+    border-color: var(--messapi-wine-dark);
+
+    box-shadow: none;
+
+    transform: translateY(-1px);
+}
+
+.pagina-publica .publico-login:active {
+    transform: scale(0.98);
+}
+
+.pagina-publica .publico-contenido {
+    padding-top: 38px;
+    padding-bottom: 60px;
+}
+
+.pagina-publica .publico-presentacion {
+    margin-bottom: 24px;
+}
+
+.pagina-publica .publico-presentacion h2 {
+    margin: 0 0 7px;
+
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.15;
+
+    color: var(--messapi-ink);
+
+    letter-spacing: -0.02em;
+}
+
+.pagina-publica .publico-presentacion p {
+    max-width: 620px;
+    margin: 0;
+
+    font-size: 0.9rem;
+    line-height: 1.55;
+
+    color: var(--messapi-soft);
+}
+
+.pagina-publica .publico-buscador {
+    margin-bottom: 34px;
+}
+
+.pagina-publica .campo-busqueda {
+    width: 100%;
+    max-width: 620px;
+    min-height: 50px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 15px;
+
+    background: #ffffff;
+
+    border: 1px solid var(--messapi-border);
+    border-radius: 12px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.035);
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.pagina-publica .campo-busqueda:focus-within {
+    border-color: var(--messapi-wine);
+
+    box-shadow:
+        0 0 0 3px rgba(139, 30, 63, 0.09);
+}
+
+.pagina-publica .icono-busqueda {
+    margin-right: 10px;
+
+    font-size: 0.95rem;
+}
+
+.pagina-publica .campo-busqueda input {
+    width: 100%;
+
+    padding: 14px 0;
+
+    background: transparent;
+
+    border: 0;
+    outline: 0;
+
+    color: var(--messapi-ink);
+
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 0.9rem;
+}
+
+.pagina-publica .campo-busqueda input::placeholder {
+    color: #999999;
+}
+
+.pagina-publica .publico-mensaje {
+    margin-bottom: 14px;
+
+    color: var(--messapi-soft);
+
+    font-size: 0.8rem;
+}
+
+.pagina-publica .publico-resultados-titulo {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 16px;
+}
+
+.pagina-publica .publico-resultados-titulo h2 {
+    margin: 0;
+
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 1.45rem;
+    font-weight: 700;
+
+    color: var(--messapi-ink);
+}
+
+.pagina-publica .publico-resultados-titulo p {
+    margin: 0;
+
+    font-size: 0.75rem;
+    font-weight: 500;
+
+    color: var(--messapi-muted);
+}
+
+.pagina-publica .publico-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    align-items: start;
+
+    gap: 16px;
+}
+
+.pagina-publica .publico-restaurante {
+    width: 100%;
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    gap: 10px;
+
+    padding: 18px;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.045);
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+
+    opacity: 1;
+}
+
+.pagina-publica .publico-restaurante:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 5px 14px rgba(0, 0, 0, 0.075);
+}
+
+.pagina-publica .publico-restaurante.restaurante-con-capacidad {
+    background: #eefbf2 !important;
+    border: 1px solid #b9e7c5 !important;
+}
+
+.pagina-publica .publico-restaurante.restaurante-poca-capacidad {
+    background: #fff8df !important;
+    border: 1px solid #f2d889 !important;
+}
+
+.pagina-publica .publico-restaurante.restaurante-lleno {
+    background: #fff0f0 !important;
+    border: 1px solid #efb5b5 !important;
+}
+
+.pagina-publica .publico-restaurante.restaurante-cerrado {
+    background: #f1f1f1 !important;
+    border: 1px solid #d2d2d2 !important;
+
+    opacity: 0.85;
+}
+
+.pagina-publica .publico-restaurante.restaurante-cerrado:hover {
+    transform: none;
+}
+
+.pagina-publica .publico-restaurante-info {
+    width: 100%;
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.pagina-publica .publico-restaurante-info h3 {
+    margin: 0 0 10px;
+
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.2;
+
+    color: var(--messapi-ink);
+}
+
+.pagina-publica .publico-direccion,
+.pagina-publica .publico-telefono {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    margin: 2px 0;
+
+    color: var(--messapi-soft);
+
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.pagina-publica .publico-telefono a {
+    color: inherit;
+
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.pagina-publica .publico-telefono a:hover {
+    text-decoration: underline;
+}
+
+.pagina-publica .publico-icono {
+    width: 18px;
+
+    display: inline-flex;
+    justify-content: center;
+
+    flex-shrink: 0;
+}
+
+.pagina-publica .publico-dato-no-disponible {
+    color: var(--messapi-muted);
+}
+
+.pagina-publica .publico-capacidad {
+    order: initial;
+
+    width: auto;
+    min-width: 0;
+
+    align-self: flex-start;
+
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    margin: 12px 0 0;
+    padding: 0;
+
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0;
+
+    box-shadow: none !important;
+}
+
+.pagina-publica .publico-capacidad small {
+    display: none !important;
+}
+
+.pagina-publica .publico-capacidad strong {
+    display: block;
+
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.pagina-publica .publico-punto-estado {
+    width: 12px;
+    height: 12px;
+
+    flex-shrink: 0;
+
+    margin: 0;
+
+    border-radius: 50%;
+}
+
+.pagina-publica .publico-capacidad-capacidad .publico-punto-estado {
+    background: #16a34a;
+}
+
+.pagina-publica .publico-capacidad-capacidad strong {
+    color: var(--messapi-ink);
+}
+
+.pagina-publica .publico-capacidad-poca .publico-punto-estado {
+    background: #f59e0b;
+}
+
+.pagina-publica .publico-capacidad-poca strong {
+    color: var(--messapi-ink);
+}
+
+.pagina-publica .publico-capacidad-lleno .publico-punto-estado {
+    background: #dc2626;
+}
+
+.pagina-publica .publico-capacidad-lleno strong {
+    color: var(--messapi-ink);
+}
+
+.pagina-publica .publico-capacidad-cerrado .publico-punto-estado {
+    background: #777777;
+}
+
+.pagina-publica .publico-capacidad-cerrado strong {
+    color: var(--messapi-ink);
+}
+
+.pagina-publica .publico-como-llegar {
+    width: 100%;
+    min-height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    margin-top: 15px;
+    padding: 11px 15px;
+
+    background: var(--messapi-wine);
+
+    border: 1px solid var(--messapi-wine);
+    border-radius: 10px;
+
+    color: #ffffff;
+
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition:
+        background 0.15s ease,
+        transform 0.15s ease;
+}
+
+.pagina-publica .publico-como-llegar:hover {
+    background: var(--messapi-wine-dark);
+
+    color: #ffffff;
+
+    text-decoration: none;
+}
+
+.pagina-publica .publico-como-llegar:active {
+    transform: scale(0.98);
+}
+
+.pagina-publica .restaurante-cerrado .publico-como-llegar {
+    background: #777777;
+    border-color: #777777;
+}
+
+.pagina-publica .publico-sin-resultados {
+    grid-column: 1 / -1;
+
+    padding: 35px 20px;
+
+    background: #ffffff;
+
+    border: 1px solid var(--messapi-border);
+    border-radius: 14px;
+
+    text-align: center;
+}
+
+.pagina-publica .publico-sin-resultados strong {
+    display: block;
+
+    margin-bottom: 5px;
+
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 1.1rem;
+
+    color: var(--messapi-ink);
+}
+
+.pagina-publica .publico-sin-resultados p {
+    margin: 0;
+
+    color: var(--messapi-soft);
+
+    font-size: 0.82rem;
+}
+
+@media (max-width: 900px) {
+
+    .pagina-publica .publico-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .pagina-publica .contenedor {
+        width: calc(100% - 24px);
+    }
+
+    .pagina-publica .publico-header-contenido {
+        min-height: 0;
+
+        flex-direction: row;
+        align-items: center;
+
+        padding-top: 14px;
+        padding-bottom: 14px;
+
+        gap: 12px;
+    }
+
+    .pagina-publica .publico-marca {
+        min-width: 0;
+    }
+
+    .pagina-publica .publico-marca h1 {
+        font-size: 1.55rem;
+    }
+
+    .pagina-publica .publico-marca p {
+        font-size: 0.68rem;
+    }
+
+    .pagina-publica .publico-login {
+        width: auto;
+        min-height: 38px;
+
+        flex-shrink: 0;
+
+        padding: 0 12px;
+
+        font-size: 0.72rem;
+    }
+
+    .pagina-publica .publico-contenido {
+        padding-top: 22px;
+        padding-bottom: 40px;
+    }
+
+    .pagina-publica .publico-presentacion {
+        margin-bottom: 18px;
+    }
+
+    .pagina-publica .publico-presentacion h2 {
+        font-size: 1.55rem;
+    }
+
+    .pagina-publica .publico-presentacion p {
+        font-size: 0.82rem;
+    }
+
+    .pagina-publica .publico-buscador {
+        margin-bottom: 26px;
+    }
+
+    .pagina-publica .campo-busqueda {
+        max-width: none;
+        min-height: 46px;
+    }
+
+    .pagina-publica .publico-resultados-titulo {
+        flex-direction: row;
+        align-items: center;
+
+        gap: 10px;
+    }
+
+    .pagina-publica .publico-resultados-titulo h2 {
+        font-size: 1.25rem;
+    }
+
+    .pagina-publica .publico-grid {
+        grid-template-columns: 1fr;
+
+        gap: 14px;
+    }
+
+    .pagina-publica .publico-restaurante {
+        display: flex;
+        flex-direction: column;
+
+        gap: 0;
+
+        min-height: 0;
+
+        padding: 16px;
+
+        border-radius: 12px;
+    }
+
+    .pagina-publica .publico-restaurante-info h3 {
+        margin-bottom: 9px;
+
+        font-size: 1.25rem;
+    }
+
+    .pagina-publica .publico-direccion,
+    .pagina-publica .publico-telefono {
+        margin: 2px 0;
+
+        font-size: 0.92rem;
+    }
+
+    .pagina-publica .publico-capacidad {
+        order: initial;
+
+        width: auto;
+
+        margin: 11px 0 0;
+        padding: 0;
+    }
+
+    .pagina-publica .publico-capacidad strong {
+        font-size: 0.95rem;
+    }
+
+    .pagina-publica .publico-como-llegar {
+        min-height: 48px;
+
+        margin-top: 13px;
+
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 380px) {
+
+    .pagina-publica .publico-marca p {
+        display: none;
+    }
+
+    .pagina-publica .publico-marca h1 {
+        font-size: 1.45rem;
+    }
+
+    .pagina-publica .publico-login {
+        padding: 0 10px;
+
+        font-size: 0.68rem;
+    }
+}
+
+.pagina-login {
+    --messapi-wine: #8B1E3F;
+    --messapi-wine-dark: #741832;
+    --messapi-bg: #f7f5f2;
+    --messapi-ink: #1f1f1f;
+    --messapi-soft: #666666;
+    --messapi-muted: #858585;
+    --messapi-border: #e5e2df;
+
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px 16px;
+
+    background:
+        linear-gradient(135deg,
+            #faf8f6 0%,
+            #f3efec 100%);
+
+    font-family: "Inter", Arial, sans-serif;
+}
+
+.pagina-login .login-contenedor {
+    width: 100%;
+    max-width: 430px;
+}
+
+.pagina-login .login-tarjeta {
+    width: 100%;
+
+    padding: 38px 36px;
+
+    background: #ffffff;
+
+    border: 1px solid var(--messapi-border);
+    border-radius: 18px;
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.07);
+}
+
+.pagina-login .login-tarjeta h1 {
+    margin: 0 0 10px;
+
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.15;
+
+    color: var(--messapi-wine);
+
+    letter-spacing: -0.02em;
+}
+
+.pagina-login .login-descripcion {
+    margin: 0 0 28px;
+
+    color: var(--messapi-soft);
+
+    font-size: 0.88rem;
+    line-height: 1.55;
+}
+
+.pagina-login .campo {
+    margin-bottom: 18px;
+}
+
+.pagina-login .campo label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: var(--messapi-ink);
+
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.pagina-login .campo input {
+    width: 100%;
+    min-height: 48px;
+
+    padding: 11px 13px;
+
+    background: #ffffff;
+
+    border: 1px solid var(--messapi-border);
+    border-radius: 10px;
+
+    color: var(--messapi-ink);
+
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 0.88rem;
+
+    outline: none;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.pagina-login .campo input::placeholder {
+    color: #a1a1a1;
+}
+
+.pagina-login .campo input:focus {
+    border-color: var(--messapi-wine);
+
+    box-shadow:
+        0 0 0 3px rgba(139, 30, 63, 0.09);
+}
+
+.pagina-login .btn-ingresar {
+    width: 100%;
+    min-height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 4px;
+    padding: 11px 18px;
+
+    background: var(--messapi-wine);
+
+    border: 1px solid var(--messapi-wine);
+    border-radius: 10px;
+
+    color: #ffffff;
+
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow: none;
+
+    transition:
+        background 0.15s ease,
+        transform 0.15s ease;
+}
+
+.pagina-login .btn-ingresar:hover {
+    background: var(--messapi-wine-dark);
+    border-color: var(--messapi-wine-dark);
+
+    box-shadow: none;
+
+    transform: translateY(-1px);
+}
+
+.pagina-login .btn-ingresar:active {
+    transform: scale(0.98);
+}
+
+.pagina-login .registro-restaurante {
+    margin-top: 27px;
+    padding-top: 22px;
+
+    border-top: 1px solid var(--messapi-border);
+
+    text-align: center;
+}
+
+.pagina-login .registro-restaurante p {
+    margin: 0 0 7px;
+
+    color: var(--messapi-soft);
+
+    font-size: 0.78rem;
+    line-height: 1.4;
+}
+
+.pagina-login .registro-restaurante a {
+    color: var(--messapi-wine);
+
+    font-size: 0.85rem;
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+.pagina-login .registro-restaurante a:hover {
+    color: var(--messapi-wine-dark);
+
+    text-decoration: underline;
+}
+
+.pagina-login .volver {
+    display: block;
+
+    margin-top: 22px;
+
+    color: var(--messapi-soft);
+
+    font-size: 0.78rem;
+    font-weight: 600;
+
+    text-align: center;
+    text-decoration: none;
+
+    transition: color 0.15s ease;
+}
+
+.pagina-login .volver:hover {
+    color: var(--messapi-wine);
+}
+
+@media (max-width: 500px) {
+
+    .pagina-login {
+        padding: 18px 12px;
+    }
+
+    .pagina-login .login-contenedor {
+        max-width: 100%;
+    }
+
+    .pagina-login .login-tarjeta {
+        padding: 28px 22px;
+
+        border-radius: 16px;
+    }
+
+    .pagina-login .login-tarjeta h1 {
+        font-size: 1.65rem;
+    }
+
+    .pagina-login .login-descripcion {
+        margin-bottom: 24px;
+
+        font-size: 0.82rem;
+    }
+
+    .pagina-login .campo input {
+        min-height: 48px;
+    }
+
+    .pagina-login .btn-ingresar {
+        min-height: 48px;
+    }
+}
+
+body:has(.panel-encabezado) {
+    --messapi-wine: #8B1E3F;
+    --messapi-wine-dark: #741832;
+    --messapi-bg: #f7f5f2;
+    --messapi-ink: #1f1f1f;
+    --messapi-soft: #666666;
+    --messapi-muted: #858585;
+    --messapi-border: #e5e2df;
+
+    background: var(--messapi-bg);
+    color: var(--messapi-ink);
+
+    font-family: "Inter", Arial, sans-serif;
+}
+
+.panel-encabezado {
+    background: var(--messapi-wine);
+    border-bottom: 0;
+}
+
+.panel-barra {
+    min-height: 92px;
+}
+
+.panel-barra h1 {
+    margin: 0 0 4px;
+
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+
+    color: #ffffff;
+}
+
+.panel-barra p {
+    margin: 0;
+
+    color: rgba(255, 255, 255, 0.78);
+
+    font-size: 0.8rem;
+}
+
+.panel-encabezado .btn-salir {
+    min-height: 40px;
+
+    padding: 9px 15px;
+
+    background: rgba(255, 255, 255, 0.12);
+
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 9px;
+
+    color: #ffffff;
+
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.panel-encabezado .btn-salir:hover {
+    background: #ffffff;
+    border-color: #ffffff;
+
+    color: var(--messapi-wine);
+}
+
+.panel-navegacion {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+
+    background: rgba(255, 255, 255, 0.97);
+
+    border-bottom: 1px solid var(--messapi-border);
+
+    backdrop-filter: blur(8px);
+}
+
+.panel-navegacion-contenido {
+    min-height: 58px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+}
+
+.panel-nav-boton {
+    min-height: 38px;
+
+    padding: 8px 18px;
+
+    background: transparent;
+
+    border: 1px solid transparent;
+    border-radius: 9px;
+
+    color: var(--messapi-soft);
+
+    font-size: 0.8rem;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.panel-nav-boton:hover {
+    background: #f5f1f2;
+
+    color: var(--messapi-wine);
+}
+
+.panel-nav-boton.activo {
+    background: var(--messapi-wine);
+    border-color: var(--messapi-wine);
+
+    color: #ffffff;
+
+    box-shadow: none;
+}
+
+.panel-contenido {
+    padding-top: 28px;
+    padding-bottom: 60px;
+}
+
+.panel-resumen {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 12px;
+
+    margin-bottom: 20px;
+}
+
+.resumen-caja {
+    padding: 17px 15px;
+
+    background: #ffffff;
+
+    border: 1px solid var(--messapi-border);
+    border-radius: 12px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.035);
+
+    text-align: center;
+}
+
+.resumen-caja span {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: var(--messapi-soft);
+
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+.resumen-caja strong {
+    display: block;
+
+    color: var(--messapi-ink);
+
+    font-size: 1.7rem;
+    font-weight: 700;
+}
+
+.resumen-caja:first-child strong {
+    color: var(--messapi-wine);
+}
+
+.resumen-caja:nth-child(2) strong {
+    color: #16a34a;
+}
+
+.resumen-caja:nth-child(3) strong {
+    color: #dc2626;
+}
+
+.resumen-caja:nth-child(4) strong {
+    color: #d89b00;
+}
+
+.seccion-estado-mesas {
+    min-height: 400px;
+
+    padding: 25px;
+
+    background: #ffffff;
+
+    border: 1px solid var(--messapi-border);
+    border-radius: 15px;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+}
+
+.panel-titulo {
+    margin-bottom: 18px;
+}
+
+.panel-titulo h2 {
+    margin: 0 0 4px;
+
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 1.45rem;
+    font-weight: 700;
+
+    color: var(--messapi-ink);
+}
+
+.panel-titulo p {
+    margin: 0;
+
+    color: var(--messapi-soft);
+
+    font-size: 0.78rem;
+}
+
+.referencias-mesas {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 18px;
+
+    margin-bottom: 26px;
+    padding: 0;
+
+    background: transparent;
+
+    border: 0;
+}
+
+.referencia {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 0;
+
+    color: var(--messapi-soft);
+
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+.referencia-color {
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+}
+
+.referencia-color.disponible {
+    background: #22a447;
+}
+
+.referencia-color.no-disponible {
+    background: #dc3f3f;
+}
+
+.referencia-color.reservada {
+    background: #e3ad19;
+}
+
+.grilla-mesas {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(100px, 1fr));
+
+    gap: 20px;
+
+    align-items: start;
+}
+
+.boton-mesa {
+    width: 92px;
+    height: 92px;
+    min-height: 92px;
+
+    justify-self: center;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 3px;
+
+    padding: 8px;
+
+    border: 0;
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 3px 9px rgba(0, 0, 0, 0.09);
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        filter 0.15s ease;
+}
+
+.boton-mesa:hover {
+    transform: translateY(-3px) scale(1.03);
+
+    box-shadow:
+        0 7px 15px rgba(0, 0, 0, 0.13);
+
+    filter: brightness(0.98);
+}
+
+.boton-mesa:active {
+    transform: scale(0.96);
+}
+
+.boton-mesa.disponible {
+    background: #dff7e5;
+    border: 2px solid #8bd59a;
+
+    color: #17672d;
+}
+
+.boton-mesa.no-disponible {
+    background: #fde1df;
+    border: 2px solid #ec9994;
+
+    color: #a82f2b;
+}
+
+.boton-mesa.reservada {
+    background: #fff2c2;
+    border: 2px solid #e5c55d;
+
+    color: #755b00;
+}
+
+.numero-mesa-panel {
+    font-size: 0.92rem;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.capacidad-mesa-panel {
+    font-size: 0.68rem;
+    font-weight: 600;
+
+    opacity: 0.82;
+}
+
+.configuracion-encabezado {
+    margin-bottom: 20px;
+}
+
+.configuracion-encabezado h2,
+.cliente-encabezado h2 {
+    margin: 3px 0 5px;
+
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+
+    color: var(--messapi-ink);
+}
+
+.configuracion-encabezado>div>p:last-child,
+.cliente-encabezado>p:last-child {
+    color: var(--messapi-soft);
+
+    font-size: 0.82rem;
+}
+
+.panel-etiqueta {
+    color: var(--messapi-wine);
+
+    font-size: 0.65rem;
+    font-weight: 800;
+
+    letter-spacing: 1.1px;
+
+    text-transform: uppercase;
+}
+
+.panel-restaurante {
+    margin-bottom: 20px;
+    padding: 23px;
+
+    background: #ffffff;
+
+    border: 1px solid var(--messapi-border);
+    border-radius: 14px;
+
+    box-shadow: 0 2px 9px rgba(0, 0, 0, 0.035);
+}
+
+.restaurante-etiqueta {
+    background: #f7edef;
+
+    color: var(--messapi-wine);
+}
+
+.restaurante-identidad h2 {
+    font-family: "Playfair Display", Georgia, serif;
+
+    color: var(--messapi-ink);
+}
+
+.restaurante-direccion {
+    color: var(--messapi-soft);
+}
+
+body:has(.panel-encabezado) .btn-principal {
+    background: var(--messapi-wine);
+    border: 1px solid var(--messapi-wine);
+
+    color: #ffffff;
+
+    box-shadow: none;
+}
+
+body:has(.panel-encabezado) .btn-principal:hover {
+    background: var(--messapi-wine-dark);
+    border-color: var(--messapi-wine-dark);
+
+    box-shadow: none;
+}
+
+body:has(.panel-encabezado) .btn-secundario {
+    background: #ffffff;
+
+    border: 1px solid #d9d5d6;
+
+    color: var(--messapi-ink);
+}
+
+body:has(.panel-encabezado) .btn-secundario:hover {
+    background: #f8f4f5;
+
+    border-color: #cdbdc2;
+
+    color: var(--messapi-wine);
+}
+
+.configuracion-mesas {
+    margin-top: 20px;
+    padding: 23px;
+
+    background: #ffffff;
+
+    border: 1px solid var(--messapi-border);
+    border-radius: 14px;
+
+    box-shadow: 0 2px 9px rgba(0, 0, 0, 0.035);
+}
+
+.lista-configuracion-mesas {
+    gap: 8px;
+}
+
+.configuracion-mesa-item {
+    min-height: 64px;
+
+    padding: 11px 13px;
+
+    background: #faf9f8;
+
+    border: 1px solid var(--messapi-border);
+    border-radius: 10px;
+}
+
+.configuracion-mesa-item:hover {
+    background: #f7f3f4;
+
+    border-color: #dbcbd0;
+}
+
+.formulario-mesa {
+    margin-top: 20px;
+    padding: 25px;
+
+    background: #ffffff;
+
+    border: 1px solid var(--messapi-border);
+    border-radius: 14px;
+
+    box-shadow: 0 2px 9px rgba(0, 0, 0, 0.035);
+}
+
+.formulario-mesa h2 {
+    font-family: "Playfair Display", Georgia, serif;
+
+    color: var(--messapi-ink);
+
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+body:has(.panel-encabezado) .campo label {
+    color: var(--messapi-ink);
+}
+
+body:has(.panel-encabezado) .campo input,
+body:has(.panel-encabezado) .campo textarea,
+body:has(.panel-encabezado) .campo select {
+    background: #ffffff;
+
+    border: 1px solid var(--messapi-border);
+    border-radius: 10px;
+}
+
+body:has(.panel-encabezado) .campo input:focus,
+body:has(.panel-encabezado) .campo textarea:focus,
+body:has(.panel-encabezado) .campo select:focus {
+    border-color: var(--messapi-wine);
+
+    box-shadow:
+        0 0 0 3px rgba(139, 30, 63, 0.09);
+}
+
+.cliente-tarjeta-publica {
+    max-width: 760px;
+
+    padding: 22px;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 2px 9px rgba(0, 0, 0, 0.04);
+}
+
+.cliente-tarjeta-info h2 {
+    font-family: "Playfair Display", Georgia, serif;
+
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.cliente-como-llegar {
+    min-height: 44px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 18px;
+    padding: 10px 16px;
+
+    background: var(--messapi-wine);
+
+    border-radius: 9px;
+
+    color: #ffffff;
+
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.cliente-como-llegar:hover {
+    background: var(--messapi-wine-dark);
+
+    color: #ffffff;
+
+    text-decoration: none;
+}
+
+.cliente-capacidad {
+    background: transparent !important;
+
+    border: 0 !important;
+
+    padding: 0;
+
+    min-width: 150px;
+}
+
+.cliente-capacidad small {
+    display: none;
+}
+
+.cliente-capacidad strong {
+    color: var(--messapi-ink);
+
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.cliente-capacidad::before {
+    width: 11px;
+    height: 11px;
+}
+
+@media (max-width: 900px) {
+
+    .panel-resumen {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grilla-mesas {
+        grid-template-columns:
+            repeat(auto-fill, minmax(90px, 1fr));
+
+        gap: 16px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .panel-barra {
+        min-height: 0;
+
+        flex-direction: row;
+        align-items: center;
+
+        padding-top: 14px;
+        padding-bottom: 14px;
+
+        gap: 10px;
+    }
+
+    .panel-barra h1 {
+        font-size: 1.35rem;
+    }
+
+    .panel-barra p {
+        display: none;
+    }
+
+    .panel-encabezado .btn-salir {
+        width: auto;
+
+        flex-shrink: 0;
+
+        padding: 8px 11px;
+
+        font-size: 0.7rem;
+    }
+
+    .panel-navegacion-contenido {
+        min-height: 54px;
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+        gap: 5px;
+    }
+
+    .panel-nav-boton {
+        width: 100%;
+
+        min-height: 36px;
+
+        padding: 7px 5px;
+
+        font-size: 0.7rem;
+    }
+
+    .panel-contenido {
+        padding-top: 18px;
+    }
+
+    .panel-resumen {
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 9px;
+    }
+
+    .resumen-caja {
+        padding: 13px 8px;
+    }
+
+    .resumen-caja strong {
+        font-size: 1.45rem;
+    }
+
+    .seccion-estado-mesas {
+        padding: 17px;
+    }
+
+    .panel-titulo h2 {
+        font-size: 1.3rem;
+    }
+
+    .referencias-mesas {
+        gap: 12px;
+    }
+
+    .grilla-mesas {
+        grid-template-columns:
+            repeat(4, 1fr);
+
+        gap: 10px 5px;
+    }
+
+    .boton-mesa {
+        width: 68px;
+        height: 68px;
+        min-height: 68px;
+
+        padding: 5px;
+    }
+
+    .numero-mesa-panel {
+        font-size: 0.72rem;
+    }
+
+    .capacidad-mesa-panel {
+        font-size: 0.56rem;
+    }
+
+    .panel-restaurante,
+    .configuracion-mesas,
+    .formulario-mesa {
+        padding: 17px;
+    }
+
+    .panel-restaurante-info {
+        gap: 18px;
+    }
+
+    .cliente-tarjeta-publica {
+        padding: 17px;
+    }
+
+    .cliente-capacidad {
+        width: auto;
+    }
+}
+
+@media (max-width: 380px) {
+
+    .grilla-mesas {
+        grid-template-columns:
+            repeat(4, 1fr);
+
+        gap: 8px 3px;
+    }
+
+    .boton-mesa {
+        width: 62px;
+        height: 62px;
+        min-height: 62px;
+    }
+}
+
+.grilla-mesas {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(145px, 1fr));
+
+    gap: 14px;
+
+    align-items: stretch;
+}
+
+.boton-mesa {
+    width: 100%;
+    height: auto;
+    min-height: 92px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    padding: 15px 12px;
+
+    border-radius: 13px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 2px 7px rgba(0, 0, 0, 0.06);
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        filter 0.15s ease;
+}
+
+.boton-mesa:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 6px 14px rgba(0, 0, 0, 0.10);
+
+    filter: brightness(0.99);
+}
+
+.boton-mesa:active {
+    transform: scale(0.98);
+}
+
+.boton-mesa.disponible {
+    background: #e8f8ec;
+
+    border: 1px solid #82d497;
+
+    color: #17672d;
+}
+
+.boton-mesa.no-disponible {
+    background: #fff0ef;
+
+    border: 1px solid #ef9692;
+
+    color: #b12f2b;
+}
+
+.boton-mesa.reservada {
+    background: #fff7dc;
+
+    border: 1px solid #e9c552;
+
+    color: #765b00;
+}
+
+.numero-mesa-panel {
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.capacidad-mesa-panel {
+    font-size: 12px;
+    font-weight: 600;
+
+    opacity: 0.82;
+}
+
+@media (max-width: 900px) {
+
+    .grilla-mesas {
+        grid-template-columns:
+            repeat(auto-fill, minmax(130px, 1fr));
+
+        gap: 12px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .grilla-mesas {
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 10px;
+    }
+
+    .boton-mesa {
+        width: 100%;
+        height: auto;
+        min-height: 82px;
+
+        padding: 12px 8px;
+
+        border-radius: 12px;
+    }
+
+    .numero-mesa-panel {
+        font-size: 14px;
+    }
+
+    .capacidad-mesa-panel {
+        font-size: 11px;
+    }
+}
+
+.boton-mesa.disponible {
+    background: linear-gradient(145deg,
+            #45d879,
+            #16a34a);
+
+    border: 1px solid #159447;
+
+    color: #ffffff;
+
+    box-shadow:
+        0 4px 10px rgba(22, 163, 74, 0.25);
+}
+
+.boton-mesa.no-disponible {
+    background: linear-gradient(145deg,
+            #ff6262,
+            #dc2626);
+
+    border: 1px solid #d62424;
+
+    color: #ffffff;
+
+    box-shadow:
+        0 4px 10px rgba(220, 38, 38, 0.25);
+}
+
+.boton-mesa.reservada {
+    background: linear-gradient(145deg,
+            #ffc947,
+            #f59e0b);
+
+    border: 1px solid #e89508;
+
+    color: #5c3a00;
+
+    box-shadow:
+        0 4px 10px rgba(245, 158, 11, 0.25);
+}
+
+.boton-mesa .numero-mesa-panel {
+    color: inherit;
+}
+
+.boton-mesa .capacidad-mesa-panel {
+    color: inherit;
+
+    opacity: 0.95;
 }
