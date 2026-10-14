@@ -1,14 +1,13 @@
 /* =========================================================
    Dashboard (web) — Panel general de mesas
-   - Navbar con Home / Editar / Salir
+   - Navbar con Home / Editar / Vista pública / Salir
+   - Toggle abierto/cerrado
    - Grid de mesas (círculos) con click para rotar estado
-   - Modal "Editar" con 2 pestañas: Info y Cantidad de mesas
-   - Se guarda todo con un solo botón
+   - Modal "Editar" con 3 pestañas: Info / Agregar / Eliminar
    ========================================================= */
 (function () {
     Guard.requireAuth();
 
-    /* ---------- Utilidades ---------- */
     const $ = (id) => document.getElementById(id);
 
     const STATUS = {
@@ -31,30 +30,43 @@
     const tablesGrid     = $('tables-grid');
     const createBtn      = $('create-restaurant-btn');
     const addTablesBtn   = $('add-tables-btn');
-        /* ---------- DOM: Toggle ON/OFF ---------- */
+
+    /* ---------- DOM: Toggle ON/OFF ---------- */
     const openCheckbox = $('open-checkbox');
     const toggleLabel  = $('toggle-label');
 
     /* ---------- DOM: Modal editar ---------- */
     const editModal    = $('edit-modal');
+    const editModalTitle = $('edit-modal-title');
     const editCancel   = $('edit-cancel');
     const editCancel2  = $('edit-cancel-2');
     const editForm     = $('edit-form');
     const editSave     = $('edit-save');
     const formError    = $('form-error');
 
-    const nameIn      = $('name');
-    const addressIn   = $('address');
-    const phoneIn     = $('phone');
-    const descIn      = $('description');
+    const nameIn    = $('name');
+    const addressIn = $('address');
+    const phoneIn   = $('phone');
+    const descIn    = $('description');
 
-    const btnMinus    = $('btn-minus');
-    const btnPlus     = $('btn-plus');
-    const tablesCount = $('tables-count');
-    const hintEl      = $('numberbox-hint');
+    /* Numberbox: Agregar mesas */
+    const addChairsMinus  = $('add-chairs-minus');
+    const addChairsPlus   = $('add-chairs-plus');
+    const addChairsCount  = $('add-chairs-count');
+    const addTablesMinus  = $('add-tables-minus');
+    const addTablesPlus   = $('add-tables-plus');
+    const addTablesCount  = $('add-tables-count');
+    const addHint         = $('add-hint');
 
-    const tabs        = document.querySelectorAll('.tab');
-    const tabPanels   = document.querySelectorAll('.tab-panel');
+    /* Numberbox: Eliminar mesas */
+    const removeInfo        = $('remove-info');
+    const removeTablesMinus = $('remove-tables-minus');
+    const removeTablesPlus  = $('remove-tables-plus');
+    const removeTablesCount = $('remove-tables-count');
+    const removeHint        = $('remove-hint');
+
+    const tabs      = document.querySelectorAll('.tab');
+    const tabPanels = document.querySelectorAll('.tab-panel');
 
     /* ---------- DOM: Modal crear ---------- */
     const createModal   = $('create-modal');
@@ -77,23 +89,23 @@
     /* ---------- Estado ---------- */
     let restaurant    = null;
     let tables        = [];
-    let originalCount = 0;
+    let activeTab     = 'info';
 
     const MIN_TABLES = 1;
     const MAX_TABLES = 100;
+    const MIN_CHAIRS = 1;
+    const MAX_CHAIRS = 20;
 
     /* =========================================================
        NAVBAR
        ========================================================= */
-    navHome.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-
+    navHome.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     navEdit.addEventListener('click', openEditModal);
-
     navLogout.addEventListener('click', () => AuthApi.logout());
 
-        /* ---------- Toggle: abrir / cerrar restaurante ---------- */
+    /* =========================================================
+       TOGGLE abierto / cerrado
+       ========================================================= */
     openCheckbox.addEventListener('change', async () => {
         if (!restaurant) return;
 
@@ -114,7 +126,6 @@
             UI.success(newState ? 'Restaurante abierto' : 'Restaurante cerrado');
 
         } catch (err) {
-            // Revertir si falla
             openCheckbox.checked = !newState;
             UI.error(err.message || 'No se pudo cambiar el estado');
         } finally {
@@ -150,14 +161,13 @@
                 restaurant.address
             ].filter(Boolean).join(' · ');
 
-             // Inicializar el toggle
+            // Toggle
             openCheckbox.checked = restaurant.is_open === 1 || restaurant.is_open === true;
             toggleLabel.textContent = openCheckbox.checked ? 'Abierto' : 'Cerrado';
 
             // Cargar mesas
             const tablesRes = await RestaurantApi.listTables(restaurant.id);
             tables = tablesRes.data || [];
-            originalCount = tables.length;
 
             if (tables.length === 0) {
                 showView(noTablesState);
@@ -179,26 +189,24 @@
     function renderTables() {
         tablesGrid.innerHTML = tables.map(t => {
             const status = STATUS[t.status_id] || STATUS[1];
+            const chairs = t.chairs || 4;
             return `
                 <button type="button"
                         class="table-circle table-circle--${status.key}"
                         data-id="${t.id}"
                         data-status="${t.status_id}"
-                        title="${status.label}">
+                        title="${status.label} · ${chairs} sillas">
                     <span class="table-circle__number">${t.table_number}</span>
+                    <span class="table-circle__chairs">${chairs} sillas</span>
                 </button>
             `;
         }).join('');
 
-        // Listener para rotar estado
         tablesGrid.querySelectorAll('.table-circle').forEach(el => {
             el.addEventListener('click', () => rotateStatus(el));
         });
     }
 
-    /* =========================================================
-       ROTAR ESTADO DE UNA MESA
-       ========================================================= */
     async function rotateStatus(el) {
         const tableId = parseInt(el.dataset.id, 10);
         el.disabled = true;
@@ -206,9 +214,8 @@
         try {
             const res = await TableApi.rotateStatus(tableId);
             const updated = res.data;
-
-            // Actualizar el DOM sin recargar
             const newStatus = STATUS[updated.status_id] || STATUS[1];
+
             el.classList.remove(
                 'table-circle--available',
                 'table-circle--occupied',
@@ -218,13 +225,11 @@
             el.dataset.status = updated.status_id;
             el.title = newStatus.label;
 
-            // Actualizar también el array local
             const idx = tables.findIndex(t => t.id === tableId);
             if (idx >= 0) tables[idx].status_id = updated.status_id;
 
-                       // Toast con el color del estado
             UI.toast(`Mesa ${updated.table_number} → ${newStatus.label}`, newStatus.key);
-            
+
         } catch (err) {
             UI.error(err.message || 'No se pudo cambiar el estado');
         } finally {
@@ -233,23 +238,28 @@
     }
 
     /* =========================================================
-       MODAL EDITAR
+       MODAL EDITAR — Abrir / Cerrar
        ========================================================= */
     function openEditModal() {
         if (!restaurant) return;
 
-        // Precargar Info
+        // Precargar pestaña Info
         nameIn.value    = restaurant.name || '';
         addressIn.value = restaurant.address || '';
         phoneIn.value   = restaurant.phone || '';
         descIn.value    = restaurant.description || '';
 
-        // Precargar Mesas
-        const initialCount = Math.max(MIN_TABLES, originalCount);
-        tablesCount.value = initialCount;
-        updateHint();
+        // Precargar pestaña Agregar
+        addChairsCount.value = tables[0]?.chairs || 4;
+        addTablesCount.value = 5;
+        updateAddHint();
 
-        // Reset pestañas
+        // Precargar pestaña Eliminar
+        removeTablesCount.value = 0;
+        updateRemoveInfo();
+        updateRemoveHint();
+
+        // Reset a la primera pestaña
         activateTab('info');
         formError.hidden = true;
 
@@ -270,98 +280,145 @@
 
     /* ---------- Pestañas ---------- */
     function activateTab(name) {
+        activeTab = name;
         tabs.forEach(t => t.classList.toggle('is-active', t.dataset.tab === name));
         tabPanels.forEach(p => p.classList.toggle('is-active', p.dataset.panel === name));
+
+        // Cambiar título del modal según la pestaña
+        const titles = {
+            info:   'Editar restaurante',
+            add:    'Agregar mesas',
+            remove: 'Eliminar mesas'
+        };
+        editModalTitle.textContent = titles[name] || 'Editar';
+
+        // Ocultar errores al cambiar de pestaña
+        formError.hidden = true;
     }
 
     tabs.forEach(t => {
         t.addEventListener('click', () => activateTab(t.dataset.tab));
     });
 
-    /* ---------- Numberbox ---------- */
-    function clampCount(n) {
+    /* =========================================================
+       NUMBERBOXES — Agregar
+       ========================================================= */
+    function clampChairs(n) {
         n = parseInt(n, 10);
-        if (isNaN(n)) n = originalCount || MIN_TABLES;
-        return Math.min(MAX_TABLES, Math.max(MIN_TABLES, n));
+        if (isNaN(n)) n = 4;
+        return Math.min(MAX_CHAIRS, Math.max(MIN_CHAIRS, n));
     }
 
-    function updateHint() {
-        hintEl.innerHTML = `Actualmente tenés <strong>${originalCount}</strong> ${originalCount === 1 ? 'mesa' : 'mesas'}.`;
+    function clampAddTables(n) {
+        n = parseInt(n, 10);
+        if (isNaN(n)) n = 1;
+        return Math.min(MAX_TABLES, Math.max(1, n));
     }
 
-    btnMinus.addEventListener('click', () => {
-        tablesCount.value = clampCount(tablesCount.value) - 1;
-        updateHint();
+    function updateAddHint() {
+        const chairs = clampChairs(addChairsCount.value);
+        const count  = clampAddTables(addTablesCount.value);
+        addHint.innerHTML = `Se agregarán <strong>${count}</strong> ${count === 1 ? 'mesa' : 'mesas'} con <strong>${chairs}</strong> ${chairs === 1 ? 'silla' : 'sillas'} cada una.`;
+    }
+
+    addChairsMinus.addEventListener('click', () => {
+        addChairsCount.value = clampChairs(addChairsCount.value) - 1;
+        updateAddHint();
+    });
+    addChairsPlus.addEventListener('click', () => {
+        addChairsCount.value = clampChairs(addChairsCount.value) + 1;
+        updateAddHint();
+    });
+    addChairsCount.addEventListener('blur', () => {
+        addChairsCount.value = clampChairs(addChairsCount.value);
+        updateAddHint();
     });
 
-    btnPlus.addEventListener('click', () => {
-        tablesCount.value = clampCount(tablesCount.value) + 1;
-        updateHint();
+    addTablesMinus.addEventListener('click', () => {
+        addTablesCount.value = clampAddTables(addTablesCount.value) - 1;
+        updateAddHint();
+    });
+    addTablesPlus.addEventListener('click', () => {
+        addTablesCount.value = clampAddTables(addTablesCount.value) + 1;
+        updateAddHint();
+    });
+    addTablesCount.addEventListener('blur', () => {
+        addTablesCount.value = clampAddTables(addTablesCount.value);
+        updateAddHint();
     });
 
-    tablesCount.addEventListener('blur', () => {
-        tablesCount.value = clampCount(tablesCount.value);
-        updateHint();
+    /* =========================================================
+       NUMBERBOXES — Eliminar
+       ========================================================= */
+    function clampRemoveTables(n) {
+        n = parseInt(n, 10);
+        if (isNaN(n)) n = 0;
+        return Math.min(tables.length, Math.max(0, n));
+    }
+
+    function updateRemoveInfo() {
+        const total = tables.length;
+        removeInfo.innerHTML = `Actualmente tenés <strong>${total}</strong> ${total === 1 ? 'mesa' : 'mesas'}.`;
+    }
+
+    function updateRemoveHint() {
+        const n = clampRemoveTables(removeTablesCount.value);
+        removeHint.innerHTML = n === 0
+            ? `Se eliminarán <strong>0</strong> mesas.`
+            : `Se eliminarán las últimas <strong>${n}</strong> ${n === 1 ? 'mesa' : 'mesas'}.`;
+    }
+
+    removeTablesMinus.addEventListener('click', () => {
+        removeTablesCount.value = clampRemoveTables(removeTablesCount.value) - 1;
+        updateRemoveHint();
+    });
+    removeTablesPlus.addEventListener('click', () => {
+        removeTablesCount.value = clampRemoveTables(removeTablesCount.value) + 1;
+        updateRemoveHint();
+    });
+    removeTablesCount.addEventListener('blur', () => {
+        removeTablesCount.value = clampRemoveTables(removeTablesCount.value);
+        updateRemoveHint();
     });
 
-    /* ---------- Guardar cambios (Info + Mesas) ---------- */
+    /* =========================================================
+       GUARDAR — según pestaña activa
+       ========================================================= */
     editForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         formError.hidden = true;
 
+        if (activeTab === 'info') {
+            await saveInfo();
+        } else if (activeTab === 'add') {
+            await addTables();
+        } else if (activeTab === 'remove') {
+            await removeTables();
+        }
+    });
+
+    /* ─── Guardar Info ─── */
+    async function saveInfo() {
         const name        = nameIn.value.trim();
         const address     = addressIn.value.trim();
         const phone       = phoneIn.value.trim();
         const description = descIn.value.trim();
-        const newCount    = clampCount(tablesCount.value);
 
-        // Validaciones
         if (!name) {
             formError.textContent = 'El nombre es obligatorio.';
             formError.hidden = false;
-            activateTab('info');
             return;
         }
         if (!address) {
             formError.textContent = 'La dirección es obligatoria.';
             formError.hidden = false;
-            activateTab('info');
             return;
-        }
-
-        // Chequear reducción de mesas
-        const countDiff = newCount - originalCount;
-
-        if (countDiff < 0) {
-            const tablesToDelete = tables.slice(newCount);
-            const busy = tablesToDelete.filter(t => t.status_id !== 1);
-
-            if (busy.length > 0) {
-                const nums = busy.map(t => `Mesa ${t.table_number}`).join(', ');
-                showBlocked(
-                    `No se puede reducir porque ${nums} no está${busy.length > 1 ? 'n' : ''} disponible${busy.length > 1 ? 's' : ''}.`
-                );
-                return;
-            }
-        }
-
-        // Confirmar si cambia la cantidad
-        if (countDiff !== 0) {
-            let msg;
-            if (countDiff > 0) {
-                msg = `Vas a agregar ${countDiff} ${countDiff === 1 ? 'mesa nueva' : 'mesas nuevas'}. ¿Confirmar?`;
-            } else {
-                msg = `Vas a eliminar ${Math.abs(countDiff)} ${Math.abs(countDiff) === 1 ? 'mesa' : 'mesas'} (las de mayor número). ¿Confirmar?`;
-            }
-            const ok = await askConfirm('Confirmar cambio de mesas', msg);
-            if (!ok) return;
         }
 
         editSave.disabled = true;
         editSave.textContent = 'Guardando...';
 
         try {
-            // 1) Actualizar info del restaurante
             await RestaurantApi.update(restaurant.id, {
                 name,
                 address,
@@ -370,40 +427,105 @@
                 is_open: restaurant.is_open ?? true
             });
 
-            // 2) Ajustar mesas
-            if (countDiff > 0) {
-                for (let i = 0; i < countDiff; i++) {
-                    const nextNumber = originalCount + i + 1;
-                    await RestaurantApi.createTable(restaurant.id, {
-                        table_number: nextNumber,
-                        details: `Mesa ${nextNumber}`,
-                        chairs: 4,
-                        status_id: 1
-                    });
-                }
-            } else if (countDiff < 0) {
-                const toDelete = tables.slice(newCount);
-                for (const t of toDelete) {
-                    await TableApi.delete(t.id);
-                }
-            }
-
             UI.success('Cambios guardados.');
             closeEditModal();
             await load();
 
         } catch (err) {
-            if (err.errors) {
-                formError.textContent = Object.values(err.errors)[0] || err.message;
-            } else {
-                formError.textContent = err.message || 'Error al guardar.';
-            }
+            formError.textContent = err.message || 'Error al guardar.';
             formError.hidden = false;
         } finally {
             editSave.disabled = false;
             editSave.textContent = 'Guardar';
         }
-    });
+    }
+
+    /* ─── Agregar mesas ─── */
+    async function addTables() {
+        const count  = clampAddTables(addTablesCount.value);
+        const chairs = clampChairs(addChairsCount.value);
+
+        if (count <= 0) {
+            formError.textContent = 'Tenés que agregar al menos 1 mesa.';
+            formError.hidden = false;
+            return;
+        }
+
+        editSave.disabled = true;
+        editSave.textContent = 'Agregando...';
+
+        try {
+            const startNumber = tables.length;
+
+            for (let i = 0; i < count; i++) {
+                const nextNumber = startNumber + i + 1;
+                await RestaurantApi.createTable(restaurant.id, {
+                    table_number: nextNumber,
+                    details:     `Mesa ${nextNumber}`,
+                    chairs:      chairs,
+                    status_id:   1
+                });
+            }
+
+            UI.success(`Se agregaron ${count} ${count === 1 ? 'mesa' : 'mesas'}.`);
+            closeEditModal();
+            await load();
+
+        } catch (err) {
+            formError.textContent = err.message || 'Error al agregar mesas.';
+            formError.hidden = false;
+        } finally {
+            editSave.disabled = false;
+            editSave.textContent = 'Guardar';
+        }
+    }
+
+    /* ─── Eliminar mesas ─── */
+    async function removeTables() {
+        const count = clampRemoveTables(removeTablesCount.value);
+
+        if (count <= 0) {
+            formError.textContent = 'Elegí al menos 1 mesa para eliminar.';
+            formError.hidden = false;
+            return;
+        }
+
+        // Verificar que las últimas N estén disponibles
+        const toDelete = tables.slice(tables.length - count);
+        const busy = toDelete.filter(t => t.status_id !== 1);
+
+        if (busy.length > 0) {
+            const nums = busy.map(t => `Mesa ${t.table_number}`).join(', ');
+            showBlocked(`No se puede eliminar porque ${nums} no está${busy.length > 1 ? 'n' : ''} disponible${busy.length > 1 ? 's' : ''}.`);
+            return;
+        }
+
+        const ok = await askConfirm(
+            'Confirmar eliminación',
+            `Vas a eliminar ${count} ${count === 1 ? 'mesa' : 'mesas'} (las de mayor número). ¿Confirmar?`
+        );
+        if (!ok) return;
+
+        editSave.disabled = true;
+        editSave.textContent = 'Eliminando...';
+
+        try {
+            for (const t of toDelete) {
+                await TableApi.delete(t.id);
+            }
+
+            UI.success(`Se eliminaron ${count} ${count === 1 ? 'mesa' : 'mesas'}.`);
+            closeEditModal();
+            await load();
+
+        } catch (err) {
+            formError.textContent = err.message || 'Error al eliminar mesas.';
+            formError.hidden = false;
+        } finally {
+            editSave.disabled = false;
+            editSave.textContent = 'Guardar';
+        }
+    }
 
     /* =========================================================
        CREAR RESTAURANTE
@@ -462,6 +584,14 @@
             UI.success('¡Restaurante creado!');
             closeCreateModal();
             await load();
+
+            // Si el restaurante quedó sin mesas, abrir automáticamente el modal de agregar
+            if (tables.length === 0) {
+                setTimeout(() => {
+                    openEditModal();
+                    activateTab('add');
+                }, 400);
+            }
 
         } catch (err) {
             modalError.textContent = err.message || 'Error al crear.';

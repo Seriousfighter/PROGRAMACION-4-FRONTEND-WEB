@@ -154,13 +154,13 @@
     </main>
 
     <!-- ============================================
-         Modal: Editar restaurante / mesas
+         Modal: Editar restaurante
          ============================================ -->
     <div class="modal-overlay" id="edit-modal" hidden>
         <div class="modal modal--large">
 
             <div class="modal__header">
-                <h2 class="modal__title">Editar restaurante</h2>
+                <h2 class="modal__title" id="edit-modal-title">Editar restaurante</h2>
                 <button type="button" class="modal__close" id="edit-cancel" aria-label="Cerrar">✕</button>
             </div>
 
@@ -169,14 +169,17 @@
                 <button type="button" class="tab is-active" data-tab="info">
                     Información
                 </button>
-                <button type="button" class="tab" data-tab="tables">
-                    Cantidad de mesas
+                <button type="button" class="tab" data-tab="add">
+                    Agregar mesas
+                </button>
+                <button type="button" class="tab" data-tab="remove">
+                    Eliminar mesas
                 </button>
             </div>
 
             <form id="edit-form" novalidate>
 
-                <!-- Pestaña: Información -->
+                <!-- ─── Pestaña 1: Información ─── -->
                 <div class="tab-panel is-active" data-panel="info">
                     <div class="form-group">
                         <label for="name">Nombre</label>
@@ -203,30 +206,72 @@
                     </div>
                 </div>
 
-                <!-- Pestaña: Cantidad de mesas -->
-                <div class="tab-panel" data-panel="tables">
+                <!-- ─── Pestaña 2: Agregar mesas ─── -->
+                <div class="tab-panel" data-panel="add">
                     <p class="form-section__hint">
-                        Podés aumentar o reducir la cantidad de mesas. Las nuevas se
-                        agregan con numeración automática; las que se eliminan son
-                        siempre las de mayor número.
+                        Se agregarán mesas nuevas con la cantidad de sillas que elijas.
                     </p>
 
-                    <div class="numberbox" id="numberbox">
-                        <button type="button" class="numberbox__btn" id="btn-minus"
-                                aria-label="Restar una mesa">−</button>
-                        <input type="number" class="numberbox__input" id="tables-count"
-                               min="1" max="100" step="1" value="1">
-                        <button type="button" class="numberbox__btn" id="btn-plus"
-                                aria-label="Sumar una mesa">+</button>
+                    <div class="form-group">
+                        <label class="numberbox__label">¿Cuántas sillas tiene cada mesa?</label>
+                        <div class="numberbox" id="add-chairs-numberbox">
+                            <button type="button" class="numberbox__btn" id="add-chairs-minus"
+                                    aria-label="Restar una silla">−</button>
+                            <input type="number" class="numberbox__input" id="add-chairs-count"
+                                   min="1" max="20" step="1" value="4">
+                            <button type="button" class="numberbox__btn" id="add-chairs-plus"
+                                    aria-label="Sumar una silla">+</button>
+                        </div>
                     </div>
 
-                    <p class="numberbox__hint" id="numberbox-hint">
-                        Actualmente tenés <strong>1</strong> mesa.
+                    <div class="form-group" style="margin-top: 24px;">
+                        <label class="numberbox__label">¿Cuántas mesas querés agregar?</label>
+                        <div class="numberbox" id="add-tables-numberbox">
+                            <button type="button" class="numberbox__btn" id="add-tables-minus"
+                                    aria-label="Restar una mesa">−</button>
+                            <input type="number" class="numberbox__input" id="add-tables-count"
+                                   min="1" max="100" step="1" value="5">
+                            <button type="button" class="numberbox__btn" id="add-tables-plus"
+                                    aria-label="Sumar una mesa">+</button>
+                        </div>
+                    </div>
+
+                    <p class="numberbox__hint" id="add-hint">
+                        Se agregarán <strong>5</strong> mesas con <strong>4</strong> sillas cada una.
                     </p>
                 </div>
 
+                <!-- ─── Pestaña 3: Eliminar mesas ─── -->
+                <div class="tab-panel" data-panel="remove">
+                    <p class="form-section__hint">
+                        Se eliminarán las mesas con mayor número. Si alguna está ocupada, no se podrá.
+                    </p>
+
+                    <p class="remove-info" id="remove-info">
+                        Actualmente tenés <strong>0</strong> mesas.
+                    </p>
+
+                    <div class="form-group" style="margin-top: 16px;">
+                        <label class="numberbox__label">¿Cuántas mesas querés eliminar?</label>
+                        <div class="numberbox" id="remove-tables-numberbox">
+                            <button type="button" class="numberbox__btn" id="remove-tables-minus"
+                                    aria-label="Restar una mesa">−</button>
+                            <input type="number" class="numberbox__input" id="remove-tables-count"
+                                   min="0" max="100" step="1" value="0">
+                            <button type="button" class="numberbox__btn" id="remove-tables-plus"
+                                    aria-label="Sumar una mesa">+</button>
+                        </div>
+                    </div>
+
+                    <p class="numberbox__hint" id="remove-hint">
+                        Se eliminarán <strong>0</strong> mesas.
+                    </p>
+                </div>
+
+                <!-- Error general -->
                 <div id="form-error" class="form-error" hidden></div>
 
+                <!-- Acciones -->
                 <div class="modal__actions">
                     <button type="button" class="btn btn-outline" id="edit-cancel-2">
                         Cancelar
