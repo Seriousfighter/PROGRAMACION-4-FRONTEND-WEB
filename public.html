@@ -3,89 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurantes disponibles — Mesas Disponibles</title>
+    <title>Messapi | Encontrá tu mesa perfecta — Crespo, Entre Ríos</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/components.css">
 </head>
 <body class="public-page">
 
+    <!-- ============================================
+         Header
+         ============================================ -->
     <header class="app-header">
         <div class="container app-header__inner">
+
+            <!-- Logo -->
             <a href="public.html" class="app-header__logo">
-                <span class="logo-icon">🍽️</span>
-                <span class="logo-text">Messapi</span>
+                <span class="logo-mark-badge">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M3 3v7a4 4 0 004 4a4 4 0 004-4V3M7 14v7m9-18v8a3 3 0 003 3a3 3 0 003-3V3m-3 11v7"
+                              stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+                <span class="app-header__brand">
+                    <span class="app-header__brand-title">Messapi</span>
+                    <span class="app-header__brand-sub">Gastronomía en Vivo</span>
+                </span>
             </a>
-            <nav class="app-header__nav">
-                <a href="index.html" class="btn btn-outline btn-sm" id="nav-login">
+
+            <!-- Info central (ubicación + estado) -->
+            <div class="app-header__meta">
+                <span class="meta-pill">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Crespo, Entre Ríos
+                </span>
+                <span class="meta-pill meta-pill--live">
+                    <span class="dot-pulse"></span>
+                    Tiempo Real
+                </span>
+            </div>
+
+            <!-- Acciones -->
+            <div class="app-header__actions">
+                <a href="index.html" class="btn btn-primary btn-sm" id="nav-login">
                     Iniciar sesión
                 </a>
                 <a href="dashboard.html" class="btn btn-primary btn-sm" id="nav-back" hidden>
                     Volver al panel
                 </a>
-            </nav>
+            </div>
+
         </div>
     </header>
+
     <!-- ============================================
          Hero
          ============================================ -->
     <section class="hero">
-        <div class="container hero__inner">
-            <p class="hero__eyebrow">Crespo E.R</p>
-            <h1 class="hero__title">Encontrá tu mesa perfecta</h1>
+        <div class="hero__inner">
+            <p class="hero__eyebrow">
+                <span class="hero__eyebrow-dot"></span>
+                Crespo E.R · Monitoreo de disponibilidad
+            </p>
+
+            <h1 class="hero__title">
+                Encontrá tu mesa <em>perfecta</em>
+            </h1>
+
+            <div class="hero__divider">
+                <span class="hero__divider-line"></span>
+                <span class="hero__divider-diamond"></span>
+                <span class="hero__divider-line"></span>
+            </div>
+
             <p class="hero__subtitle">
-                Consultá en tiempo real la disponibilidad de mesas en los mejores restaurantes de la ciudad.
+                Consultá en tiempo real la disponibilidad de mesas en los mejores restaurantes y bares de la ciudad.
             </p>
         </div>
     </section>
 
     <!-- ============================================
-         Stats
+         Toolbar (buscador + filtros)
          ============================================ -->
-    <section class="container stats-section" id="stats-section" hidden>
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-card__icon">🏛️</div>
-                <div class="stat-card__value" id="stat-restaurants">—</div>
-                <div class="stat-card__label">Restaurantes</div>
+    <section class="container toolbar-section" id="toolbar" hidden>
+        <div class="toolbar-card">
+            <div class="toolbar-card__inner">
+
+                <!-- Buscador -->
+                <div class="toolbar__search">
+                    <span class="toolbar__search-icon">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    <input type="text" id="search-input"
+                           placeholder="Buscar por nombre o calle (ej. Ándale, Otto Sagemüller)..."
+                           autocomplete="off">
+                </div>
+
+                <!-- Categoría -->
+                <div class="toolbar__category">
+                    <select id="category-select">
+                        <option value="">Todas las categorías</option>
+                        <option value="mexicana">🌮 Comida Mexicana</option>
+                        <option value="italiano">🍝 Italiano &amp; Pastas</option>
+                        <option value="parrilla">🥩 Variado &amp; Parrilla</option>
+                        <option value="bar">🍺 Bar &amp; Cerveza</option>
+                    </select>
+                    <span class="toolbar__category-arrow">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                </div>
+
+                <!-- Orden -->
+                <div class="toolbar__sort">
+                    <select id="sort-select">
+                        <option value="availability">Mayor disponibilidad</option>
+                        <option value="name">Nombre (A-Z)</option>
+                        <option value="total">Mayor cantidad de mesas</option>
+                    </select>
+                    <span class="toolbar__category-arrow">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                </div>
+
+                <!-- Botón "Solo libres" -->
+                <button type="button" class="toolbar__only-open" id="only-open-btn">
+                    <span class="dot-pulse dot-pulse--green"></span>
+                    Solo libres
+                </button>
+
             </div>
-            <div class="stat-card">
-                <div class="stat-card__icon">🪑</div>
-                <div class="stat-card__value" id="stat-available">—</div>
-                <div class="stat-card__label">Mesas disponibles</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-card__icon">⭐</div>
-                <div class="stat-card__value stat-card__value--text" id="stat-best">—</div>
-                <div class="stat-card__label">Mejor opción hoy</div>
+
+            <!-- Quick pills -->
+            <div class="toolbar__pills">
+                <span class="toolbar__pills-label">Filtro rápido:</span>
+                <button type="button" class="pill is-active" data-category="">Todos</button>
+                <button type="button" class="pill" data-category="mexicana">🌮 Mexicanas</button>
+                <button type="button" class="pill" data-category="italiano">🍝 Italiano</button>
+                <button type="button" class="pill" data-category="parrilla">🥩 Variado &amp; Parrilla</button>
+                <button type="button" class="pill" data-category="bar">🍺 Cerveza artesanal</button>
             </div>
         </div>
     </section>
 
     <!-- ============================================
-         Toolbar
-         ============================================ -->
-    <section class="container toolbar" id="toolbar" hidden>
-        <div class="toolbar__search">
-            <span class="toolbar__search-icon">🔍</span>
-            <input type="text" id="search-input"
-                   placeholder="Buscar por nombre, dirección o descripción..."
-                   autocomplete="off">
-        </div>
-        <div class="toolbar__sort">
-            <label for="sort-select">Ordenar por</label>
-            <select id="sort-select">
-                <option value="availability">Mayor disponibilidad</option>
-                <option value="name">Nombre (A-Z)</option>
-                <option value="total">Mayor cantidad de mesas</option>
-            </select>
-        </div>
-    </section>
-
-    <!-- ============================================
-         Main
+         Main (grid de restaurantes)
          ============================================ -->
     <main class="container public-main">
 
@@ -112,32 +185,42 @@
          Footer
          ============================================ -->
     <footer class="app-footer">
-        <div class="container">
-            <p>&copy; 2026 Mesas Disponibles — Proyecto académico</p>
+        <div class="container app-footer__inner">
+
+            <div class="app-footer__brand">
+                <span class="app-footer__logo">Messapi</span>
+                <span class="app-footer__sep">|</span>
+                <p>&copy; 2026 Mesas Disponibles — Proyecto académico</p>
+            </div>
+
+            <div class="app-footer__meta">
+                <span class="footer-live">
+                    <span class="dot-pulse dot-pulse--green"></span>
+                    Sistema de monitoreo en tiempo real
+                </span>
+            </div>
+
         </div>
     </footer>
 
+    <!-- ============================================
+         Scripts
+         ============================================ -->
     <script src="js/config.js"></script>
     <script src="js/utils/session.js"></script>
     <script src="js/utils/ui.js"></script>
     <script src="js/services/client.js"></script>
     <script src="js/services/public.js"></script>
-        <script>
-        // Mostrar "Volver al panel" solo si venimos desde el dashboard
+    <script>
+        // Header: mostrar "Login" o "Volver al panel" según sesión
         (function () {
             const backBtn  = document.getElementById('nav-back');
             const loginBtn = document.getElementById('nav-login');
             if (!backBtn || !loginBtn) return;
 
-            const params  = new URLSearchParams(window.location.search);
-            const fromPanel = params.get('from') === 'panel';
-
-            if (fromPanel) {
+            if (Session.isLogged()) {
                 backBtn.hidden = false;
                 loginBtn.hidden = true;
-            } else {
-                backBtn.hidden = true;
-                loginBtn.hidden = false;
             }
         })();
     </script>
