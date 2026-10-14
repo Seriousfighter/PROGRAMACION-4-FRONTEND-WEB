@@ -529,7 +529,16 @@ a:hover { color: var(--wine-dark); text-decoration: none; }
     to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.modal--large { max-width: 560px; }
+.modal--large {
+    max-width: 560px;
+    min-height: 520px;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal--large .tab-panel {
+    flex: 1;
+}
 
 .modal__header {
     display: flex;
@@ -1115,9 +1124,18 @@ a:hover { color: var(--wine-dark); text-decoration: none; }
 .tables-hero__head {
     display: flex;
     align-items: center;
-    gap: 20px;
+    justify-content: space-between;
+    gap: 16px;
     flex-wrap: wrap;
     margin-bottom: 8px;
+}
+
+.tables-hero__head-left {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    min-width: 0;
 }
 
 .tables-hero__head .tables-hero__title {
@@ -1765,3 +1783,62 @@ body.public-page {
         width: 100%;
     }
 }
+/* =========================================================
+   FILTROS POR ESTADO (banner del panel)
+   ========================================================= */
+.tables-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px;
+    background: #f5f5f4;
+    border-radius: 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.tables-filter::-webkit-scrollbar { display: none; }
+
+.filter-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 16px;
+    border-radius: 9px;
+    border: none;
+    background: transparent;
+    color: #57534e;
+    font-family: inherit;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+}
+
+.filter-tab:hover {
+    color: var(--ink);
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.filter-tab.is-active {
+    background: #fff;
+    color: var(--ink);
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.filter-tab__dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.filter-tab__dot--green  { background: #10b981; }
+.filter-tab__dot--red    { background: #e11d48; }
+.filter-tab__dot--yellow { background: #f59e0b; }

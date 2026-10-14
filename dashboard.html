@@ -86,19 +86,47 @@
 
         <!-- Hero -->
         <section class="tables-hero">
-            <div class="tables-hero__head">
-                <h1 class="tables-hero__title">PANEL GENERAL DE MESAS</h1>
 
-                <!-- Toggle ON/OFF (abierto / cerrado) -->
-                <label class="toggle" id="open-toggle" title="Abrir o cerrar el restaurante">
-                    <input type="checkbox" id="open-checkbox">
-                    <span class="toggle__track">
-                        <span class="toggle__thumb"></span>
-                    </span>
-                    <span class="toggle__label" id="toggle-label">—</span>
-                </label>
+            <!-- Fila 1: Título + Toggle + Filtros (todos en la misma línea) -->
+            <div class="tables-hero__head">
+
+                <div class="tables-hero__head-left">
+                    <h1 class="tables-hero__title">PANEL GENERAL DE MESAS</h1>
+
+                    <!-- Toggle ON/OFF (abierto / cerrado) -->
+                    <label class="toggle" id="open-toggle" title="Abrir o cerrar el restaurante">
+                        <input type="checkbox" id="open-checkbox">
+                        <span class="toggle__track">
+                            <span class="toggle__thumb"></span>
+                        </span>
+                        <span class="toggle__label" id="toggle-label">—</span>
+                    </label>
+                </div>
+
+                <!-- Filtros por estado (a la derecha) -->
+                <div class="tables-filter" id="tables-filter">
+                    <button type="button" class="filter-tab is-active" data-filter="all">
+                        Todas (<span id="count-all">0</span>)
+                    </button>
+                    <button type="button" class="filter-tab" data-filter="available">
+                        <span class="filter-tab__dot filter-tab__dot--green"></span>
+                        Libres (<span id="count-available">0</span>)
+                    </button>
+                    <button type="button" class="filter-tab" data-filter="occupied">
+                        <span class="filter-tab__dot filter-tab__dot--red"></span>
+                        Ocupadas (<span id="count-occupied">0</span>)
+                    </button>
+                    <button type="button" class="filter-tab" data-filter="reserved">
+                        <span class="filter-tab__dot filter-tab__dot--yellow"></span>
+                        Reservadas (<span id="count-reserved">0</span>)
+                    </button>
+                </div>
+
             </div>
+
+            <!-- Fila 2: Info del restaurante (abajo de todo) -->
             <p class="tables-hero__subtitle" id="restaurant-info">Cargando...</p>
+
         </section>
 
         <!-- Loading -->

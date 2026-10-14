@@ -35,6 +35,16 @@
     const openCheckbox = $('open-checkbox');
     const toggleLabel  = $('toggle-label');
 
+        /* ---------- Filtros por estado ---------- */
+    const tablesFilter   = $('tables-filter');
+    const filterTabs     = document.querySelectorAll('.filter-tab');
+    const countAll       = $('count-all');
+    const countAvailable = $('count-available');
+    const countOccupied  = $('count-occupied');
+    const countReserved  = $('count-reserved');
+
+    let activeFilter = 'all';
+
     /* ---------- DOM: Modal editar ---------- */
     const editModal    = $('edit-modal');
     const editModalTitle = $('edit-modal-title');
@@ -205,6 +215,40 @@
         tablesGrid.querySelectorAll('.table-circle').forEach(el => {
             el.addEventListener('click', () => rotateStatus(el));
         });
+
+        updateCounters();
+        applyFilter();
+    }
+
+    /* Actualizar contadores de cada estado */
+    function updateCounters() {
+        const total     = tables.length;
+        const available = tables.filter(t => t.status_id === 1).length;
+        const occupied  = tables.filter(t => t.status_id === 2).length;
+        const reserved  = tables.filter(t => t.status_id === 3).length;
+
+        countAll.textContent       = total;
+        countAvailable.textContent = available;
+        countOccupied.textContent  = occupied;
+        countReserved.textContent  = reserved;
+    }
+
+    /* Aplicar filtro a los círculos */
+    function applyFilter() {
+        const circles = tablesGrid.querySelectorAll('.table-circle');
+
+        circles.forEach(circle => {
+            const statusId = parseInt(circle.dataset.status, 10);
+            let statusKey = 'available';
+            if (statusId === 2) statusKey = 'occupied';
+            else if (statusId === 3) statusKey = 'reserved';
+
+            if (activeFilter === 'all' || statusKey === activeFilter) {
+                circle.hidden = false;
+            } else {
+                circle.hidden = true;
+            }
+        });
     }
 
     async function rotateStatus(el) {
@@ -229,6 +273,8 @@
             if (idx >= 0) tables[idx].status_id = updated.status_id;
 
             UI.toast(`Mesa ${updated.table_number} → ${newStatus.label}`, newStatus.key);
+             updateCounters();
+            applyFilter();
 
         } catch (err) {
             UI.error(err.message || 'No se pudo cambiar el estado');
@@ -632,6 +678,19 @@
             blockedModal.hidden = true;
         }, { once: true });
     }
+
+    /* =========================================================
+       FILTROS POR ESTADO
+       ========================================================= */
+    filterTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            filterTabs.forEach(t => t.classList.remove('is-active'));
+            tab.classList.add('is-active');
+
+            activeFilter = tab.dataset.filter;
+            applyFilter();
+        });
+    });
 
     /* =========================================================
        Init
