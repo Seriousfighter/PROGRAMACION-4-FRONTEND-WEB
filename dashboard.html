@@ -212,6 +212,18 @@
                         Se agregarán mesas nuevas con la cantidad de sillas que elijas.
                     </p>
 
+                     <div class="form-group" style="margin-top: 24px;">
+                        <label class="numberbox__label">¿Cuántas mesas querés agregar?</label>
+                        <div class="numberbox" id="add-tables-numberbox">
+                            <button type="button" class="numberbox__btn" id="add-tables-minus"
+                                    aria-label="Restar una mesa">−</button>
+                            <input type="number" class="numberbox__input" id="add-tables-count"
+                                   min="1" max="100" step="1" value="5">
+                            <button type="button" class="numberbox__btn" id="add-tables-plus"
+                                    aria-label="Sumar una mesa">+</button>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label class="numberbox__label">¿Cuántas sillas tiene cada mesa?</label>
                         <div class="numberbox" id="add-chairs-numberbox">
@@ -224,17 +236,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group" style="margin-top: 24px;">
-                        <label class="numberbox__label">¿Cuántas mesas querés agregar?</label>
-                        <div class="numberbox" id="add-tables-numberbox">
-                            <button type="button" class="numberbox__btn" id="add-tables-minus"
-                                    aria-label="Restar una mesa">−</button>
-                            <input type="number" class="numberbox__input" id="add-tables-count"
-                                   min="1" max="100" step="1" value="5">
-                            <button type="button" class="numberbox__btn" id="add-tables-plus"
-                                    aria-label="Sumar una mesa">+</button>
-                        </div>
-                    </div>
+                   
 
                     <p class="numberbox__hint" id="add-hint">
                         Se agregarán <strong>5</strong> mesas con <strong>4</strong> sillas cada una.
