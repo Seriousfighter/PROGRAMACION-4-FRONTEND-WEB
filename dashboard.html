@@ -21,10 +21,15 @@
     <header class="app-navbar">
         <div class="app-navbar__inner">
 
-            <div class="app-navbar__brand">
-                <span class="logo-mark"></span>
-                <span class="logo-text">Messapi</span>
-                <span class="app-navbar__badge">Admin</span>
+            <div class="app-navbar__brand" style="display: flex; align-items: center; gap: 10px;">
+                <!-- Logo en círculo -->
+                <div style="width: 34px; height: 34px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #ffffff; border: 1px solid var(--border); padding: 2px; flex-shrink: 0;">
+                    <img src="assets/logo.jpeg" alt="Messapi" style="width: 100%; height: 100%; object-fit: contain; border-radius: 50%;">
+                </div>
+
+                <!-- Texto y Badge -->
+                <span style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--ink);">Messapi</span>
+                <span class="app-navbar__badge" style="margin-left: 4px;">Admin</span>
             </div>
 
             <nav class="app-navbar__actions">
@@ -83,15 +88,15 @@
          Panel de mesas
          ============================================ -->
     <main class="tables-panel">
-
         <!-- Hero -->
         <section class="tables-hero">
 
-            <!-- Fila 1: Título + Toggle + Filtros (todos en la misma línea) -->
-            <div class="tables-hero__head">
-
-                <div class="tables-hero__head-left">
-                    <h1 class="tables-hero__title">PANEL GENERAL DE MESAS</h1>
+            <!-- 1. Título, Toggle e Info del restaurante (todo apilado) -->
+            <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px;">
+                
+                <!-- Fila del título y el toggle -->
+                <div class="tables-hero__head-left" style="display: flex; align-items: center; gap: 12px;">
+                    <h1 class="tables-hero__title" style="margin: 0;">PANEL GENERAL DE MESAS</h1>
 
                     <!-- Toggle ON/OFF (abierto / cerrado) -->
                     <label class="toggle" id="open-toggle" title="Abrir o cerrar el restaurante">
@@ -103,8 +108,29 @@
                     </label>
                 </div>
 
-                <!-- Filtros por estado (a la derecha) -->
-                <div class="tables-filter" id="tables-filter">
+                <!-- Info del restaurante (Justo debajo del título) -->
+                <p class="tables-hero__subtitle" id="restaurant-info" style="margin: 0; font-weight: 500;">
+                    Cargando...
+                </p>
+
+            </div>
+
+            <!-- 2. Fila del buscador + filtros -->
+            <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+                
+                <!-- Buscador de mesas -->
+                <div class="search-table-wrapper" style="margin: 0;">
+                    <span class="search-table-icon">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <circle cx="11" cy="11" r="7"/>
+                            <path d="m20 20-3.5-3.5" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                    <input type="number" id="search-table-input" placeholder="Buscar N°..." class="search-table-input">
+                </div>
+
+                <!-- Filtros por estado -->
+                <div class="tables-filter" id="tables-filter" style="margin-left: 0;">
                     <button type="button" class="filter-tab is-active" data-filter="all">
                         Todas (<span id="count-all">0</span>)
                     </button>
@@ -123,9 +149,6 @@
                 </div>
 
             </div>
-
-            <!-- Fila 2: Info del restaurante (abajo de todo) -->
-            <p class="tables-hero__subtitle" id="restaurant-info">Cargando...</p>
 
         </section>
 

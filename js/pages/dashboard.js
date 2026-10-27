@@ -42,6 +42,7 @@
     const countAvailable = $('count-available');
     const countOccupied  = $('count-occupied');
     const countReserved  = $('count-reserved');
+    const searchTableInput = $('search-table-input');
 
     let activeFilter = 'all';
 
@@ -234,16 +235,26 @@
     }
 
     /* Aplicar filtro a los círculos */
-    function applyFilter() {
+        function applyFilter() {
+        const searchTerm = searchTableInput ? searchTableInput.value.trim() : '';
         const circles = tablesGrid.querySelectorAll('.table-circle');
 
         circles.forEach(circle => {
             const statusId = parseInt(circle.dataset.status, 10);
+            const tableNumber = circle.querySelector('.table-circle__number').textContent;
+            
             let statusKey = 'available';
             if (statusId === 2) statusKey = 'occupied';
             else if (statusId === 3) statusKey = 'reserved';
 
-            if (activeFilter === 'all' || statusKey === activeFilter) {
+            // 1. Validar filtro por estado
+            const matchesStatus = (activeFilter === 'all' || statusKey === activeFilter);
+
+            // 2. Validar búsqueda exacta
+            const matchesSearch = searchTerm === '' || tableNumber === searchTerm;
+
+            // Mostrar si cumple ambas
+            if (matchesStatus && matchesSearch) {
                 circle.hidden = false;
             } else {
                 circle.hidden = true;
@@ -692,6 +703,13 @@
         });
     });
 
+    /* =========================================================
+       BUSCADOR DE MESAS
+       ========================================================= */
+    if (searchTableInput) {
+        searchTableInput.addEventListener('input', applyFilter);
+    }
+    
     /* =========================================================
        Init
        ========================================================= */

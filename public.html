@@ -21,19 +21,18 @@
         <div class="container app-header__inner">
 
             <!-- Logo -->
-            <a href="public.html" class="app-header__logo">
-                <span class="logo-mark-badge">
-                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
-                        <path d="M3 3v7a4 4 0 004 4a4 4 0 004-4V3M7 14v7m9-18v8a3 3 0 003 3a3 3 0 003-3V3m-3 11v7"
-                              stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </span>
+            <a href="public.html" class="app-header__logo" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+                <!-- Logo en círculo -->
+                <div style="width: 44px; height: 44px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #ffffff; border: 1px solid var(--border); padding: 2px; flex-shrink: 0;">
+                    <img src="assets/logo.jpeg" alt="Messapi" style="width: 100%; height: 100%; object-fit: contain; border-radius: 50%;">
+                </div>
+                
+                <!-- Texto -->
                 <span class="app-header__brand">
                     <span class="app-header__brand-title">Messapi</span>
                     <span class="app-header__brand-sub">Gastronomía en Vivo</span>
                 </span>
             </a>
-
             <!-- Info central (ubicación + estado) -->
             <div class="app-header__meta">
                 <span class="meta-pill">
@@ -69,7 +68,7 @@
         <div class="hero__inner">
             <p class="hero__eyebrow">
                 <span class="hero__eyebrow-dot"></span>
-                Crespo E.R · Monitoreo de disponibilidad
+                Monitoreo de disponibilidad
             </p>
 
             <h1 class="hero__title">

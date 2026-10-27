@@ -17,40 +17,6 @@
    Card base (con borde superior decorativo)
    ========================================================= */
 .card {
-    background: var(--surface);
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    padding: 0;
-    box-shadow: var(--shadow-sm);
-    transition: box-shadow 0.25s, transform 0.25s, border-color 0.25s;
-    overflow: hidden;
-    position: relative;
-    animation: fadeUp 0.4s ease-out both;
-}
-
-.card:hover {
-    box-shadow: var(--shadow-lg);
-    transform: translateY(-4px);
-    border-color: var(--border-dark);
-}
-
-@keyframes fadeUp {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0);    }
-}
-
-/* Borde superior decorativo (vino → dorado) */
-.card::before {
-    content: '';
-    display: block;
-    height: 3px;
-    background: linear-gradient(90deg, var(--wine) 0%, var(--gold) 100%);
-}
-
-/* =========================================================
-   Restaurant card (rediseño editorial)
-   ========================================================= */
-.card {
     background: #fff;
     border-radius: 18px;
     border: 1px solid #E8DFD3;
@@ -65,17 +31,16 @@
 }
 
 .card:hover {
-    box-shadow: 0 12px 30px -4px rgba(44, 30, 20, 0.09),
-                0 4px 12px -2px rgba(44, 30, 20, 0.04);
+    box-shadow: 0 12px 30px -4px rgba(44, 30, 20, 0.09), 0 4px 12px -2px rgba(44, 30, 20, 0.04);
     transform: translateY(-4px);
 }
 
-/* Borde superior tricolor */
+/* Borde superior decorativo (Rojo → Negro) */
 .card::before {
     content: '';
     display: block;
     height: 5px;
-    background: linear-gradient(90deg, #d97706 0%, var(--gold) 50%, #10b981 100%);
+    background: linear-gradient(90deg, #dc2626 0%, var(--wine) 50%, #111827 100%);
 }
 
 @keyframes fadeUp {
@@ -92,17 +57,8 @@
 }
 
 /* Header: nombre + badge */
-.restaurant-card__header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
-}
-
-.restaurant-card__title-block {
-    min-width: 0;
-    flex: 1;
-}
+.restaurant-card__header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.restaurant-card__title-block { min-width: 0; flex: 1; }
 
 .restaurant-card__name {
     font-family: 'Playfair Display', Georgia, serif;
@@ -144,42 +100,18 @@
     flex-shrink: 0;
 }
 
-.status-badge__dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    flex-shrink: 0;
-}
+.status-badge__dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 
-.status-badge--success {
-    background: #ecfdf5;
-    color: #065f46;
-    border: 1px solid #a7f3d0;
-}
-.status-badge--success .status-badge__dot {
-    background: #10b981;
-    animation: dotPing 2s ease-in-out infinite;
-}
+.status-badge--success { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+.status-badge--success .status-badge__dot { background: #10b981; animation: dotPing 2s ease-in-out infinite; }
 
-.status-badge--warning {
-    background: #fef3c7;
-    color: #92400e;
-    border: 1px solid #fde68a;
-}
+.status-badge--warning { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
 .status-badge--warning .status-badge__dot { background: #d97706; }
 
-.status-badge--danger {
-    background: #fee2e2;
-    color: #991b1b;
-    border: 1px solid #fecaca;
-}
+.status-badge--danger { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
 .status-badge--danger .status-badge__dot { background: #dc2626; }
 
-.status-badge--muted {
-    background: #f5f5f4;
-    color: #57534e;
-    border: 1px solid #e7e5e4;
-}
+.status-badge--muted { background: #f5f5f4; color: #57534e; border: 1px solid #e7e5e4; }
 .status-badge--muted .status-badge__dot { background: #78716c; }
 
 /* Meta: dirección + teléfono */
@@ -192,20 +124,8 @@
     border-bottom: 1px solid #f0eae1;
 }
 
-.restaurant-card__meta li {
-    color: #57534e;
-    font-size: 0.82rem;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    line-height: 1.4;
-}
-
-.restaurant-card__meta li svg {
-    color: var(--wine);
-    flex-shrink: 0;
-}
+.restaurant-card__meta li { color: #57534e; font-size: 0.82rem; font-weight: 500; display: flex; align-items: center; gap: 8px; line-height: 1.4; }
+.restaurant-card__meta li svg { color: var(--wine); flex-shrink: 0; }
 
 /* Descripción */
 .restaurant-card__description {
@@ -232,82 +152,26 @@
     cursor: pointer;
 }
 
-.restaurant-card__map:hover {
-    border-color: var(--wine);
-    box-shadow: 0 6px 16px rgba(122, 28, 60, 0.15);
-    text-decoration: none;
-}
+.restaurant-card__map:hover { border-color: var(--wine); box-shadow: 0 6px 16px rgba(227, 27, 35, 0.15); text-decoration: none; }
 
-.restaurant-card__map iframe {
-    display: block;
-    width: 100%;
-    height: 130px;
-    border: 0;
-    pointer-events: none;
-    filter: saturate(0.95);
-    transition: filter 0.2s;
-}
-
+.restaurant-card__map iframe { display: block; width: 100%; height: 130px; border: 0; pointer-events: none; filter: saturate(0.95); transition: filter 0.2s; }
 .restaurant-card__map:hover iframe { filter: saturate(1.05); }
 
 /* Disponibilidad (número grande + barra) */
-.restaurant-card__availability {
-    margin-top: auto;
-    padding-top: 14px;
-}
+.restaurant-card__availability { margin-top: auto; padding-top: 14px; }
 
-.availability-number {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 8px;
-    margin-bottom: 10px;
-}
-
-.availability-number__count {
-    display: flex;
-    align-items: baseline;
-    gap: 6px;
-}
-
-.availability-number__count strong {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--ink);
-    line-height: 1;
-    letter-spacing: -0.02em;
-}
-
-.availability-number__count span {
-    color: var(--muted);
-    font-size: 0.75rem;
-    font-weight: 500;
-}
+.availability-number { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+.availability-number__count { display: flex; align-items: baseline; gap: 6px; }
+.availability-number__count strong { font-family: 'Playfair Display', Georgia, serif; font-size: 2rem; font-weight: 700; color: var(--ink); line-height: 1; letter-spacing: -0.02em; }
+.availability-number__count span { color: var(--muted); font-size: 0.75rem; font-weight: 500; }
 
 /* Barra de progreso */
-.availability-bar {
-    height: 8px;
-    background: #f5f5f4;
-    border-radius: 999px;
-    overflow: hidden;
-    border: 1px solid #e7e5e4;
-}
-
-.availability-bar__fill {
-    height: 100%;
-    background: linear-gradient(90deg, #059669 0%, #10b981 100%);
-    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 999px;
-}
+.availability-bar { height: 8px; background: #f5f5f4; border-radius: 999px; overflow: hidden; border: 1px solid #e7e5e4; }
+.availability-bar__fill { height: 100%; background: linear-gradient(90deg, #059669 0%, #10b981 100%); transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 999px; }
 
 /* Estados de la barra según disponibilidad */
-.availability-bar__fill--low {
-    background: linear-gradient(90deg, #dc2626 0%, #ef4444 100%);
-}
-.availability-bar__fill--medium {
-    background: linear-gradient(90deg, #d97706 0%, #f59e0b 100%);
-}
+.availability-bar__fill--low { background: linear-gradient(90deg, #dc2626 0%, #ef4444 100%); }
+.availability-bar__fill--medium { background: linear-gradient(90deg, #d97706 0%, #f59e0b 100%); }
 
 /* Footer de la card: link "Ver en Maps" */
 .restaurant-card__footer {
@@ -321,11 +185,7 @@
     border-radius: 0 0 18px 18px;
 }
 
-.restaurant-card__footer-text {
-    font-size: 0.7rem;
-    color: #78716c;
-    font-weight: 500;
-}
+.restaurant-card__footer-text { font-size: 0.7rem; color: #78716c; font-weight: 500; }
 
 .restaurant-card__maps-link {
     display: inline-flex;
@@ -342,15 +202,8 @@
     white-space: nowrap;
 }
 
-.restaurant-card__maps-link:hover {
-    background: var(--wine);
-    color: #fff;
-    text-decoration: none;
-}
-
-.restaurant-card__maps-link:active {
-    transform: scale(0.97);
-}
+.restaurant-card__maps-link:hover { background: var(--wine); color: #fff; text-decoration: none; }
+.restaurant-card__maps-link:active { transform: scale(0.97); }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 720px) {
@@ -359,6 +212,7 @@
     .restaurant-card__map iframe { height: 110px; }
     .availability-number__count strong { font-size: 1.7rem; }
 }
+
 /* =========================================================
    Puntito de estado (abierto / cerrado)
    ========================================================= */
@@ -372,26 +226,76 @@
     margin-top: 4px;
 }
 
-.status-dot--open {
-    background: #16a34a;
-    animation: statusPulse 2s ease-in-out infinite;
-}
-
-.status-dot--closed {
-    background: #dc2626;
-}
+.status-dot--open { background: #16a34a; animation: statusPulse 2s ease-in-out infinite; }
+.status-dot--closed { background: #dc2626; }
 
 @keyframes statusPulse {
-    0%, 100% {
-        box-shadow:
-            0 0 0 3px rgba(255, 255, 255, 0.9),
-            0 0 0 0 rgba(22, 163, 74, 0.5),
-            0 1px 3px rgba(0, 0, 0, 0.15);
-    }
-    50% {
-        box-shadow:
-            0 0 0 3px rgba(255, 255, 255, 0.9),
-            0 0 0 8px rgba(22, 163, 74, 0),
-            0 1px 3px rgba(0, 0, 0, 0.15);
+    0%, 100% { box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.9), 0 0 0 0 rgba(22, 163, 74, 0.5), 0 1px 3px rgba(0, 0, 0, 0.15); }
+    50% { box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.9), 0 0 0 8px rgba(22, 163, 74, 0), 0 1px 3px rgba(0, 0, 0, 0.15); }
+}
+/* =========================================================
+   Buscador de mesas (Estilo Píldora)
+   ========================================================= */
+.search-table-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 150px; /* Tamaño ideal para que entre al lado de los filtros */
+}
+
+.search-table-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--wine);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    transition: color 0.2s ease;
+}
+
+.search-table-input {
+    width: 100%;
+    padding: 8px 12px 8px 34px; /* Ajustado para que mida lo mismo que los filtros */
+    font-family: inherit;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--ink);
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    outline: none;
+    transition: all 0.25s ease;
+    -moz-appearance: textfield;
+    -webkit-appearance: none;
+}
+
+.search-table-input::-webkit-outer-spin-button,
+.search-table-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.search-table-input::placeholder {
+    color: var(--muted-soft);
+    font-weight: 400;
+}
+
+.search-table-input:focus {
+    border-color: var(--wine);
+    box-shadow: 0 0 0 3px rgba(227, 27, 35, 0.10), 0 2px 8px rgba(227, 27, 35, 0.08);
+    background: #ffffff;
+}
+
+.search-table-wrapper:focus-within .search-table-icon {
+    color: var(--wine-dark);
+}
+
+/* En celulares, que ocupe todo el ancho */
+@media (max-width: 720px) {
+    .search-table-wrapper {
+        max-width: 100%;
     }
 }
