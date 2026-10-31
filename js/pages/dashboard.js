@@ -2,6 +2,7 @@
    Dashboard (web) — Panel general de mesas
    - Navbar con Home / Editar / Vista pública / Salir
    - Toggle abierto/cerrado
+   - Buscador exacto por número de mesa
    - Grid de mesas (círculos) con click para rotar estado
    - Modal "Editar" con 3 pestañas: Info / Agregar / Eliminar
    ========================================================= */
@@ -16,12 +17,16 @@
         3: { key: 'reserved',  label: 'Reservada'  }
     };
 
-    /* ---------- DOM: Navbar ---------- */
+    /* =========================================================
+       1. DOM: Navbar
+       ========================================================= */
     const navHome   = $('nav-home');
     const navEdit   = $('nav-edit');
     const navLogout = $('nav-logout');
 
-    /* ---------- DOM: Panel ---------- */
+    /* =========================================================
+       2. DOM: Panel principal
+       ========================================================= */
     const restaurantInfo = $('restaurant-info');
     const loading        = $('loading');
     const emptyState     = $('empty-state');
@@ -31,86 +36,104 @@
     const createBtn      = $('create-restaurant-btn');
     const addTablesBtn   = $('add-tables-btn');
 
-    /* ---------- DOM: Toggle ON/OFF ---------- */
+    /* =========================================================
+       3. DOM: Toggle ON/OFF
+       ========================================================= */
     const openCheckbox = $('open-checkbox');
     const toggleLabel  = $('toggle-label');
 
-        /* ---------- Filtros por estado ---------- */
-    const tablesFilter   = $('tables-filter');
-    const filterTabs     = document.querySelectorAll('.filter-tab');
-    const countAll       = $('count-all');
-    const countAvailable = $('count-available');
-    const countOccupied  = $('count-occupied');
-    const countReserved  = $('count-reserved');
+    /* =========================================================
+       4. DOM: Filtros y Buscador
+       ========================================================= */
+    const filterTabs       = document.querySelectorAll('.filter-tab');
+    const countAll         = $('count-all');
+    const countAvailable   = $('count-available');
+    const countOccupied    = $('count-occupied');
+    const countReserved    = $('count-reserved');
     const searchTableInput = $('search-table-input');
 
     let activeFilter = 'all';
 
-    /* ---------- DOM: Modal editar ---------- */
-    const editModal    = $('edit-modal');
+    /* =========================================================
+       5. DOM: Modal Editar
+       ========================================================= */
+    const editModal      = $('edit-modal');
     const editModalTitle = $('edit-modal-title');
-    const editCancel   = $('edit-cancel');
-    const editCancel2  = $('edit-cancel-2');
-    const editForm     = $('edit-form');
-    const editSave     = $('edit-save');
-    const formError    = $('form-error');
+    const editCancel     = $('edit-cancel');
+    const editCancel2    = $('edit-cancel-2');
+    const editForm       = $('edit-form');
+    const editSave       = $('edit-save');
+    const formError      = $('form-error');
 
+    // Inputs de la pestaña Info
     const nameIn    = $('name');
     const addressIn = $('address');
     const phoneIn   = $('phone');
     const descIn    = $('description');
 
-    /* Numberbox: Agregar mesas */
-    const addChairsMinus  = $('add-chairs-minus');
-    const addChairsPlus   = $('add-chairs-plus');
-    const addChairsCount  = $('add-chairs-count');
-    const addTablesMinus  = $('add-tables-minus');
-    const addTablesPlus   = $('add-tables-plus');
-    const addTablesCount  = $('add-tables-count');
-    const addHint         = $('add-hint');
+    // Inputs de la pestaña Agregar
+    const addChairsMinus = $('add-chairs-minus');
+    const addChairsPlus  = $('add-chairs-plus');
+    const addChairsCount = $('add-chairs-count');
+    const addTablesMinus = $('add-tables-minus');
+    const addTablesPlus  = $('add-tables-plus');
+    const addTablesCount = $('add-tables-count');
+    const addHint        = $('add-hint');
 
-    /* Numberbox: Eliminar mesas */
+    // Inputs de la pestaña Eliminar
     const removeInfo        = $('remove-info');
     const removeTablesMinus = $('remove-tables-minus');
     const removeTablesPlus  = $('remove-tables-plus');
     const removeTablesCount = $('remove-tables-count');
     const removeHint        = $('remove-hint');
 
+    // Pestañas
     const tabs      = document.querySelectorAll('.tab');
     const tabPanels = document.querySelectorAll('.tab-panel');
 
-    /* ---------- DOM: Modal crear ---------- */
-    const createModal   = $('create-modal');
-    const cancelCreate  = $('cancel-create-btn');
-    const submitCreate  = $('submit-create-btn');
-    const createForm    = $('create-restaurant-form');
-    const modalError    = $('modal-error');
+    /* =========================================================
+       6. DOM: Modal Crear Restaurante
+       ========================================================= */
+    const createModal  = $('create-modal');
+    const cancelCreate = $('cancel-create-btn');
+    const submitCreate = $('submit-create-btn');
+    const createForm   = $('create-restaurant-form');
+    const modalError   = $('modal-error');
 
-    /* ---------- DOM: Modales confirmación ---------- */
-    const confirmModal = $('confirm-modal');
-    const confirmTitle = $('confirm-title');
-    const confirmMsg   = $('confirm-message');
-    const confirmOk    = $('confirm-ok');
-    const confirmCancel= $('confirm-cancel');
+    /* =========================================================
+       7. DOM: Modales de Confirmación / Bloqueo
+       ========================================================= */
+    const confirmModal  = $('confirm-modal');
+    const confirmTitle  = $('confirm-title');
+    const confirmMsg    = $('confirm-message');
+    const confirmOk     = $('confirm-ok');
+    const confirmCancel = $('confirm-cancel');
 
     const blockedModal = $('blocked-modal');
     const blockedMsg   = $('blocked-message');
     const blockedOk    = $('blocked-ok');
 
-    /* ---------- Estado ---------- */
-    let restaurant    = null;
-    let tables        = [];
-    let activeTab     = 'info';
+    /* =========================================================
+       8. Estado Global
+       ========================================================= */
+    let restaurant = null;
+    let tables     = [];
+    let activeTab  = 'info';
 
     const MIN_TABLES = 1;
     const MAX_TABLES = 100;
     const MIN_CHAIRS = 1;
     const MAX_CHAIRS = 20;
+
+    /* =========================================================
+       9. Navbar
+       ========================================================= */
+    navHome.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     navEdit.addEventListener('click', openEditModal);
     navLogout.addEventListener('click', () => AuthApi.logout());
 
     /* =========================================================
-       TOGGLE abierto / cerrado
+       10. Toggle Abierto / Cerrado
        ========================================================= */
     openCheckbox.addEventListener('change', async () => {
         if (!restaurant) return;
@@ -129,7 +152,16 @@
 
             restaurant.is_open = newState ? 1 : 0;
             toggleLabel.textContent = newState ? 'Abierto' : 'Cerrado';
-            UI.success(newState ? 'Restaurante abierto' : 'Restaurante cerrado');
+
+            if (newState === false) {
+                const mesasAOcupar = tables.filter(t => t.status_id !== 1);
+                if (mesasAOcupar.length > 0) {
+                    await Promise.all(mesasAOcupar.map(t => forceAvailable(t.id)));
+                }
+            }
+
+            UI.success(newState ? 'Restaurante abierto' : 'Restaurante cerrado y mesas liberadas');
+            await load();
 
         } catch (err) {
             openCheckbox.checked = !newState;
@@ -140,7 +172,7 @@
     });
 
     /* =========================================================
-       CARGA INICIAL
+       11. Carga Inicial
        ========================================================= */
     function showView(el) {
         [loading, emptyState, noTablesState, tablesContent]
@@ -167,11 +199,9 @@
                 restaurant.address
             ].filter(Boolean).join(' · ');
 
-            // Toggle
             openCheckbox.checked = restaurant.is_open === 1 || restaurant.is_open === true;
             toggleLabel.textContent = openCheckbox.checked ? 'Abierto' : 'Cerrado';
 
-            // Cargar mesas
             const tablesRes = await RestaurantApi.listTables(restaurant.id);
             tables = tablesRes.data || [];
 
@@ -190,7 +220,7 @@
     }
 
     /* =========================================================
-       RENDER DE MESAS
+       12. Render de Mesas
        ========================================================= */
     function renderTables() {
         tablesGrid.innerHTML = tables.map(t => {
@@ -216,7 +246,6 @@
         applyFilter();
     }
 
-    /* Actualizar contadores de cada estado */
     function updateCounters() {
         const total     = tables.length;
         const available = tables.filter(t => t.status_id === 1).length;
@@ -229,8 +258,10 @@
         countReserved.textContent  = reserved;
     }
 
-    /* Aplicar filtro a los círculos */
-        function applyFilter() {
+    /* =========================================================
+       13. Filtros y Buscador Exacto
+       ========================================================= */
+    function applyFilter() {
         const searchTerm = searchTableInput ? searchTableInput.value.trim() : '';
         const circles = tablesGrid.querySelectorAll('.table-circle');
 
@@ -242,13 +273,9 @@
             if (statusId === 2) statusKey = 'occupied';
             else if (statusId === 3) statusKey = 'reserved';
 
-            // 1. Validar filtro por estado
             const matchesStatus = (activeFilter === 'all' || statusKey === activeFilter);
-
-            // 2. Validar búsqueda exacta
             const matchesSearch = searchTerm === '' || tableNumber === searchTerm;
 
-            // Mostrar si cumple ambas
             if (matchesStatus && matchesSearch) {
                 circle.hidden = false;
             } else {
@@ -257,6 +284,23 @@
         });
     }
 
+    filterTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            filterTabs.forEach(t => t.classList.remove('is-active'));
+            tab.classList.add('is-active');
+
+            activeFilter = tab.dataset.filter;
+            applyFilter();
+        });
+    });
+
+    if (searchTableInput) {
+        searchTableInput.addEventListener('input', applyFilter);
+    }
+
+    /* =========================================================
+       14. Rotar Estado de una Mesa
+       ========================================================= */
     async function rotateStatus(el) {
         const tableId = parseInt(el.dataset.id, 10);
         el.disabled = true;
@@ -279,7 +323,7 @@
             if (idx >= 0) tables[idx].status_id = updated.status_id;
 
             UI.toast(`Mesa ${updated.table_number} → ${newStatus.label}`, newStatus.key);
-             updateCounters();
+            updateCounters();
             applyFilter();
 
         } catch (err) {
@@ -289,31 +333,50 @@
         }
     }
 
+    async function forceAvailable(tableId) {
+        const table = tables.find(t => t.id === tableId);
+        if (!table || table.status_id === 1) return; 
+
+        let rotationsNeeded = 0;
+        if (table.status_id === 2) rotationsNeeded = 2;
+        if (table.status_id === 3) rotationsNeeded = 1;
+
+        for (let i = 0; i < rotationsNeeded; i++) {
+            const res = await TableApi.rotateStatus(tableId);
+            table.status_id = res.data.status_id; 
+        }
+    }
+
     /* =========================================================
-       MODAL EDITAR — Abrir / Cerrar
+       15. Modal Editar — Abrir / Cerrar
        ========================================================= */
     function openEditModal() {
         if (!restaurant) return;
 
-        // Precargar pestaña Info
         nameIn.value    = restaurant.name || '';
         addressIn.value = restaurant.address || '';
         phoneIn.value   = restaurant.phone || '';
         descIn.value    = restaurant.description || '';
 
-        // Precargar pestaña Agregar
+        // Precargar pestaña Agregar (Arranca en 1 mesa o 0 si está lleno)
+        const remaining = MAX_TABLES - tables.length;
         addChairsCount.value = tables[0]?.chairs || 4;
-        addTablesCount.value = 5;
+        addTablesCount.value = remaining > 0 ? 1 : 0;
         updateAddHint();
 
-        // Precargar pestaña Eliminar
-        removeTablesCount.value = 0;
+        // Precargar pestaña Eliminar (Arranca en 1 mesa)
+        removeTablesCount.value = 1;
         updateRemoveInfo();
         updateRemoveHint();
 
-        // Reset a la primera pestaña
         activateTab('info');
         formError.hidden = true;
+
+        // Deshabilitar botones de agregar si ya está lleno
+        const isFull = remaining <= 0;
+        addTablesMinus.disabled = isFull;
+        addTablesPlus.disabled = isFull;
+        addTablesCount.disabled = isFull;
 
         editModal.hidden = false;
         document.body.style.overflow = 'hidden';
@@ -330,13 +393,14 @@
         if (e.target === editModal) closeEditModal();
     });
 
-    /* ---------- Pestañas ---------- */
+    /* =========================================================
+       16. Pestañas del Modal
+       ========================================================= */
     function activateTab(name) {
         activeTab = name;
         tabs.forEach(t => t.classList.toggle('is-active', t.dataset.tab === name));
         tabPanels.forEach(p => p.classList.toggle('is-active', p.dataset.panel === name));
 
-        // Cambiar título del modal según la pestaña
         const titles = {
             info:   'Editar restaurante',
             add:    'Agregar mesas',
@@ -344,7 +408,6 @@
         };
         editModalTitle.textContent = titles[name] || 'Editar';
 
-        // Ocultar errores al cambiar de pestaña
         formError.hidden = true;
     }
 
@@ -353,7 +416,7 @@
     });
 
     /* =========================================================
-       NUMBERBOXES — Agregar
+       17. Numberboxes — Agregar Mesas
        ========================================================= */
     function clampChairs(n) {
         n = parseInt(n, 10);
@@ -364,15 +427,31 @@
     function clampAddTables(n) {
         n = parseInt(n, 10);
         if (isNaN(n)) n = 1;
-        return Math.min(MAX_TABLES, Math.max(1, n));
+        
+        const remaining = MAX_TABLES - tables.length;
+        if (remaining <= 0) return 0;
+
+        return Math.min(remaining, Math.max(1, n));
     }
 
     function updateAddHint() {
+        const remaining = MAX_TABLES - tables.length;
         const chairs = clampChairs(addChairsCount.value);
         const count  = clampAddTables(addTablesCount.value);
-        addHint.innerHTML = `Se agregarán <strong>${count}</strong> ${count === 1 ? 'mesa' : 'mesas'} con <strong>${chairs}</strong> ${chairs === 1 ? 'silla' : 'sillas'} cada una.`;
+
+        if (remaining <= 0) {
+            addHint.innerHTML = `<span style="color: #dc2626; font-weight: 600;">Límite alcanzado: ya tenés ${MAX_TABLES} mesas.</span>`;
+            return;
+        }
+
+        if (parseInt(addTablesCount.value, 10) > remaining) {
+            addHint.innerHTML = `Solo podés agregar <strong>${remaining}</strong> ${remaining === 1 ? 'mesa' : 'mesas'} más para llegar al límite de ${MAX_TABLES}.`;
+        } else {
+            addHint.innerHTML = `Se agregará${count > 1 ? 'n' : ''} <strong>${count}</strong> ${count === 1 ? 'mesa' : 'mesas'} con <strong>${chairs}</strong> ${chairs === 1 ? 'silla' : 'sillas'} cada una.`;
+        }
     }
 
+    // EVENTOS AGREGAR (Recuperados)
     addChairsMinus.addEventListener('click', () => {
         addChairsCount.value = clampChairs(addChairsCount.value) - 1;
         updateAddHint();
@@ -381,7 +460,7 @@
         addChairsCount.value = clampChairs(addChairsCount.value) + 1;
         updateAddHint();
     });
-    addChairsCount.addEventListener('blur', () => {
+    addChairsCount.addEventListener('input', () => {
         addChairsCount.value = clampChairs(addChairsCount.value);
         updateAddHint();
     });
@@ -394,18 +473,18 @@
         addTablesCount.value = clampAddTables(addTablesCount.value) + 1;
         updateAddHint();
     });
-    addTablesCount.addEventListener('blur', () => {
+    addTablesCount.addEventListener('input', () => {
         addTablesCount.value = clampAddTables(addTablesCount.value);
         updateAddHint();
     });
 
     /* =========================================================
-       NUMBERBOXES — Eliminar
+       18. Numberboxes — Eliminar Mesas
        ========================================================= */
     function clampRemoveTables(n) {
         n = parseInt(n, 10);
-        if (isNaN(n)) n = 0;
-        return Math.min(tables.length, Math.max(0, n));
+        if (isNaN(n)) n = 1;
+        return Math.min(tables.length, Math.max(1, n)); 
     }
 
     function updateRemoveInfo() {
@@ -415,9 +494,7 @@
 
     function updateRemoveHint() {
         const n = clampRemoveTables(removeTablesCount.value);
-        removeHint.innerHTML = n === 0
-            ? `Se eliminarán <strong>0</strong> mesas.`
-            : `Se eliminarán las últimas <strong>${n}</strong> ${n === 1 ? 'mesa' : 'mesas'}.`;
+        removeHint.innerHTML = `Se eliminará${n > 1 ? 'n' : ''} <strong>${n}</strong> ${n === 1 ? 'mesa' : 'mesas'}.`;
     }
 
     removeTablesMinus.addEventListener('click', () => {
@@ -428,13 +505,13 @@
         removeTablesCount.value = clampRemoveTables(removeTablesCount.value) + 1;
         updateRemoveHint();
     });
-    removeTablesCount.addEventListener('blur', () => {
+    removeTablesCount.addEventListener('input', () => {
         removeTablesCount.value = clampRemoveTables(removeTablesCount.value);
         updateRemoveHint();
     });
 
     /* =========================================================
-       GUARDAR — según pestaña activa
+       19. Guardar (según pestaña activa)
        ========================================================= */
     editForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -449,7 +526,6 @@
         }
     });
 
-    /* ─── Guardar Info ─── */
     async function saveInfo() {
         const name        = nameIn.value.trim();
         const address     = addressIn.value.trim();
@@ -492,8 +568,15 @@
         }
     }
 
-    /* ─── Agregar mesas ─── */
     async function addTables() {
+        const remaining = MAX_TABLES - tables.length;
+        
+        if (remaining <= 0) {
+            formError.textContent = `No podés agregar más mesas. Ya alcanzaste el límite de ${MAX_TABLES}.`;
+            formError.hidden = false;
+            return;
+        }
+
         const count  = clampAddTables(addTablesCount.value);
         const chairs = clampChairs(addChairsCount.value);
 
@@ -532,7 +615,6 @@
         }
     }
 
-    /* ─── Eliminar mesas ─── */
     async function removeTables() {
         const count = clampRemoveTables(removeTablesCount.value);
 
@@ -542,7 +624,6 @@
             return;
         }
 
-        // Verificar que las últimas N estén disponibles
         const toDelete = tables.slice(tables.length - count);
         const busy = toDelete.filter(t => t.status_id !== 1);
 
@@ -580,7 +661,7 @@
     }
 
     /* =========================================================
-       CREAR RESTAURANTE
+       20. Crear Restaurante
        ========================================================= */
     function openCreateModal() {
         createForm.reset();
@@ -637,7 +718,6 @@
             closeCreateModal();
             await load();
 
-            // Si el restaurante quedó sin mesas, abrir automáticamente el modal de agregar
             if (tables.length === 0) {
                 setTimeout(() => {
                     openEditModal();
@@ -655,7 +735,7 @@
     });
 
     /* =========================================================
-       MODALES DE CONFIRMACIÓN
+       21. Modales de Confirmación
        ========================================================= */
     function askConfirm(title, message) {
         return new Promise((resolve) => {
@@ -686,27 +766,7 @@
     }
 
     /* =========================================================
-       FILTROS POR ESTADO
-       ========================================================= */
-    filterTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            filterTabs.forEach(t => t.classList.remove('is-active'));
-            tab.classList.add('is-active');
-
-            activeFilter = tab.dataset.filter;
-            applyFilter();
-        });
-    });
-
-    /* =========================================================
-       BUSCADOR DE MESAS
-       ========================================================= */
-    if (searchTableInput) {
-        searchTableInput.addEventListener('input', applyFilter);
-    }
-    
-    /* =========================================================
-       Init
+       22. Init
        ========================================================= */
     load();
 })();
