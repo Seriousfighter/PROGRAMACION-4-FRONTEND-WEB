@@ -106,11 +106,6 @@
     const MAX_TABLES = 100;
     const MIN_CHAIRS = 1;
     const MAX_CHAIRS = 20;
-
-    /* =========================================================
-       NAVBAR
-       ========================================================= */
-    navHome.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     navEdit.addEventListener('click', openEditModal);
     navLogout.addEventListener('click', () => AuthApi.logout());
 
