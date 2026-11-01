@@ -1,7 +1,8 @@
 /* =========================================================
-   Página pública de restaurantes
+   Página pública de restaurantes (web)
    ========================================================= */
 (function () {
+    // Referencias a los elementos del DOM
     const grid          = document.getElementById('restaurants-grid');
     const loading       = document.getElementById('loading');
     const errorBox      = document.getElementById('error-box');
@@ -16,11 +17,12 @@
     const onlyOpenBtn    = document.getElementById('only-open-btn');
     const pills          = document.querySelectorAll('.pill');
 
+    // Guarda todos los restaurantes para filtrar sin volver a pedir a la API
     let allRestaurants = [];
 
     /* ---------------------------------------------------------
-       Embeds y Links personalizados por restaurante.
-       Si un restaurante no está acá, se genera automáticamente.
+       Links e iframes de Google Maps personalizados.
+       Si un restaurante no está acá, se genera automático.
        --------------------------------------------------------- */
     const RESTAURANT_MAPS = {
         1: { // Darcy Resto
@@ -37,48 +39,45 @@
         },
         6: { // Ándale
             embed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3074.113761600445!2d-60.31210442476286!3d-32.03120107398426!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95b424a22407a597%3A0xbdafc99f7b1961bb!2s%C3%81ndale%20Bar%20%26%20Comida%20Mexicana!5e1!3m2!1ses-419!2sar!4v1793118703633!5m2!1ses-419!2sar',
-            // 👇 Acá va el link oficial de Ándale que te lleva a la ficha con las 4.4 estrellas
             link: 'https://maps.app.goo.gl/gQzfMF9Q8eXb6oWo6' 
         }
     };
 
-    /* Genera el embed/link automático para un restaurante */
+    // Genera un link de Google Maps a partir de una dirección (por si no está en la lista)
     function autoMap(address) {
         let fullAddress = address || '';
         if (!fullAddress.toLowerCase().includes('crespo')) {
-            fullAddress += ', Crespo, Entre Ríos, Argentina';
+            fullAddress += ', Crespo, Entre Ríos, Argentina'; // Agrega la ciudad si falta
         }
         
-        const query = encodeURIComponent(fullAddress);
+        const query = encodeURIComponent(fullAddress); // Codifica la URL (tildes, espacios)
         return {
             embed: `https://maps.google.com/maps?q=${query}&t=&z=17&ie=UTF8&iwloc=&output=embed`,
             link:  `https://www.google.com/maps/search/?api=1&query=${query}`
         };
     }
 
+    // Oculta todas las vistas y muestra solo la que recibe
     function show(el) {
         [loading, errorBox, emptyBox, grid].forEach(e => e.hidden = true);
         el.hidden = false;
     }
 
+    // Construye la tarjeta HTML de un restaurante
     function buildCard(r, index) {
         const available = r.available_tables;
         const total     = r.total_tables;
         const pct       = total > 0 ? (available / total) * 100 : 0;
 
-        const delay = Math.min(index * 40, 400);
+        const delay = Math.min(index * 40, 400); // Retraso para la animación
 
-        // Mapa: custom si existe, si no automático
+        // Busca el mapa personalizado o genera uno automático
         const custom = RESTAURANT_MAPS[r.id];
         const fallback = autoMap(r.address);
-        
-        // Embed: el personalizado (que muestra el pin exacto) o el automático
         const embed = custom?.embed || fallback.embed;
-        
-        // Link: SI EXISTE en RESTAURANT_MAPS usa ese (ficha del lugar). Si no, busca la dirección.
         const link = custom?.link || fallback.link;
 
-        // Badge de estado según disponibilidad
+        // Define el color y texto del badge según la disponibilidad
         let badgeCls = 'status-badge--success';
         let badgeTxt = 'Disponible';
         if (!r.is_open) {
@@ -95,12 +94,12 @@
             badgeTxt = 'Medio';
         }
 
-        // Color de la barra
+        // Color de la barra de disponibilidad
         let barCls = '';
         if (pct <= 30) barCls = 'availability-bar__fill--low';
         else if (pct <= 60) barCls = 'availability-bar__fill--medium';
 
-        // Categoría (chip corto)
+        // Toma la primera palabra de la descripción como categoría
         const category = r.description ? r.description.split(' ')[0] : 'Restaurante';
 
         return `
@@ -171,6 +170,7 @@
         `;
     }
 
+    // Palabras clave por categoría (para el filtro)
     const CATEGORY_KEYWORDS = {
         mexicana: ['mexican', 'taco', 'ándale', 'andale', 'burrito', 'guacamole'],
         italiano: ['italian', 'pasta', 'pizza', 'punto', 'coma', 'napoli'],
@@ -178,15 +178,18 @@
         bar:      ['bar', 'cerveza', 'cervecería', 'birra', 'pub', 'ándale']
     };
 
+    // Aplica los filtros de búsqueda, categoría y "Solo libres"
     function applyFilters() {
         const query    = searchInput.value.trim().toLowerCase();
         const sort     = sortSelect.value;
         const category = categorySelect ? categorySelect.value.toLowerCase() : '';
         const onlyOpen = onlyOpenBtn ? onlyOpenBtn.classList.contains('is-active') : false;
 
+        // Filtra la lista de restaurantes
         let list = allRestaurants.filter(r => {
             if (onlyOpen && !r.is_open) return false;
 
+            // Filtro por categoría (usa las palabras clave)
             if (category) {
                 const keywords = CATEGORY_KEYWORDS[category] || [category];
                 const haystack = [r.name, r.description || ''].join(' ').toLowerCase();
@@ -194,11 +197,13 @@
                 if (!matches) return false;
             }
 
+            // Filtro por texto de búsqueda
             if (!query) return true;
             const haystack = [r.name, r.address, r.description || ''].join(' ').toLowerCase();
             return haystack.includes(query);
         });
 
+        // Ordena la lista según la opción seleccionada
         if (sort === 'availability') {
             list.sort((a, b) => b.available_tables - a.available_tables || a.name.localeCompare(b.name));
         } else if (sort === 'name') {
@@ -207,6 +212,7 @@
             list.sort((a, b) => b.total_tables - a.total_tables || a.name.localeCompare(b.name));
         }
 
+        // Muestra mensaje de vacío o dibuja las tarjetas
         if (list.length === 0) {
             emptyMsg.textContent = query
                 ? `No se encontraron resultados para "${query}".`
@@ -220,6 +226,7 @@
         }
     }
 
+    // Carga los restaurantes desde la API
     async function load() {
         show(loading);
         try {
@@ -233,7 +240,7 @@
                 return;
             }
             
-            toolbar.hidden = false;
+            toolbar.hidden = false; // Muestra la barra de búsqueda y filtros
             applyFilters();
             show(grid);
 
@@ -243,11 +250,13 @@
         }
     }
 
+    // Eventos de los filtros
     searchInput.addEventListener('input', applyFilters);
     sortSelect.addEventListener('change', applyFilters);
 
     if (categorySelect) {
         categorySelect.addEventListener('change', () => {
+            // Sincroniza el select con las píldoras de categoría
             pills.forEach(p => {
                 p.classList.toggle('is-active', p.dataset.category === categorySelect.value);
             });
@@ -257,11 +266,12 @@
 
     if (onlyOpenBtn) {
         onlyOpenBtn.addEventListener('click', () => {
-            onlyOpenBtn.classList.toggle('is-active');
+            onlyOpenBtn.classList.toggle('is-active'); // Cambia el color del botón
             applyFilters();
         });
     }
 
+    // Eventos de las píldoras de categoría rápida
     pills.forEach(pill => {
         pill.addEventListener('click', () => {
             pills.forEach(p => p.classList.remove('is-active'));
@@ -274,5 +284,6 @@
         });
     });
 
+    // Inicia la carga de datos
     load();
 })();

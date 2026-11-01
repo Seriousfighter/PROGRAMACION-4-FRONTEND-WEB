@@ -1,32 +1,26 @@
 /* =========================================================
    Dashboard (web) — Panel general de mesas
-   - Navbar con Home / Editar / Vista pública / Salir
-   - Toggle abierto/cerrado
-   - Buscador exacto por número de mesa
-   - Grid de mesas (círculos) con click para rotar estado
-   - Modal "Editar" con 3 pestañas: Info / Agregar / Eliminar
    ========================================================= */
 (function () {
+    // Protege la ruta: si no hay sesión activa, redirige al login
     Guard.requireAuth();
 
+    // Atajo para document.getElementById
     const $ = (id) => document.getElementById(id);
 
+    // Diccionario de estados de las mesas
     const STATUS = {
         1: { key: 'available', label: 'Disponible' },
         2: { key: 'occupied',  label: 'Ocupada'    },
         3: { key: 'reserved',  label: 'Reservada'  }
     };
 
-    /* =========================================================
-       1. DOM: Navbar
-       ========================================================= */
+    /* ---------- 1. DOM: Navbar ---------- */
     const navHome   = $('nav-home');
     const navEdit   = $('nav-edit');
     const navLogout = $('nav-logout');
 
-    /* =========================================================
-       2. DOM: Panel principal
-       ========================================================= */
+    /* ---------- 2. DOM: Panel principal ---------- */
     const restaurantInfo = $('restaurant-info');
     const loading        = $('loading');
     const emptyState     = $('empty-state');
@@ -36,15 +30,11 @@
     const createBtn      = $('create-restaurant-btn');
     const addTablesBtn   = $('add-tables-btn');
 
-    /* =========================================================
-       3. DOM: Toggle ON/OFF
-       ========================================================= */
+    /* ---------- 3. DOM: Toggle ON/OFF ---------- */
     const openCheckbox = $('open-checkbox');
     const toggleLabel  = $('toggle-label');
 
-    /* =========================================================
-       4. DOM: Filtros y Buscador
-       ========================================================= */
+    /* ---------- 4. DOM: Filtros y Buscador ---------- */
     const filterTabs       = document.querySelectorAll('.filter-tab');
     const countAll         = $('count-all');
     const countAvailable   = $('count-available');
@@ -52,11 +42,9 @@
     const countReserved    = $('count-reserved');
     const searchTableInput = $('search-table-input');
 
-    let activeFilter = 'all';
+    let activeFilter = 'all'; // Filtro actual (Todas, Libres, etc.)
 
-    /* =========================================================
-       5. DOM: Modal Editar
-       ========================================================= */
+    /* ---------- 5. DOM: Modal Editar ---------- */
     const editModal      = $('edit-modal');
     const editModalTitle = $('edit-modal-title');
     const editCancel     = $('edit-cancel');
@@ -87,22 +75,18 @@
     const removeTablesCount = $('remove-tables-count');
     const removeHint        = $('remove-hint');
 
-    // Pestañas
+    // Pestañas del modal
     const tabs      = document.querySelectorAll('.tab');
     const tabPanels = document.querySelectorAll('.tab-panel');
 
-    /* =========================================================
-       6. DOM: Modal Crear Restaurante
-       ========================================================= */
+    /* ---------- 6. DOM: Modal Crear Restaurante ---------- */
     const createModal  = $('create-modal');
     const cancelCreate = $('cancel-create-btn');
     const submitCreate = $('submit-create-btn');
     const createForm   = $('create-restaurant-form');
     const modalError   = $('modal-error');
 
-    /* =========================================================
-       7. DOM: Modales de Confirmación / Bloqueo
-       ========================================================= */
+    /* ---------- 7. DOM: Modales de Confirmación / Bloqueo ---------- */
     const confirmModal  = $('confirm-modal');
     const confirmTitle  = $('confirm-title');
     const confirmMsg    = $('confirm-message');
@@ -113,24 +97,22 @@
     const blockedMsg   = $('blocked-message');
     const blockedOk    = $('blocked-ok');
 
-    /* =========================================================
-       8. Estado Global
-       ========================================================= */
-    let restaurant = null;
-    let tables     = [];
-    let activeTab  = 'info';
+    /* ---------- 8. Estado Global ---------- */
+    let restaurant = null;   // Objeto con los datos del restaurante
+    let tables     = [];     // Array con todas las mesas
+    let activeTab  = 'info'; // Pestaña activa del modal
 
     const MIN_TABLES = 1;
-    const MAX_TABLES = 100;
+    const MAX_TABLES = 100;  // Límite de mesas por restaurante
     const MIN_CHAIRS = 1;
     const MAX_CHAIRS = 20;
 
     /* =========================================================
        9. Navbar
        ========================================================= */
-    navHome.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-    navEdit.addEventListener('click', openEditModal);
-    navLogout.addEventListener('click', () => AuthApi.logout());
+    navHome.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' })); // Sube suavemente al inicio
+    navEdit.addEventListener('click', openEditModal); // Abre el modal de edición
+    navLogout.addEventListener('click', () => AuthApi.logout()); // Cierra sesión
 
     /* =========================================================
        10. Toggle Abierto / Cerrado
@@ -139,9 +121,10 @@
         if (!restaurant) return;
 
         const newState = openCheckbox.checked;
-        openCheckbox.disabled = true;
+        openCheckbox.disabled = true; // Evita doble clic
 
         try {
+            // Actualiza el estado del restaurante en la API
             await RestaurantApi.update(restaurant.id, {
                 name:        restaurant.name,
                 address:     restaurant.address,
@@ -153,6 +136,7 @@
             restaurant.is_open = newState ? 1 : 0;
             toggleLabel.textContent = newState ? 'Abierto' : 'Cerrado';
 
+            // Si se está cerrando, libera todas las mesas automáticamente
             if (newState === false) {
                 const mesasAOcupar = tables.filter(t => t.status_id !== 1);
                 if (mesasAOcupar.length > 0) {
@@ -161,10 +145,10 @@
             }
 
             UI.success(newState ? 'Restaurante abierto' : 'Restaurante cerrado y mesas liberadas');
-            await load();
+            await load(); // Recarga la vista
 
         } catch (err) {
-            openCheckbox.checked = !newState;
+            openCheckbox.checked = !newState; // Revierte el switch si falla
             UI.error(err.message || 'No se pudo cambiar el estado');
         } finally {
             openCheckbox.disabled = false;
@@ -175,6 +159,7 @@
        11. Carga Inicial
        ========================================================= */
     function showView(el) {
+        // Oculta todas las vistas y muestra solo la que recibe
         [loading, emptyState, noTablesState, tablesContent]
             .forEach(e => e.hidden = true);
         el.hidden = false;
@@ -182,11 +167,11 @@
 
     async function load() {
         showView(loading);
-
         try {
             const res = await RestaurantApi.list();
             const restaurants = res.data || [];
 
+            // Si no hay restaurantes, muestra el estado vacío
             if (restaurants.length === 0) {
                 restaurantInfo.textContent = 'Creá tu primer restaurante.';
                 showView(emptyState);
@@ -202,6 +187,7 @@
             openCheckbox.checked = restaurant.is_open === 1 || restaurant.is_open === true;
             toggleLabel.textContent = openCheckbox.checked ? 'Abierto' : 'Cerrado';
 
+            // Trae las mesas
             const tablesRes = await RestaurantApi.listTables(restaurant.id);
             tables = tablesRes.data || [];
 
@@ -223,6 +209,7 @@
        12. Render de Mesas
        ========================================================= */
     function renderTables() {
+        // Genera el HTML de cada mesa
         tablesGrid.innerHTML = tables.map(t => {
             const status = STATUS[t.status_id] || STATUS[1];
             const chairs = t.chairs || 4;
@@ -238,6 +225,7 @@
             `;
         }).join('');
 
+        // Agrega el evento de clic a cada mesa
         tablesGrid.querySelectorAll('.table-circle').forEach(el => {
             el.addEventListener('click', () => rotateStatus(el));
         });
@@ -247,6 +235,7 @@
     }
 
     function updateCounters() {
+        // Actualiza los números de los filtros
         const total     = tables.length;
         const available = tables.filter(t => t.status_id === 1).length;
         const occupied  = tables.filter(t => t.status_id === 2).length;
@@ -274,6 +263,7 @@
             else if (statusId === 3) statusKey = 'reserved';
 
             const matchesStatus = (activeFilter === 'all' || statusKey === activeFilter);
+            // Búsqueda exacta: si escribe "1", solo muestra la mesa 1 (no la 10, 11, etc.)
             const matchesSearch = searchTerm === '' || tableNumber === searchTerm;
 
             if (matchesStatus && matchesSearch) {
@@ -288,7 +278,6 @@
         tab.addEventListener('click', () => {
             filterTabs.forEach(t => t.classList.remove('is-active'));
             tab.classList.add('is-active');
-
             activeFilter = tab.dataset.filter;
             applyFilter();
         });
@@ -310,6 +299,7 @@
             const updated = res.data;
             const newStatus = STATUS[updated.status_id] || STATUS[1];
 
+            // Actualiza las clases CSS del círculo
             el.classList.remove(
                 'table-circle--available',
                 'table-circle--occupied',
@@ -334,6 +324,7 @@
     }
 
     async function forceAvailable(tableId) {
+        // Fuerza una mesa a volver a estar disponible (1) sin importar su estado actual
         const table = tables.find(t => t.id === tableId);
         if (!table || table.status_id === 1) return; 
 
@@ -353,18 +344,18 @@
     function openEditModal() {
         if (!restaurant) return;
 
+        // Precarga los inputs con los datos actuales
         nameIn.value    = restaurant.name || '';
         addressIn.value = restaurant.address || '';
         phoneIn.value   = restaurant.phone || '';
         descIn.value    = restaurant.description || '';
 
-        // Precargar pestaña Agregar (Arranca en 1 mesa o 0 si está lleno)
+        // Calcula cuántas mesas faltan para llegar al límite de 100
         const remaining = MAX_TABLES - tables.length;
         addChairsCount.value = tables[0]?.chairs || 4;
         addTablesCount.value = remaining > 0 ? 1 : 0;
         updateAddHint();
 
-        // Precargar pestaña Eliminar (Arranca en 1 mesa)
         removeTablesCount.value = 1;
         updateRemoveInfo();
         updateRemoveHint();
@@ -372,25 +363,25 @@
         activateTab('info');
         formError.hidden = true;
 
-        // Deshabilitar botones de agregar si ya está lleno
+        // Si ya hay 100 mesas, bloquea los botones para agregar
         const isFull = remaining <= 0;
         addTablesMinus.disabled = isFull;
         addTablesPlus.disabled = isFull;
         addTablesCount.disabled = isFull;
 
         editModal.hidden = false;
-        document.body.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden'; // Bloquea el scroll del fondo
     }
 
     function closeEditModal() {
         editModal.hidden = true;
-        document.body.style.overflow = '';
+        document.body.style.overflow = ''; // Devuelve el scroll
     }
 
     editCancel.addEventListener('click', closeEditModal);
     editCancel2.addEventListener('click', closeEditModal);
     editModal.addEventListener('click', (e) => {
-        if (e.target === editModal) closeEditModal();
+        if (e.target === editModal) closeEditModal(); // Cierra si se hace clic en el fondo
     });
 
     /* =========================================================
@@ -407,7 +398,6 @@
             remove: 'Eliminar mesas'
         };
         editModalTitle.textContent = titles[name] || 'Editar';
-
         formError.hidden = true;
     }
 
@@ -419,22 +409,23 @@
        17. Numberboxes — Agregar Mesas
        ========================================================= */
     function clampChairs(n) {
+        // Limita la cantidad de sillas entre 1 y 20
         n = parseInt(n, 10);
         if (isNaN(n)) n = 4;
         return Math.min(MAX_CHAIRS, Math.max(MIN_CHAIRS, n));
     }
 
     function clampAddTables(n) {
+        // Limita las mesas a agregar según el espacio restante hasta 100
         n = parseInt(n, 10);
         if (isNaN(n)) n = 1;
-        
         const remaining = MAX_TABLES - tables.length;
         if (remaining <= 0) return 0;
-
         return Math.min(remaining, Math.max(1, n));
     }
 
     function updateAddHint() {
+        // Actualiza el texto de ayuda debajo del input
         const remaining = MAX_TABLES - tables.length;
         const chairs = clampChairs(addChairsCount.value);
         const count  = clampAddTables(addTablesCount.value);
@@ -451,7 +442,7 @@
         }
     }
 
-    // EVENTOS AGREGAR (Recuperados)
+    // Eventos de los botones + y - (sillas)
     addChairsMinus.addEventListener('click', () => {
         addChairsCount.value = clampChairs(addChairsCount.value) - 1;
         updateAddHint();
@@ -465,6 +456,7 @@
         updateAddHint();
     });
 
+    // Eventos de los botones + y - (mesas)
     addTablesMinus.addEventListener('click', () => {
         addTablesCount.value = clampAddTables(addTablesCount.value) - 1;
         updateAddHint();
@@ -482,6 +474,7 @@
        18. Numberboxes — Eliminar Mesas
        ========================================================= */
     function clampRemoveTables(n) {
+        // Limita las mesas a eliminar (mínimo 1)
         n = parseInt(n, 10);
         if (isNaN(n)) n = 1;
         return Math.min(tables.length, Math.max(1, n)); 
@@ -527,6 +520,7 @@
     });
 
     async function saveInfo() {
+        // Guarda los datos de la pestaña "Información"
         const name        = nameIn.value.trim();
         const address     = addressIn.value.trim();
         const phone       = phoneIn.value.trim();
@@ -569,6 +563,7 @@
     }
 
     async function addTables() {
+        // Agrega las mesas nuevas a la base de datos
         const remaining = MAX_TABLES - tables.length;
         
         if (remaining <= 0) {
@@ -616,6 +611,7 @@
     }
 
     async function removeTables() {
+        // Elimina las mesas (solo si están disponibles)
         const count = clampRemoveTables(removeTablesCount.value);
 
         if (count <= 0) {
@@ -627,6 +623,7 @@
         const toDelete = tables.slice(tables.length - count);
         const busy = toDelete.filter(t => t.status_id !== 1);
 
+        // Si alguna de las mesas a eliminar está ocupada o reservada, bloquea la acción
         if (busy.length > 0) {
             const nums = busy.map(t => `Mesa ${t.table_number}`).join(', ');
             showBlocked(`No se puede eliminar porque ${nums} no está${busy.length > 1 ? 'n' : ''} disponible${busy.length > 1 ? 's' : ''}.`);
@@ -718,6 +715,7 @@
             closeCreateModal();
             await load();
 
+            // Si el restaurante quedó sin mesas, abre el modal de agregar automáticamente
             if (tables.length === 0) {
                 setTimeout(() => {
                     openEditModal();
@@ -738,6 +736,7 @@
        21. Modales de Confirmación
        ========================================================= */
     function askConfirm(title, message) {
+        // Muestra un modal de confirmación y devuelve una Promesa (true/false)
         return new Promise((resolve) => {
             confirmTitle.textContent = title;
             confirmMsg.textContent = message;
@@ -758,6 +757,7 @@
     }
 
     function showBlocked(message) {
+        // Muestra un modal de advertencia que solo tiene el botón "Entendido"
         blockedMsg.textContent = message;
         blockedModal.hidden = false;
         blockedOk.addEventListener('click', () => {
@@ -768,5 +768,5 @@
     /* =========================================================
        22. Init
        ========================================================= */
-    load();
+    load(); // Inicia la carga de datos
 })();

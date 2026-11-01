@@ -6,7 +6,7 @@ const RestaurantApi = {
     /* Listar los restaurantes del usuario autenticado
        GET /api/restaurants  →  { data: [...] } */
     list() {
-        return ApiClient.get('/restaurants');
+        return ApiClient.get('/restaurants'); 
     },
 
     /* Obtener un restaurante por id
