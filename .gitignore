@@ -1,0 +1,19 @@
+# System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Logs
+*.log
+
+# Dependencies (future-proofing)
+node_modules/
+vendor/
+
+# Env files
+.env
+.env.local

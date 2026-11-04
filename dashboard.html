@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel — Messapi</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/main.css?v=1">
+</head>
+<body>
+
+    <!-- ============================================
+         Navbar
+         ============================================ -->
+    <header class="app-navbar">
+        <div class="app-navbar__inner">
+
+            <div class="app-navbar__brand" style="display: flex; align-items: center; gap: 10px;">
+                <!-- Logo en círculo -->
+                <div style="width: 34px; height: 34px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #ffffff; border: 1px solid var(--border); padding: 2px; flex-shrink: 0;">
+                    <img src="assets/logo.jpeg" alt="Messapi" style="width: 100%; height: 100%; object-fit: contain; border-radius: 50%;">
+                </div>
+
+                <!-- Texto y Badge -->
+                <span style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--ink);">Messapi</span>
+                <span class="app-navbar__badge" style="margin-left: 4px;">Admin</span>
+            </div>
+
+            <nav class="app-navbar__actions">
+                <button type="button" class="navbar-btn is-active" id="nav-home" title="Home">
+                    <svg class="navbar-btn__icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                        <path d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1V10.5Z"
+                              fill="none" stroke="currentColor" stroke-width="1.8"
+                              stroke-linejoin="round" stroke-linecap="round"/>
+                    </svg>
+                    <span class="navbar-btn__label">Home</span>
+                </button>
+
+                <button type="button" class="navbar-btn" id="nav-edit" title="Editar">
+                    <svg class="navbar-btn__icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                        <path d="M4 20h4l10-10-4-4L4 16v4Z"
+                              fill="none" stroke="currentColor" stroke-width="1.8"
+                              stroke-linejoin="round" stroke-linecap="round"/>
+                        <path d="M13.5 6.5 17.5 10.5"
+                              fill="none" stroke="currentColor" stroke-width="1.8"
+                              stroke-linecap="round"/>
+                    </svg>
+                    <span class="navbar-btn__label">Editar</span>
+                </button>
+
+                <a href="public.html?from=panel" class="navbar-btn" id="nav-public" title="Ver página principal">
+                    <svg class="navbar-btn__icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                        <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"
+                              fill="none" stroke="currentColor" stroke-width="1.8"
+                              stroke-linejoin="round" stroke-linecap="round"/>
+                        <circle cx="12" cy="12" r="3"
+                                fill="none" stroke="currentColor" stroke-width="1.8"/>
+                    </svg>
+                    <span class="navbar-btn__label">Vista pública</span>
+                </a>
+
+                <button type="button" class="navbar-btn navbar-btn--danger" id="nav-logout" title="Cerrar sesión">
+                    <svg class="navbar-btn__icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                        <path d="M15 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1h-4"
+                              fill="none" stroke="currentColor" stroke-width="1.8"
+                              stroke-linecap="round"/>
+                        <path d="M10 17l-5-5 5-5"
+                              fill="none" stroke="currentColor" stroke-width="1.8"
+                              stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M5 12h12"
+                              fill="none" stroke="currentColor" stroke-width="1.8"
+                              stroke-linecap="round"/>
+                    </svg>
+                    <span class="navbar-btn__label">Salir</span>
+                </button>
+            </nav>
+
+        </div>
+    </header>
+
+    <!-- ============================================
+         Panel de mesas
+         ============================================ -->
+    <main class="tables-panel">
+        <!-- Hero -->
+        <section class="tables-hero">
+
+            <!-- 1. Título, Toggle e Info del restaurante (todo apilado) -->
+            <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px;">
+                
+                <!-- Fila del título y el toggle -->
+                <div class="tables-hero__head-left" style="display: flex; align-items: center; gap: 12px;">
+                    <h1 class="tables-hero__title" style="margin: 0;">PANEL GENERAL DE MESAS</h1>
+
+                    <!-- Toggle ON/OFF (abierto / cerrado) -->
+                    <label class="toggle" id="open-toggle" title="Abrir o cerrar el restaurante">
+                        <input type="checkbox" id="open-checkbox">
+                        <span class="toggle__track">
+                            <span class="toggle__thumb"></span>
+                        </span>
+                        <span class="toggle__label" id="toggle-label">—</span>
+                    </label>
+                </div>
+
+                <!-- Info del restaurante (Justo debajo del título) -->
+                <p class="tables-hero__subtitle" id="restaurant-info" style="margin: 0; font-weight: 500;">
+                    Cargando...
+                </p>
+
+            </div>
+
+            <!-- 2. Fila del buscador + filtros -->
+            <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+                
+                <!-- Buscador de mesas -->
+                <div class="search-table-wrapper" style="margin: 0;">
+                    <span class="search-table-icon">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <circle cx="11" cy="11" r="7"/>
+                            <path d="m20 20-3.5-3.5" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                    <input type="number" id="search-table-input" placeholder="Buscar N°..." class="search-table-input">
+                </div>
+
+                <!-- Filtros por estado -->
+                <div class="tables-filter" id="tables-filter" style="margin-left: 0;">
+                    <button type="button" class="filter-tab is-active" data-filter="all">
+                        Todas (<span id="count-all">0</span>)
+                    </button>
+                    <button type="button" class="filter-tab" data-filter="available">
+                        <span class="filter-tab__dot filter-tab__dot--green"></span>
+                        Libres (<span id="count-available">0</span>)
+                    </button>
+                    <button type="button" class="filter-tab" data-filter="occupied">
+                        <span class="filter-tab__dot filter-tab__dot--red"></span>
+                        Ocupadas (<span id="count-occupied">0</span>)
+                    </button>
+                    <button type="button" class="filter-tab" data-filter="reserved">
+                        <span class="filter-tab__dot filter-tab__dot--yellow"></span>
+                        Reservadas (<span id="count-reserved">0</span>)
+                    </button>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Loading -->
+        <div id="loading" class="state-block">
+            <div class="spinner"></div>
+            <p>Cargando tus mesas...</p>
+        </div>
+
+        <!-- Sin restaurante -->
+        <section id="empty-state" class="empty-restaurant" hidden>
+            <div class="empty-restaurant__card">
+                <h2 class="empty-restaurant__title">Todavía no tenés un restaurante</h2>
+                <p class="empty-restaurant__text">
+                    Creá tu primer restaurante para empezar a gestionar tus mesas.
+                </p>
+                <button type="button" class="btn btn-primary" id="create-restaurant-btn">
+                    Crear mi restaurante
+                </button>
+            </div>
+        </section>
+
+        <!-- Sin mesas -->
+        <section id="no-tables-state" class="state-block" hidden>
+            <p>No tenés mesas todavía.</p>
+            <button type="button" class="btn btn-primary" id="add-tables-btn">
+                Agregar mesas
+            </button>
+        </section>
+
+        <!-- Grid de mesas -->
+        <section id="tables-content" hidden>
+
+            <div id="tables-grid" class="tables-grid"></div>
+
+            <!-- Leyenda -->
+            <div class="legend">
+                <span class="legend__item">
+                    <span class="legend__dot legend__dot--available"></span>
+                    Disponible
+                </span>
+                <span class="legend__item">
+                    <span class="legend__dot legend__dot--reserved"></span>
+                    Reservada
+                </span>
+                <span class="legend__item">
+                    <span class="legend__dot legend__dot--occupied"></span>
+                    Ocupada
+                </span>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ============================================
+         Modal: Editar restaurante
+         ============================================ -->
+    <div class="modal-overlay" id="edit-modal" hidden>
+        <div class="modal modal--large">
+
+            <div class="modal__header">
+                <h2 class="modal__title" id="edit-modal-title">Editar restaurante</h2>
+                <button type="button" class="modal__close" id="edit-cancel" aria-label="Cerrar">✕</button>
+            </div>
+
+            <!-- Pestañas -->
+            <div class="tabs">
+                <button type="button" class="tab is-active" data-tab="info">
+                    Información
+                </button>
+                <button type="button" class="tab" data-tab="add">
+                    Agregar mesas
+                </button>
+                <button type="button" class="tab" data-tab="remove">
+                    Eliminar mesas
+                </button>
+            </div>
+
+            <form id="edit-form" novalidate>
+
+                <!-- ─── Pestaña 1: Información ─── -->
+                <div class="tab-panel is-active" data-panel="info">
+                    <div class="form-group">
+                        <label for="name">Nombre</label>
+                        <input type="text" id="name" required maxlength="150"
+                               placeholder="Ej: La Parrilla del Tío">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Dirección</label>
+                        <input type="text" id="address" required maxlength="255"
+                               placeholder="Ej: Av. Siempre Viva 742">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Teléfono</label>
+                        <input type="text" id="phone" maxlength="30"
+                               placeholder="Ej: 1145551234">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Descripción</label>
+                        <textarea id="description" rows="3" maxlength="1000"
+                                  placeholder="Ej: Carnes a la parrilla"></textarea>
+                    </div>
+                </div>
+
+                <!-- ─── Pestaña 2: Agregar mesas ─── -->
+                <div class="tab-panel" data-panel="add">
+                    <p class="form-section__hint">
+                        Se agregarán mesas nuevas con la cantidad de sillas que elijas.
+                    </p>
+
+                     <div class="form-group" style="margin-top: 24px;">
+                        <label class="numberbox__label">¿Cuántas mesas querés agregar?</label>
+                        <div class="numberbox" id="add-tables-numberbox">
+                            <button type="button" class="numberbox__btn" id="add-tables-minus"
+                                    aria-label="Restar una mesa">−</button>
+                            <input type="number" class="numberbox__input" id="add-tables-count"
+                                   min="1" max="100" step="1" value="1">
+                            <button type="button" class="numberbox__btn" id="add-tables-plus"
+                                    aria-label="Sumar una mesa">+</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="numberbox__label">¿Cuántas sillas tiene cada mesa?</label>
+                        <div class="numberbox" id="add-chairs-numberbox">
+                            <button type="button" class="numberbox__btn" id="add-chairs-minus"
+                                    aria-label="Restar una silla">−</button>
+                            <input type="number" class="numberbox__input" id="add-chairs-count"
+                                   min="1" max="20" step="1" value="1">
+                            <button type="button" class="numberbox__btn" id="add-chairs-plus"
+                                    aria-label="Sumar una silla">+</button>
+                        </div>
+                    </div>
+
+                   
+
+                    <p class="numberbox__hint" id="add-hint">
+                        Se agregarán <strong>1</strong> mesas con <strong>1</strong> sillas cada una.
+                    </p>
+                </div>
+
+                <!-- ─── Pestaña 3: Eliminar mesas ─── -->
+                <div class="tab-panel" data-panel="remove">
+                    <p class="form-section__hint">
+                        Se eliminarán las mesas con mayor número. Si alguna está ocupada, no se podrá.
+                    </p>
+
+                    <p class="remove-info" id="remove-info">
+                        Actualmente tenés <strong>0</strong> mesas.
+                    </p>
+
+                    <div class="form-group" style="margin-top: 16px;">
+                        <label class="numberbox__label">¿Cuántas mesas querés eliminar?</label>
+                        <div class="numberbox" id="remove-tables-numberbox">
+                            <button type="button" class="numberbox__btn" id="remove-tables-minus"
+                                    aria-label="Restar una mesa">−</button>
+                            <input type="number" class="numberbox__input" id="remove-tables-count"
+                                   min="1" max="100" step="1" value="1">
+                            <button type="button" class="numberbox__btn" id="remove-tables-plus"
+                                    aria-label="Sumar una mesa">+</button>
+                        </div>
+                    </div>
+
+                    <p class="numberbox__hint" id="remove-hint">
+                        Se eliminarán <strong>1</strong> mesas.
+                    </p>
+                </div>
+
+                <!-- Error general -->
+                <div id="form-error" class="form-error" hidden></div>
+
+                <!-- Acciones -->
+                <div class="modal__actions">
+                    <button type="button" class="btn btn-outline" id="edit-cancel-2">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="edit-save">
+                        Guardar
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================
+         Modal: Crear restaurante
+         ============================================ -->
+    <div class="modal-overlay" id="create-modal" hidden>
+        <div class="modal">
+            <h2 class="modal__title">Crear restaurante</h2>
+            <p class="modal__message">Completá los datos de tu restaurante.</p>
+
+            <form id="create-restaurant-form" novalidate>
+                <div class="form-group">
+                    <label for="create-name">Nombre</label>
+                    <input type="text" id="create-name" required maxlength="150"
+                           placeholder="Ej: La Parrilla del Tío">
+                </div>
+                <div class="form-group">
+                    <label for="create-address">Dirección</label>
+                    <input type="text" id="create-address" required maxlength="255"
+                           placeholder="Ej: Av. Siempre Viva 742">
+                </div>
+                <div class="form-group">
+                    <label for="create-phone">Teléfono</label>
+                    <input type="text" id="create-phone" maxlength="30"
+                           placeholder="Ej: 1145551234">
+                </div>
+                <div class="form-group">
+                    <label for="create-description">Descripción</label>
+                    <textarea id="create-description" rows="3" maxlength="1000"
+                              placeholder="Ej: Carnes a la parrilla"></textarea>
+                </div>
+
+                <div id="modal-error" class="form-error" hidden></div>
+
+                <div class="modal__actions">
+                    <button type="button" class="btn btn-outline" id="cancel-create-btn">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="submit-create-btn">
+                        Crear restaurante
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================
+         Modal: Confirmar cambio de mesas
+         ============================================ -->
+    <div class="modal-overlay" id="confirm-modal" hidden>
+        <div class="modal">
+            <h2 class="modal__title" id="confirm-title">Confirmar cambio</h2>
+            <p class="modal__message" id="confirm-message"></p>
+
+            <div class="modal__actions">
+                <button type="button" class="btn btn-outline" id="confirm-cancel">
+                    Cancelar
+                </button>
+                <button type="button" class="btn btn-primary" id="confirm-ok">
+                    Confirmar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         Modal: No se puede reducir
+         ============================================ -->
+    <div class="modal-overlay" id="blocked-modal" hidden>
+        <div class="modal">
+            <h2 class="modal__title">No se puede reducir la cantidad de mesas</h2>
+            <p class="modal__message" id="blocked-message"></p>
+
+            <div class="modal__actions">
+                <button type="button" class="btn btn-primary" id="blocked-ok">
+                    Entendido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/utils/session.js"></script>
+    <script src="js/utils/ui.js"></script>
+    <script src="js/utils/guard.js"></script>
+    <script src="js/services/client.js"></script>
+    <script src="js/services/auth.js"></script>
+    <script src="js/services/restaurant.js"></script>
+    <script src="js/services/tables.js"></script>
+    <script src="js/pages/dashboard.js"></script>
+</body>
+</html>
